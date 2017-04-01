@@ -15,11 +15,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[bwa.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [bwa.install]
 linux = "make"
 mac = "make"
@@ -28,11 +23,11 @@ windows = "make"
 [star]
 github_url = "https://github.com/alexdobin/STAR"
 
-version_newest = "2.5.2b"
+version_newest = "2.5.3a"
 
 supported.os = ["linux", "mac"]
 
-version_available = ["2.5.0b", "2.5.0c", "2.5.1a", "2.5.1b", "2.5.2a", "2.5.2b", "STAR_2.3.1z12", "STAR_2.3.1z9", "STAR_2.4.0a", "STAR_2.4.0c", "STAR_2.4.0d", "STAR_2.4.0e", "STAR_2.4.0f1", "STAR_2.4.0g", "STAR_2.4.0g1", "STAR_2.4.0h", "STAR_2.4.0h1", "STAR_2.4.0i", "STAR_2.4.0j", "STAR_2.4.0k", "STAR_2.4.1a", "STAR_2.4.1b", "STAR_2.4.1c", "STAR_2.4.1d", "STAR_2.4.2a", "STAR_2.5.0a"]
+version_available = ["2.5.3a", "2.5.0b", "2.5.0c", "2.5.1a", "2.5.1b", "2.5.2a", "2.5.2b", "STAR_2.3.1z12", "STAR_2.3.1z9", "STAR_2.4.0a", "STAR_2.4.0c", "STAR_2.4.0d", "STAR_2.4.0e", "STAR_2.4.0f1", "STAR_2.4.0g", "STAR_2.4.0g1", "STAR_2.4.0h", "STAR_2.4.0h1", "STAR_2.4.0i", "STAR_2.4.0j", "STAR_2.4.0k", "STAR_2.4.1a", "STAR_2.4.1b", "STAR_2.4.1c", "STAR_2.4.1d", "STAR_2.4.2a", "STAR_2.5.0a"]
 
 after_failure = "echo 'fail!'"
 
@@ -41,13 +36,8 @@ after_success = "echo 'successful!'"
 make_dir = ["source", "./"]
 
 [star.bin_dir]
-linux = "./bin/Linux_x86_64"
-mac = "./bin/MacOSX_x86_64"
-
-[star.before_install]
-linux = ""
-mac = ""
-windows = ""
+linux = "{{destdir}}/bin/Linux_x86_64"
+mac = "{{destdir}}/bin/MacOSX_x86_64"
 
 [star.install]
 linux = "make"
@@ -57,9 +47,9 @@ windows = "make"
 [htslib]
 github_url = "https://github.com/samtools/htslib"
 
-version_newest = "1.3.2"
+version_newest = "1.4"
 
-version_available = ["0.2.0-rc1","0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.2.1", "1.3", "1.3.1", "1.3.2", "stable1", "stable2", "vcf-direct-final"]
+version_available = ["0.2.0-rc1","0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.2.1", "1.3", "1.3.1", "1.3.2", "1.4"]
 
 after_failure = "echo 'fail!'"
 
@@ -69,11 +59,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[htslib.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [htslib.install]
 linux = "make"
 mac = "make"
@@ -82,13 +67,13 @@ windows = "make"
 [samtools]
 github_url = "https://github.com/samtools/samtools"
 
-version_newest = "1.3.1"
+version_newest = "1.4"
 
 dependence = ["htslib"]
 
-dependence_version = ["1.3.2"]
+dependence_version = ["{{version}}"]
 
-version_available = ["0.1.1", "0.1.10", "0.1.11", "0.1.12", "0.1.12a", "0.1.13", "0.1.14", "0.1.15", "0.1.16", "0.1.17", "0.1.18", "0.1.19", "0.1.2-svntag", "0.1.2-tarball", "0.1.20", "0.1.3", "0.1.4", "0.1.5", "0.1.5a", "0.1.5b", "0.1.5c", "0.1.6", "0.1.7", "0.1.7a", "0.1.8", "0.1.9", "0.2.0-rc1", "0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.3", "1.3.1", "st-final" ]
+version_available = ["0.1.1", "0.1.10", "0.1.11", "0.1.12", "0.1.12a", "0.1.13", "0.1.14", "0.1.15", "0.1.16", "0.1.17", "0.1.18", "0.1.19", "0.1.2-svntag", "0.1.2-tarball", "0.1.20", "0.1.3", "0.1.4", "0.1.5", "0.1.5a", "0.1.5b", "0.1.5c", "0.1.6", "0.1.7", "0.1.7a", "0.1.8", "0.1.9", "0.2.0-rc1", "0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.3", "1.3.1", "1.4" ]
 
 after_failure = "echo 'fail!'"
 
@@ -98,11 +83,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[samtools.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [samtools.install]
 linux = ["autoconf -Wno-syntax; sed -i 's;HTSDIR = ../htslib;HTSDIR = {{htslib:source.dir}};' config.mk; make && make install prefix=`pwd`"]
 mac = ["autoconf -Wno-syntax; sed -i 's;HTSDIR = ../htslib;HTSDIR = {{htslib:source.dir}};' config.mk; make && make install prefix=`pwd`"]
@@ -111,9 +91,9 @@ windows = ["autoconf -Wno-syntax; sed -i 's;HTSDIR = ../htslib;HTSDIR = {{htslib
 [bcftools]
 github_url = "https://github.com/samtools/bcftools"
 
-version_newest = "1.3.1"
+version_newest = "1.4"
 
-version_available = ["0.1.0", "0.2.0-rc1", "0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.3", "1.3.1", "stable1", "stable2", "vcf-direct-final"]
+version_available = ["0.1.0", "0.2.0-rc1", "0.2.0-rc10", "0.2.0-rc11", "0.2.0-rc12", "0.2.0-rc2", "0.2.0-rc3", "0.2.0-rc4", "0.2.0-rc5", "0.2.0-rc6", "0.2.0-rc7", "0.2.0-rc8", "0.2.0-rc9", "1.0", "1.1", "1.2", "1.3", "1.3.1", "1.4"]
 
 dependence = ["htslib"]
 
@@ -126,11 +106,6 @@ after_success = "echo 'successful!'"
 make_dir = ["./"]
 
 bin_dir = ["./"]
-
-[bcftools.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [bcftools.install]
 linux = "sed -i 's;HTSDIR = ../htslib;HTSDIR = {{htslib:source.dir}};' Makefile; make"
@@ -152,11 +127,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[bowtie.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [bowtie.install]
 linux = "make"
 mac = "make"
@@ -176,11 +146,6 @@ after_success = "echo 'successful!'"
 make_dir = ["./"]
 
 bin_dir = ["./"]
-
-[bowtie2.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [bowtie2.install]
 linux = "make"
@@ -202,11 +167,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[tophat2.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [tophat2.install]
 linux = "sh autogen.sh && ./configure --prefix=`pwd` && make && make install"
 mac = "sh autogen.sh && ./configure --prefix=`pwd` && make && make install"
@@ -227,22 +187,12 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[varscan2.before_install]
-linux = ""
-mac = ""
-windows = ""
-
-[varscan2.install]
-linux = ""
-mac = ""
-windows = ""
-
 [picard]
 github_url = "https://github.com/broadinstitute/picard"
 
-version_newest = "2.8.3"
+version_newest = "2.9.0"
 
-version_available = ["1.03", "1.04", "1.05", "1.06", "1.07", "1.08", "1.09", "1.10", "1.100", "1.101", "1.102", "1.103", "1.104", "1.105", "1.106", "1.107", "1.108", "1.109", "1.11", "1.110", "1.113", "1.114", "1.115", "1.116", "1.117", "1.118", "1.119", "1.12", "1.120", "1.121", "1.122", "1.123", "1.124", "1.125", "1.126", "1.127", "1.128", "1.129", "1.13", "1.130", "1.131", "1.133", "1.134", "1.135", "1.136", "1.137", "1.138", "1.139", "1.14", "1.140", "1.141", "1.15", "1.16", "1.17", "1.18", "1.19", "1.21", "1.22", "1.23", "1.24", "1.25", "1.26", "1.27", "1.28", "1.29", "1.30", "1.31", "1.32", "1.33", "1.34", "1.35", "1.36", "1.37", "1.38", "1.39", "1.40", "1.41", "1.42", "1.43", "1.44", "1.45", "1.46", "1.47", "1.48", "1.49", "1.50", "1.51", "1.52", "1.53", "1.54", "1.55", "1.56", "1.57", "1.58", "1.59", "1.60", "1.61", "1.62", "1.63", "1.64", "1.65", "1.66", "1.67", "1.68", "1.69", "1.70", "1.71", "1.72", "1.73", "1.74", "1.75", "1.76", "1.77", "1.78", "1.79", "1.80", "1.81", "1.82", "1.83", "1.84", "1.85", "1.86", "1.87", "1.88", "1.89", "1.90", "1.91", "1.92", "1.93", "1.94", "1.95", "1.96", "1.97", "1.98", "1.99", "2.0.1", "2.1.0", "2.1.1", "2.2.0", "2.2.1", "2.2.2", "2.2.3", "2.2.4", "2.3.0", "2.3.0_buildhotfix", "2.4.0", "2.4.1", "2.5.0", "2.5.0-gradle", "2.6.0", "2.7.0", "2.7.1", "2.7.2", "2.8.0", "2.8.1", "2.8.2", "2.8.3", "BCM", "bc_4.13"]
+version_available = ["1.03", "1.04", "1.05", "1.06", "1.07", "1.08", "1.09", "1.10", "1.100", "1.101", "1.102", "1.103", "1.104", "1.105", "1.106", "1.107", "1.108", "1.109", "1.11", "1.110", "1.113", "1.114", "1.115", "1.116", "1.117", "1.118", "1.119", "1.12", "1.120", "1.121", "1.122", "1.123", "1.124", "1.125", "1.126", "1.127", "1.128", "1.129", "1.13", "1.130", "1.131", "1.133", "1.134", "1.135", "1.136", "1.137", "1.138", "1.139", "1.14", "1.140", "1.141", "1.15", "1.16", "1.17", "1.18", "1.19", "1.21", "1.22", "1.23", "1.24", "1.25", "1.26", "1.27", "1.28", "1.29", "1.30", "1.31", "1.32", "1.33", "1.34", "1.35", "1.36", "1.37", "1.38", "1.39", "1.40", "1.41", "1.42", "1.43", "1.44", "1.45", "1.46", "1.47", "1.48", "1.49", "1.50", "1.51", "1.52", "1.53", "1.54", "1.55", "1.56", "1.57", "1.58", "1.59", "1.60", "1.61", "1.62", "1.63", "1.64", "1.65", "1.66", "1.67", "1.68", "1.69", "1.70", "1.71", "1.72", "1.73", "1.74", "1.75", "1.76", "1.77", "1.78", "1.79", "1.80", "1.81", "1.82", "1.83", "1.84", "1.85", "1.86", "1.87", "1.88", "1.89", "1.90", "1.91", "1.92", "1.93", "1.94", "1.95", "1.96", "1.97", "1.98", "1.99", "2.0.1", "2.1.0", "2.1.1", "2.2.0", "2.2.1", "2.2.2", "2.2.3", "2.2.4", "2.3.0", "2.3.0_buildhotfix", "2.4.0", "2.4.1", "2.5.0", "2.5.0-gradle", "2.6.0", "2.7.0", "2.7.1", "2.7.2", "2.8.0", "2.8.1", "2.8.2", "2.8.3", "2.9.0"]
 
 after_failure = "echo 'fail!'"
 
@@ -251,11 +201,6 @@ after_success = "echo 'successful!'"
 make_dir = ["./"]
 
 bin_dir = ["build/libs"]
-
-[picard.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [picard.install]
 linux = "./gradlew shadowJar"
@@ -276,11 +221,6 @@ after_success = "echo 'successful!'"
 make_dir = ["./"]
 
 bin_dir = ["./"]
-
-[vcftools.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [vcftools.install]
 linux = "./autogen.sh && ./configure --prefix=`pwd` && make && make install"
@@ -306,11 +246,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[pindel.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [pindel.install]
 linux = "./INSTALL {{htslib:source.dir}}"
 mac = ""
@@ -331,16 +266,6 @@ make_dir = ["./"]
 
 bin_dir = ["lofreq_star-2.1.2_linux-x86-64/bin/"]
 
-[lofreq.before_install]
-linux = ""
-mac = ""
-windows = ""
-
-[lofreq.install]
-linux = ""
-mac = ""
-windows = ""
-
 [hisat2]
 github_url = "https://github.com/infphilo/hisat2"
 
@@ -356,11 +281,6 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[hisat2.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [hisat2.install]
 linux = "make"
 mac = "make"
@@ -369,24 +289,20 @@ windows = "make"
 [freebayes]
 github_url = "https://github.com/ekg/freebayes"
 
+use_git2r = false
 recursive_clone = true
 
-version_newest = "v1.1.0"
+version_newest = "master"
 
-version_available = ["development", "first", "may_release", "stable", "v0.1.0", "v0.9.10", "v0.9.13", "v0.9.14", "v0.9.15", "v0.9.16", "v0.9.17", "v0.9.18", "v0.9.19", "v0.9.20", "v0.9.21", "v0.9.9.1", "v0.9.9.2", "v1.0.0", "v1.0.1", "v1.0.2", "v1.1.0", "v9.9.1", "v9.9.11", "v9.9.13", "v9.9.2"]
+version_available = ["v0.1.0", "v0.9.10", "v0.9.13", "v0.9.14", "v0.9.15", "v0.9.16", "v0.9.17", "v0.9.18", "v0.9.19", "v0.9.20", "v0.9.21", "v0.9.9.1", "v0.9.9.2", "v1.0.0", "v1.0.1", "v1.0.2", "v1.1.0", "v9.9.1", "v9.9.11", "v9.9.13", "v9.9.2", "master"]
 
-after_failure = "echo 'fail!'"
+after_failure = "echo 'fail'"
 
 after_success = "echo 'successful!'"
 
 make_dir = ["./"]
 
 bin_dir = ["./bin"]
-
-[freebayes.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [freebayes.install]
 linux = "make"
@@ -433,11 +349,6 @@ make_dir = ["./"]
 
 bin_dir = ["./bin"]
 
-[bedtools.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [bedtools.install]
 linux = "make"
 mac = "make"
@@ -457,11 +368,6 @@ after_success = "echo 'successful!'"
 make_dir = ["./"]
 
 bin_dir = ["./"]
-
-[sparsehash.before_install]
-linux = ""
-mac = ""
-windows = ""
 
 [sparsehash.install]
 linux = "sh autogen.sh && ./configure --prefix=`pwd` && make && make install"
@@ -487,15 +393,10 @@ make_dir = ["./"]
 
 bin_dir = ["./"]
 
-[abyss.before_install]
-linux = ""
-mac = ""
-windows = ""
-
 [abyss.install]
-linux = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make && make install"
-mac = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make && make install"
-windows = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make && make install"
+linux = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make"
+mac = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make"
+windows = "sh autogen.sh && ./configure --enable-maxk=96 --prefix=`pwd` --with-mpi --with-sqlite={{sqlite:source.dir}} CPPFLAGS=-I{{sparsehash:source.dir}}/include && make"
 
 [bamtools]
 github_url = "https://github.com/pezmaster31/bamtools"
@@ -521,3 +422,206 @@ windows = "md build; cd build && cmake .."
 linux = "cd build && make"
 mac = "cd build && make"
 windows = "cd build && make"
+
+[breakdancer]
+github_url = "https://github.com/genome/breakdancer.git"
+use_git2r = false
+
+version_newest = "v1.4.5"
+
+version_available = ["v1.0.0", "v1.0.1", "v1.0.2", "v1.1.0", "v1.1.1", "v1.2.0", "v1.2.1", "v1.2.2", "v1.2.3", "v1.2.4", "v1.2.5", "v1.2.6", "v1.2.7", "v1.2.7.1", "v1.2.8", "v1.2.8.1", "v1.2.8.2", "v1.2.8.3", "v1.3.0", "v1.3.1", "v1.3.1.1", "v1.3.2", "v1.3.3", "v1.3.3.1", "v1.3.3.2", "v1.3.3.3", "v1.3.4", "v1.3.5", "v1.3.5.1", "v1.3.6", "v1.3.7", "v1.4.0", "v1.4.1", "v1.4.2", "v1.4.3", "v1.4.4", "v1.4.5", "master"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./bin"]
+
+[breakdancer.before_install]
+linux = ["mkdir build; cd build && cmake .. -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr/local"]
+mac = ["mkdir build; cd build && cmake .. -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr/local"]
+windows = ["mkdir build; cd build && cmake .. -DCMAKE_BUILD_TYPE=release -DCMAKE_INSTALL_PREFIX=/usr/local"]
+
+[breakdancer.install]
+linux = "cd build && make && make install"
+mac = "cd build && make && make install"
+windows = "cd build && make && make install"
+
+[htseq]
+github_url = "https://github.com/simon-anders/htseq"
+
+version_newest = "release_0.7.1"
+
+version_available = ["release_0.4.0", "release_0.4.1", "release_0.4.2-p3", "release_0.5.4", "release_0.6.1", "release_0.6.1p1", "release_0.7.0", "release_0.7.0py3", "release_0.7.1", "release_0.7.1py3"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./scripts"]
+
+[htseq.before_install]
+linux = ["pip install numpy", "pip install Cython", "pip install 'matplotlib>=1.4'"]
+mac = ["pip install numpy", "pip install Cython", "pip install 'matplotlib>=1.4'"]
+windows = ["pip install numpy", "pip install Cython", "pip install 'matplotlib>=1.4'"]
+
+[htseq.install]
+linux = "python setup.py install"
+mac = "python setup.py install"
+windows = "python setup.py install"
+
+[seqtk]
+github_url = "https://github.com/ndaniel/seqtk"
+
+version_newest = "1.2-r101b"
+
+version_available = ["1.0", "1.0-r68a", "1.0-r68b", "1.0-r68c", "1.0-r68d", "1.0-r68e", "1.0-r82b", "1.2-r101b", "seqtk-1.0-r68b", "seqtk-1.0-r86a", "sgdp"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./"]
+
+[seqtk.install]
+linux = "make"
+mac = "make"
+windows = "make"
+
+[delly]
+github_url = "https://github.com/dellytools/delly.git"
+use_git2r = false
+recursive_clone = true
+
+version_newest = "v0.7.6"
+
+version_available = ["v0.1.2", "v0.1.3", "v0.2.1", "v0.2.2", "v0.3.1", "v0.3.2", "v0.3.3", "v0.5.3", "v0.5.4", "v0.5.5", "v0.5.6", "v0.5.8", "v0.5.9", "v0.6.1", "v0.6.2", "v0.6.3", "v0.6.5", "v0.6.6", "v0.6.7", "v0.6.8", "v0.7.1", "v0.7.2", "v0.7.3", "v0.7.5", "v0.7.6"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./src"]
+
+[delly.install]
+linux = "make all"
+mac = "make all"
+windows = "make all"
+
+[tmap]
+github_url = "git://github.com/iontorrent/TMAP.git"
+use_git2r = false
+
+version_newest = "3.4.0"
+
+version_available = ["0.0.1", "0.0.10", "0.0.11", "0.0.12", "0.0.13", "0.0.14", "0.0.15", "0.0.16", "0.0.17", "0.0.18", "0.0.19", "0.0.2", "0.0.20", "0.0.21", "0.0.22", "0.0.23", "0.0.24", "0.0.25", "0.0.26", "0.0.27", "0.0.28", "0.0.29", "0.0.3", "0.0.30", "0.0.31", "0.0.4", "0.0.5", "0.0.6", "0.0.7", "0.0.8", "0.0.9", "0.1.1", "0.1.2", "0.1.3", "0.2.0", "0.2.1", "0.2.2", "0.2.3", "0.3.0", "0.3.1", "0.3.2", "0.3.3", "0.3.4", "0.3.5", "0.3.6", "0.3.7", "0.3.8", "0.3.9", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6", "2.9.0", "2.9.1", "2.9.2", "3.0.0", "3.0.1", "3.2.0", "3.2.1", "3.4.0"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./"]
+
+[tmap.before_install]
+linux = ["git submodule init", " git submodule update"]
+mac = ["git submodule init", " git submodule update"]
+windows = ["git submodule init", " git submodule update"]
+
+[tmap.install]
+linux = ["git checkout -b {{version}} tmap.{{version}}", "git submodule update", 
+         "sh autogen.sh && ./configure --prefix=`pwd` && make", "make install"]
+mac = ["git checkout -b {{version}} tmap.{{version}}", "git submodule update", 
+         "sh autogen.sh && ./configure --prefix=`pwd` && make", "make install"]
+windows = ["git checkout -b {{version}} tmap.{{version}}", "git submodule update", 
+         "sh autogen.sh && ./configure --prefix=`pwd` && make", "make install"]
+
+[somaticsniper]
+github_url = "https://github.com/genome/somatic-sniper"
+
+version_newest = "v1.0.5.0"
+
+version_available = ["v0.1.0", "v0.7.4", "v0.7.4.1", "v0.7.4.2", "v0.7.4.3", "v0.7.4.4", "v0.7.4.5", "v0.7.4.6", "v0.7.4.7", "v0.7.4.8", "v0.7.4.9", "v1.0.0", "v1.0.0.1", "v1.0.0.2", "v1.0.1", "v1.0.2", "v1.0.2.1", "v1.0.2.2", "v1.0.2.3", "v1.0.3", "v1.0.4", "v1.0.4.1", "v1.0.4.2", "v1.0.5.0"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./build/bin"]
+
+[somaticsniper.install]
+linux = "mkdir build; cd build && cmake ../ && make deps && make -j && make test"
+mac = "mkdir build; cd build && cmake ../ && make deps && make -j && make test"
+
+[bamutil]
+github_url = "https://github.com/statgen/bamUtil"
+
+version_newest = "v1.0.14"
+
+version_available = ["v1.0.0", "v1.0.10", "v1.0.11", "v1.0.12", "v1.0.13", "v1.0.14", "v1.0.2", "v1.0.3", "v1.0.5", "v1.0.6", "v1.0.7", "v1.0.9"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./bin"]
+
+[bamutil.install]
+linux = "make cloneLib && make && make install INSTALLDIR={{destdir}}"
+mac = "make cloneLib && make && make install INSTALLDIR={{destdir}}"
+windows = "make cloneLib && make && make install INSTALLDIR={{destdir}}"
+
+[vcflib]
+github_url = "https://github.com/vcflib/vcflib"
+use_git2r = false
+recursive_clone = true
+
+version_newest = "v1.0.0-rc1"
+
+version_available = ["v1.0.0-rc1", "v1.0.0-rc0"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./bin"]
+
+[vcflib.install]
+linux = "make"
+mac = "make"
+windows = "make"
+
+[jvarkit]
+github_url = "https://github.com/lindenb/jvarkit/"
+
+version_newest = "master"
+
+version_available = ["master"]
+
+after_failure = "echo 'fail!'"
+
+after_success = "echo 'successful!'"
+
+make_dir = ["./"]
+
+bin_dir = ["./dist"]
+
+[jvarkit.install]
+linux = "make all"
+mac = "make all"
+windows = "make all"
