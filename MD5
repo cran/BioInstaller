@@ -1,5 +1,5 @@
 7aec14ad44a2be21ba2a21147315e496 *ChangeLog
-75048c5e4032c48ef7ad325515ddc128 *DESCRIPTION
+b74c2437da846bc39f2c3945b35fc15b *DESCRIPTION
 4842fc3ffc3a7a8011c31023ad4d575f *LICENSE
 df355cecbe61c67d9402ebbfcc7ecc89 *NAMESPACE
 e7f77955409646b2e0b95b68706fefb3 *R/BioInstaller.R
@@ -7,7 +7,7 @@ e7f77955409646b2e0b95b68706fefb3 *R/BioInstaller.R
 adfb3371a38261fa9971b107cf2e43e2 *R/info.R
 eeb4b2a5d11e148aab3d3203a1badc66 *R/install.R
 4747d47f886e280843b3878d1283e09b *R/install_utils.R
-ad6052192bced3cd9e50a80cfb6cbbcf *R/utils_function.R
+cb9e647266e8ef66d164530e6c6d4530 *R/utils_function.R
 16bd27bdd89c97c5d7ed8f3050f49016 *README.md
 a83267e262eae4123912d657ac90e432 *inst/extdata/github.toml
 ceb77cd6ba5d1ecb5ac4b99fe665828d *inst/extdata/html/novocraft.html
