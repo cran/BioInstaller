@@ -31,11 +31,11 @@ devtools::install_github("Miachol/BioInstaller")
 
 **NGS Aligner:** 
 
-- BWA, STAR, TMAP, Bowtie, Bowtie2, tophat2, hisat2, GMAP-GSNAP, ABySS, SSAHA2, Velvet, Edean
+- BWA, STAR, TMAP, Bowtie, Bowtie2, tophat2, hisat2, GMAP-GSNAP, ABySS, SSAHA2, Velvet, Edean, Trinity, oases, RUM, MapSplice2
 
 **NGS Utils:** 
 
-- htslib, samtools, bcftools, bedtools, bamtools, vcftools, sratools, picard, HTSeq, seqtk, UCSC Utils(blat, liftOver)
+- htslib, samtools, bcftools, bedtools, bamtools, vcftools, sratools, picard, HTSeq, seqtk, UCSC Utils(blat, liftOver), bamUtil, jvarkit, bcl2fastq2
 
 **NGS Variant Caller:** 
     
@@ -51,7 +51,7 @@ devtools::install_github("Miachol/BioInstaller")
 
 **NGS Quality Control:** 
 
-- FastQC
+- FastQC, PRINSEQ, SolexaQA, FASTX-Toolkit
 
 **NGS Others:**
 
@@ -67,5 +67,5 @@ devtools::install_github("Miachol/BioInstaller")
 
 **Others:** 
 
-- sparsehash, sqlite, pigz, lzo, lzop
+- sparsehash, sqlite, pigz, lzo, lzop, bzip2, zlib, armadillo
 

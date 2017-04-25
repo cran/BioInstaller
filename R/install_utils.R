@@ -95,7 +95,7 @@ is.setted.dependence <- function(config) {
 # Get need install name
 get.need.install <- function(config, db) {
   need.install <- config$dependence[!config$dependence %in% show.installed(db)]
-  need.install.version <- config$dependence_version[!config$dependence %in% show.installed()]
+  need.install.version <- config$dependence_version[!config$dependence %in% show.installed(db)]
   return(list(need.install = need.install, need.install.version = need.install.version))
 }
 
@@ -118,11 +118,9 @@ process.dependence <- function(config, db, destdir, verbose) {
     need.install <- get.need.install(config, db)$need.install
     need.install.version <- get.need.install(config, db)$need.install.version
     count <- 1
-    for (i in need.install) {
-      if (is.need.dependence(i)) {
-        install.dependence(i, need.install.version[count], destdir)
-      }
-      count <- count + 1
+    if (is.need.dependence(need.install)) {
+      install.dependence(need.install, need.install.version, paste0(destdir, 
+        "/dependence/", need.install))
     }
   }
 }
@@ -147,7 +145,7 @@ download.dir.files <- function(config, source_url, destfile, showWarnings = FALS
   for (i in source_url) {
     tryCatch({
       status.tmp <- download.file.custom(url = i, destfile = destfile[count], 
-        is.dir = is.dir)
+        is.dir = is.dir, showWarnings = showWarnings)
       if (!is.logical(status.tmp) && status.tmp == 0) {
         status.tmp <- TRUE
       } else {
@@ -227,12 +225,12 @@ git.download <- function(name, destdir, version, github_url, use_git2r, recursiv
   recursive_clone <- convert.bool(recursive_clone)
   if (use_git2r) {
     repo <- git2r::clone(github_url, destdir)
-    if(version != "master") {
+    if (version != "master") {
       text <- sprintf("git2r::checkout(git2r::tags(repo)[['%s']])", version)
       status <- eval(parse(text = text))
       status <- is.null(status)
     }
-    if(length(list.files(destdir)) != 0) {
+    if (length(list.files(destdir)) != 0) {
       status <- TRUE
     } else {
       status <- FALSE
@@ -245,12 +243,13 @@ git.download <- function(name, destdir, version, github_url, use_git2r, recursiv
     }
     status <- for_runcmd(cmd)
     status <- status == 0
-    if(!status) {
+    status[is.null(status)] <- FALSE
+    if (!status) {
       return(FALSE)
     }
     olddir <- getwd()
     setwd(destdir)
-    if(version != "master") {
+    if (version != "master") {
       status <- for_runcmd(sprintf("git checkout %s", version))
     }
     setwd(olddir)

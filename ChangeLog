@@ -1,3 +1,20 @@
+2017-04-24 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+		
+		* Update FastQC URL
+		* Update Version newest
+		* Change dependece install dir in the {{destdir}}/dependence/some_dependence
+		* Add "softwares_version" format name recognition, eg. bwa@0.7.2a,
+		name.saved="bwa@0.7.2a", version=0.7.2a
+		* Release 0.1.0
+
+2017-04-11 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* bcl2fastq2 be supported
+
+2017-04-09 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* samstat, PRINSEQ, SolexaQA, fastx_toolkit be supported
+
 2017-03-19 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
 		
 		* GATK, Mutect, SSAHA2, NovoAlign be supported

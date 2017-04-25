@@ -119,7 +119,7 @@ get.edena.newest.version <- function() {
 
 # Function get fastqc all versions
 get.fastqc.versions <- function() {
-  urls <- c("http://www.bioinformatics.bbsrc.ac.uk/projects/fastqc/")
+  urls <- c("http://www.bioinformatics.babraham.ac.uk/projects/fastqc/")
   versions_final <- NULL
   for (url in urls) {
     h <- basicTextGatherer()
@@ -127,8 +127,8 @@ get.fastqc.versions <- function() {
     web <- str_split(web, "\n")
     web <- web[[1]]
     
-    web <- web[str_detect(web, "Version")]
-    web <- str_extract(web, "[0-9][.0-9]*")
+    web <- str_extract(web, "Version [0-9][.0-9]*")
+    web <- str_replace_all(web, "Version", "")
   }
   return(versions_final)
 }
@@ -383,3 +383,78 @@ get.armadillo.newest.version <- function() {
   return(versions[1])
 }
 
+# Function get prinseq all versions
+get.prinseq.versions <- function() {
+  urls <- c("https://sourceforge.net/projects/prinseq/files/standalone/")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[!str_detect(web, "source=files")]
+    web <- web[str_detect(web, 'files/standalone/prinseq-lite')]
+    web <- web[!str_detect(web, 'timeline')]
+    web <- str_extract(web, "[0-9][0-9.]*")
+    web <- str_replace(web, ".$", "")
+    web <- web[!is.na(web)]
+  }
+  versions_final <- web
+  return(versions_final)
+}
+# Function get prinseq newest version
+get.prinseq.newest.version <- function() {
+  versions <- get.prinseq.versions()
+  return(versions[1])
+}
+
+# Function get solexaqa all versions
+get.solexaqa.versions <- function() {
+  urls <- c("https://sourceforge.net/projects/solexaqa/files/src/")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[!str_detect(web, "source=files")]
+    web <- web[str_detect(web, 'files/src/SolexaQA')]
+    web <- web[!str_detect(web, 'timeline')]
+    web <- str_extract(web, "[v.][0-9][0-9.]*")
+    web <- str_replace(web, ".$", "")
+    web <- str_replace(web, "^[v.]", "")
+    web <- web[!is.na(web)]
+  }
+  versions_final <- web
+  return(versions_final)
+}
+# Function get solexaqa newest version
+get.solexaqa.newest.version <- function() {
+  versions <- get.solexaqa.versions()
+  return(versions[1])
+}
+
+# Function get mapsplice2 all versions
+get.mapsplice2.versions <- function() {
+  urls <- c("http://www.netlab.uky.edu/p/bioinfo/MapSplice2")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "download")]
+    web <- str_extract(web, "[0-9]\\.[0-9.]*")
+    web <- web[!is.na(web)]
+  }
+  versions_final <- web
+  return(versions_final)
+}
+# Function get mapsplice2 newest version
+get.mapsplice2.newest.version <- function() {
+  versions <- get.mapsplice2.versions()
+  return(versions[1])
+}
