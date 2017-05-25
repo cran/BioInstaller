@@ -7,18 +7,20 @@
 #' @param executable.files Executable files in bin.dir
 #' @param db File of saving softwares infomation
 #' @param ... Other key and value paired need be saved in BioInstaller
-#' @param verbose TRUE is debug mode
+#' @param verbose Ligical indicating wheather show the log message
 #' @export
 #' @return Bool Value
 #' @examples
-#' set.biosoftwares.db(sprintf('%s/.BioInstaller', tempdir()))
+#' db <- sprintf('%s/.BioInstaller', tempdir())
+#' set.biosoftwares.db(db)
 #' change.info(name = 'demo', installed = 'yes', source.dir = '',
 #' bin.dir = '', excutable.files = c('demo'), others.customer = 'demo')
+#' unlink(db)
 change.info <- function(name = "", installed = TRUE, source.dir = "", bin.dir = "", 
   executable.files = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", 
-    "softwares_db_demo.yaml", package = "BioInstaller")), ..., verbose = FALSE) {
+    "softwares_db_demo.yaml", package = "BioInstaller")), ..., verbose = TRUE) {
   msg <- sprintf("Running change.info for %s and be saved to %s", name, db)
-  flog.info(msg)
+  info.msg(msg, verbose = verbose)
   source.dir <- normalizePath(source.dir, mustWork = F)
   bin.dir <- normalizePath(bin.dir, mustWork = F)
   db <- normalizePath(db, mustWork = F)
@@ -29,25 +31,28 @@ change.info <- function(name = "", installed = TRUE, source.dir = "", bin.dir = 
   if (!file.exists(config.cfg)) {
     file.create(config.cfg)
   }
-  Sys.setenv(R_CONFIGFILE_ACTIVE = config.cfg)
-  config <- configr::read.config()
+  config <- configr::read.config(file = config.cfg)
   config[[name]] = list(installed = installed, source.dir = source.dir, bin_dir = bin.dir, 
     executable_files = executable.files, ...)
-  configr::write.config(config.dat = config, write.type = "yaml")
+  configr::write.config(config.dat = config, file = config.cfg, write.type = "yaml")
 }
 
 #' Show biologly softwares infomation of system
 #'
 #' @param name Software name
 #' @param db File of saving softwares infomation
-#' @param verbose TRUE is debug mode
+#' @param verbose Ligical indicating wheather show the log message
 #' @export
 #' @return Bool Value
 #' @examples
-#' set.biosoftwares.db(sprintf('%s/.BioInstaller', tempdir()))
+#' db <- sprintf('%s/.BioInstaller', tempdir())
+#' set.biosoftwares.db(db)
+#' change.info(name = 'bwa', installed = 'yes', source.dir = '',
+#' bin.dir = '', excutable.files = c('demo'), others.customer = 'demo')
 #' get.info('bwa')
+#' unlink(db)
 get.info <- function(name = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", 
-  "softwares_db_demo.yaml", package = "BioInstaller")), verbose = FALSE) {
+  "softwares_db_demo.yaml", package = "BioInstaller")), verbose = TRUE) {
   db <- normalizePath(db, mustWork = FALSE)
   if (!db.check(db)) {
     return(FALSE)
@@ -56,13 +61,11 @@ get.info <- function(name = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", syste
   if (!file.exists(config.cfg)) {
     file.create(config.cfg)
   }
-  Sys.setenv(R_CONFIGFILE_ACTIVE = config.cfg)
-  if (!(name %in% configr::eval.config.groups())) {
+  if (!(name %in% configr::eval.config.sections(file = db))) {
     warning(sprintf("%s not existed in BioInstaller database.", name))
     return(FALSE)
   }
-  Sys.setenv(R_CONFIG_ACTIVE = name)
-  config <- configr::eval.config()
+  config <- configr::eval.config(config = name, file = db)
   return(config)
 }
 
@@ -70,14 +73,18 @@ get.info <- function(name = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", syste
 #'
 #' @param name Software name
 #' @param db File of saving softwares infomation
-#' @param verbose TRUE is debug mode
+#' @param verbose Ligical indicating wheather show the log message
 #' @export
 #' @return Bool Value
 #' @examples
-#' set.biosoftwares.db(sprintf('%s/.BioInstaller', tempdir()))
+#' db <- sprintf('%s/.BioInstaller', tempdir())
+#' set.biosoftwares.db(db)
+#' change.info(name = 'bwa', installed = 'yes', source.dir = '',
+#' bin.dir = '', excutable.files = c('demo'), others.customer = 'demo')
 #' del.info('bwa')
+#' unlink(db)
 del.info <- function(name = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", 
-  "softwares_db_demo.yaml", package = "BioInstaller")), verbose = FALSE) {
+  "softwares_db_demo.yaml", package = "BioInstaller")), verbose = TRUE) {
   db <- normalizePath(db, mustWork = FALSE)
   if (!db.check(db)) {
     return(FALSE)
@@ -86,29 +93,32 @@ del.info <- function(name = "", db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", syste
   if (!file.exists(config.cfg)) {
     file.create(config.cfg)
   }
-  Sys.setenv(R_CONFIGFILE_ACTIVE = config.cfg)
-  if (!(name %in% configr::eval.config.groups())) {
+  if (!(name %in% configr::eval.config.sections(file = config.cfg))) {
     warning(sprintf("%s not existed in BioInstaller database.", name))
     return(FALSE)
   }
-  config <- configr::read.config(config = name)
+  config <- configr::read.config(config = name, file = config.cfg)
   config[[name]] <- NULL
-  configr::write.config(config.dat = config, write.type = "yaml")
+  configr::write.config(config.dat = config, file = config.cfg, write.type = "yaml")
 }
 
 #' Show all installed bio-softwares in system
 #'
 #' @param db File of saving softwares infomation
 #' @param only.installed Logical wheather only show installed softwares in db
-#' @param verbose TRUE is debug mode
+#' @param verbose Ligical indicating wheather show the log message
 #' @export
 #' @return Bool Value
 #' @examples
-#' set.biosoftwares.db(sprintf('%s/.BioInstaller', tempdir()))
+#' db <- sprintf('%s/.BioInstaller', tempdir())
+#' set.biosoftwares.db(db)
+#' change.info(name = 'bwa', installed = 'yes', source.dir = '',
+#' bin.dir = '', excutable.files = c('demo'), others.customer = 'demo')
 #' show.installed()
+#' unlink(db)
 show.installed <- function(db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", 
   "softwares_db_demo.yaml", package = "BioInstaller")), only.installed = TRUE, 
-  verbose = FALSE) {
+  verbose = TRUE) {
   db <- normalizePath(db, mustWork = FALSE)
   if (!db.check(db)) {
     return(FALSE)
@@ -118,11 +128,9 @@ show.installed <- function(db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.fil
     file.create(config.cfg)
   }
   softwares <- c()
-  Sys.setenv(R_CONFIGFILE_ACTIVE = config.cfg)
-  groups <- configr::eval.config.groups()
-  for (i in groups) {
-    Sys.setenv(R_CONFIG_ACTIVE = i)
-    config <- eval.config()
+  sections <- configr::eval.config.sections(file = config.cfg)
+  for (i in sections) {
+    config <- eval.config(config = i, file = config.cfg)
     if ("installed" %in% names(config)) {
       is.installed <- config[["installed"]] %in% c(TRUE, "yes", 1)
     } else {

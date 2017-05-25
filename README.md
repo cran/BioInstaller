@@ -1,15 +1,14 @@
-# [![Build Status](https://travis-ci.org/Miachol/BioInstaller.svg)](https://travis-ci.org/Miachol/BioInstaller) [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat)](https://en.wikipedia.org/wiki/MIT_License) [![CRAN](http://www.r-pkg.org/badges/version/BioInstaller)](https://cran.r-project.org/package=BioInstaller) [![Downloads](http://cranlogs.r-pkg.org/badges/BioInstaller?color=brightgreen)](http://www.r-pkg.org/pkg/BioInstaller) [![codecov](https://codecov.io/github/Miachol/BioInstaller/branch/master/graphs/badge.svg)](https://codecov.io/github/Miachol/BioInstaller) 
+# [![Build Status](https://travis-ci.org/Miachol/BioInstaller.svg)](https://travis-ci.org/Miachol/BioInstaller) [![CRAN](http://www.r-pkg.org/badges/version/BioInstaller)](https://cran.r-project.org/package=BioInstaller) [![Downloads](http://cranlogs.r-pkg.org/badges/BioInstaller?color=brightgreen)](http://www.r-pkg.org/pkg/BioInstaller) [![codecov](https://codecov.io/github/Miachol/BioInstaller/branch/master/graphs/badge.svg)](https://codecov.io/github/Miachol/BioInstaller) 
 
 BioInstaller package
 ==============
 
 ## Introduction
-Install and download massive bioinformatics analysis software and database, such as NGS analysis tools with its required database or/and reference, is still a task that need to spend a lot of time. 
+[Conda](https://conda.io/docs/intro.html) and [Bioconda](http://bioconda.github.io/) have made it easy to install many packages and bio-softwares conveniently. Yet, learning how to install and compile bioinformatics softwares were still necessary. Because, the experience will help you to  improve the ability of debugging.
 
-Especialy, when start a NGS analysis work in a new computer or system, you need costs so much time and energy to 
- establish a complete set of softwares and dependce of a analysis pipeline and set the corresponding configuration file.
+Especialy, when start a NGS analysis work in a new computer or system, you need costs so much time and energy to establish a complete set of softwares and dependce of a analysis pipeline and set the corresponding configuration file.
 
-[BioInstaller](https://github.com/Miachol/BioInstaller) can be used to install these tools, dependences and databases in R conveniently. More detail can be founded in [Document](http://bioinfo.rjh.com.cn/labs/jhuang/tools/BioInstaller/) website.
+[BioInstaller](https://github.com/Miachol/BioInstaller) can be used to download/install bioinformatics tools, dependences and databases in R relatively easily, and the information of installed softwares will be saved which can be used to generate configuration file. More detail can be founded in [Document](http://bioinfo.rjh.com.cn/labs/jhuang/tools/BioInstaller/) website.
 
 ## Installation
 
@@ -29,43 +28,34 @@ devtools::install_github("Miachol/BioInstaller")
 
 ## Support Summary
 
-**NGS Aligner:** 
-
-- BWA, STAR, TMAP, Bowtie, Bowtie2, tophat2, hisat2, GMAP-GSNAP, ABySS, SSAHA2, Velvet, Edean, Trinity, oases, RUM, MapSplice2
-
-**NGS Utils:** 
-
-- htslib, samtools, bcftools, bedtools, bamtools, vcftools, sratools, picard, HTSeq, seqtk, UCSC Utils(blat, liftOver), bamUtil, jvarkit, bcl2fastq2
-
-**NGS Variant Caller:** 
-    
-- GATK, Mutect, VarScan2, FreeBayes, LoFreq, TVC, SomaticSniper, Pindel, Delly, BreakDancer, FusionCatcher
-
-**NGS Variant Annotation:** 
-
-- ANNOVAR, SnpEff
-
-**NGS Genome:**
-
-- hisat2_reffa, ucsc_reffa, ensemble_reffa 
-
-**NGS Quality Control:** 
+**Quality Control:** 
 
 - FastQC, PRINSEQ, SolexaQA, FASTX-Toolkit
 
-**NGS Others:**
+**Alignment and Assembly:** 
 
-- gatk_bundle
+- BWA, STAR, TMAP, Bowtie, Bowtie2, tophat2, hisat2, GMAP-GSNAP, ABySS, SSAHA2, Velvet, Edean, Trinity, oases, RUM, MapSplice2, NovoAlign
+
+**Variant Detection:** 
+    
+- GATK, Mutect, VarScan2, FreeBayes, LoFreq, TVC, SomaticSniper, Pindel, Delly, BreakDancer, FusionCatcher, Genome STRiP, CNVnator, CNVkit, SpeedSeq
+
+**Variant Annotation:** 
+
+- ANNOVAR, SnpEff
+
+**Utils:** 
+
+- htslib, samtools, bcftools, bedtools, bamtools, vcftools, sratools, picard, HTSeq, seqtk, UCSC Utils(blat, liftOver), bamUtil, jvarkit, bcl2fastq2
+
+**Genome:**
+
+- hisat2_reffa, ucsc_reffa, ensemble_reffa 
 
 **CHIP-seq Analysis:**
 
-- MACS, CESA
-
-**Image Processing:**
-
-- ImageJ
+- MACS, CEAS
 
 **Others:** 
 
-- sparsehash, sqlite, pigz, lzo, lzop, bzip2, zlib, armadillo
-
+- sparsehash, sqlite, pigz, lzo, lzop, bzip2, zlib, armadillo, pxz, ROOT, curl, xz, pcre, R, gatk_bundle, ImageJ, igraph

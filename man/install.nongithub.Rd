@@ -4,16 +4,18 @@
 \alias{install.nongithub}
 \title{Download and Install Software(Non-Github) in SIMut}
 \usage{
-install.nongithub(name = "", destdir = "./", version = NULL,
-  show.all.versions = FALSE, name.saved = NULL,
+install.nongithub(name = "", download.dir = NULL, destdir = NULL,
+  version = NULL, show.all.versions = FALSE, name.saved = NULL,
   nongithub.cfg = system.file("extdata", "nongithub.toml", package =
   "BioInstaller"), db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE",
   system.file("extdata", "softwares_db_demo.yaml", package = "BioInstaller")),
-  download.only = FALSE, decompress = TRUE, showWarnings = FALSE,
-  verbose = FALSE, ...)
+  download.only = FALSE, decompress = TRUE, dependence.need = TRUE,
+  showWarnings = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{name}{Software name}
+
+\item{download.dir}{A string, point the source code download destdir}
 
 \item{destdir}{A string, point the install path}
 
@@ -34,9 +36,11 @@ system.file('extdata', 'softwares_db_demo.yaml', package = 'BioInstaller'))}
 
 \item{decompress}{Logicol indicating wheather need to decompress the downloaded file, default is TRUE}
 
+\item{dependence.need}{Logical should the dependence should be installed}
+
 \item{showWarnings}{Logical should the warnings on failure be shown?}
 
-\item{verbose}{TRUE is debug mode}
+\item{verbose}{Ligical indicating wheather show the log message}
 
 \item{...}{Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}}
 }
@@ -47,6 +51,8 @@ Bool Value
 Download and Install Software(Non-Github) in SIMut
 }
 \examples{
-set.biosoftwares.db(sprintf('\%s/.BioInstaller', tempdir()))
-install.nongithub('gmap', sprintf('\%s/gmap_example', tempdir()), verbose = TRUE)
+db <- sprintf('\%s/.BioInstaller', tempdir())
+set.biosoftwares.db(db)
+install.nongithub('gmap', show.all.versions = TRUE)
+unlink(db)
 }

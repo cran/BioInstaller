@@ -458,3 +458,137 @@ get.mapsplice2.newest.version <- function() {
   versions <- get.mapsplice2.versions()
   return(versions[1])
 }
+
+# Function get root all versions
+get.root.versions <- function() {
+  urls <- c("https://root.cern.ch/releases")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "Release")]
+    web <- str_extract(web, "[0-9]\\.[0-9./]*")
+    web <- str_replace_all(web, fixed("/"), fixed("."))
+    web <- web[!is.na(web)]
+  }
+  versions_final <- web
+  versions_final <- sort(versions_final, decreasing=T)
+  return(versions_final)
+}
+# Function get root newest version
+get.root.newest.version <- function() {
+  versions <- get.root.versions()
+  return(versions[1])
+}
+
+# Function get curl all versions
+get.curl.versions <- function() {
+  urls <- c("https://curl.haxx.se/download/")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "curl-")]
+    web <- str_extract(web, "[0-9]\\.[0-9./]*")
+    web <- web[!is.na(web)]
+    web <- web[!duplicated(web)]
+    web <- str_replace(web, ".$", "")
+  }
+  versions_final <- web
+  versions_final <- sort(versions_final, decreasing=T)
+  return(versions_final)
+}
+# Function get curl newest version
+get.curl.newest.version <- function() {
+  versions <- get.curl.versions()
+  return(versions[1])
+}
+
+# Function get r all versions
+get.r.versions <- function() {
+  urls <- paste0("https://cran.r-project.org/src/base/R-", c(0,1,2,3), "/")
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "R-")]
+    web <- str_extract(web, "R.[0-9-a-z.]*.tgz|R.[0-9-a-z.]*.tar.gz")
+    web <- str_replace(web, ".tar.gz|.tgz$", "")
+    web <- str_replace(web, "R-", "")
+    web <- web[!is.na(web)]
+    web <- web[!duplicated(web)]
+    versions_final <- c(versions_final, web)
+  }
+  versions_final <- sort(versions_final, decreasing=T)
+  return(versions_final)
+}
+# Function get r newest version
+get.r.newest.version <- function() {
+  versions <- get.r.versions()
+  return(versions[1])
+}
+
+get.pcre.versions <- function() {
+  urls <- "https://ftp.pcre.org/pub/pcre/"
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "pcre")]
+    web <- str_extract(web, "pcre[0-9-a-z.]*.tar.gz")
+    web <- web[!str_detect(web,"pcre2")]
+    web <- str_replace(web, ".tar.gz$", "")
+    web <- str_replace(web, "pcre-", "")
+    web <- web[!is.na(web)]
+    web <- web[!duplicated(web)]
+    versions_final <- c(versions_final, web)
+  }
+  versions_final <- sort(versions_final, decreasing=T)
+  return(versions_final)
+}
+# Function get r newest version
+get.pcre.newest.version <- function() {
+  versions <- get.pcre.versions()
+  return(versions[1])
+}
+
+get.miniconda.versions <- function() {
+  urls <- "https://repo.continuum.io/miniconda/"
+  versions_final <- NULL
+  for (url in urls) {
+    h <- basicTextGatherer()
+    web <- getURL(url, headerfunction = h$update)
+    web <- str_split(web, "\n")
+    web <- web[[1]]
+    web <- web[str_detect(web, "href")]
+    web <- web[str_detect(web, "Miniconda")]
+    web <- web[!str_detect(web, "latest")]
+    web <- str_extract(web, "Miniconda[0-9-a-zA-Z.-_]*.[(.sh)(.exe)$]")
+    web <- str_replace(web, ".tar.gz$", "")
+    web <- str_replace(web, ".exe$", "")
+    web <- str_replace(web, ".sh$", "")
+    web <- str_replace(web, "^Miniconda-|Miniconda", "")
+    web <- web[!is.na(web)]
+    web <- web[!duplicated(web)]
+    versions_final <- c(versions_final, web)
+  }
+  versions_final <- sort(versions_final, decreasing=T)
+  return(versions_final)
+}
+# Function get r newest version
+get.miniconda.newest.version <- function() {
+  versions <- get.miniconda.versions()
+  return(versions[1])
+}

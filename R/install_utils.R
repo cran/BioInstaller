@@ -5,7 +5,6 @@ db.check <- function(db) {
   } else {
     file.create(db)
   }
-  
 }
 # Configuration file and install name initial
 config.and.name.initial <- function(config.cfg, name) {
@@ -13,19 +12,19 @@ config.and.name.initial <- function(config.cfg, name) {
   if (!status) {
     return(FALSE)
   }
-  Sys.setenv(R_CONFIGFILE_ACTIVE = config.cfg)
   status <- check.install.name(name, config.cfg)
   if (!status) {
     return(FALSE)
   }
-  Sys.setenv(R_CONFIG_ACTIVE = name)
   return(TRUE)
 }
 
 # Check configfile wheather is a valid format configuration file
 check.configfile.validate <- function(config.cfg) {
-  if (is.list(read.config(config.cfg))) {
+  if (is.list(read.config(file = config.cfg))) {
     return(TRUE)
+  } else {
+    return(FALSE)
   }
 }
 
@@ -35,7 +34,7 @@ check.install.name <- function(name, config.cfg) {
     warning("Parameter 'name' must be a character.")
     return(FALSE)
   }
-  if (!(name %in% eval.config.groups(config.cfg))) {
+  if (!(name %in% eval.config.sections(file = config.cfg))) {
     if (name == "") {
       warning("Parameter 'name' can not be empty!")
     } else {
@@ -47,14 +46,14 @@ check.install.name <- function(name, config.cfg) {
 }
 
 # Initial parameter version
-version.initial <- function(name, version, config) {
+version.initial <- function(name = "", version = NULL, versions = NULL, config = NULL) {
   if (is.null(version)) {
-    version <- config$version_newest
+    version <- version.newest(config, versions)
   }
   if (is.numeric(version)) {
     version <- as.character(version)
   }
-  if (!version %in% config$version_available) {
+  if (!version %in% versions) {
     stop(sprintf("%s version of %s are not available!", version, name))
   }
   return(version)
@@ -62,7 +61,13 @@ version.initial <- function(name, version, config) {
 
 # Check wheather show all avaliable version can be installed
 show.avaliable.versions <- function(config) {
-  return(config$version_available)
+  flag <- use.github.response(config)
+  if (flag) {
+    versions <- as.character(get.github.version(config))
+  } else {
+    versions <- config$version_available
+  }
+  return(versions)
 }
 
 # Check wheather destdir is exist or not, if not will create it, and set workdir
@@ -73,7 +78,6 @@ set.makedir <- function(make.dir, destdir) {
   } else {
     dir.create(destdir, showWarnings = FALSE, recursive = TRUE)
     setwd(destdir)
-    
   }
   for (i in make.dir) {
     if (i != "./" && dir.exists(i)) {
@@ -92,39 +96,72 @@ is.setted.dependence <- function(config) {
   return(!is.null(config$dependence_version) && !is.null(config$dependence))
 }
 
+check.need.install <- function(names, versions, db) {
+  result <- c()
+  names.installed <- show.installed(db)
+  count <- 1
+  for (i in names) {
+    if (i %in% names.installed) {
+      if (versions[count] == get.info(i)$version) {
+        result <- c(result, TRUE)
+      } else {
+        result <- c(result, FALSE)
+      }
+    } else {
+      result <- c(result, FALSE)
+    }
+    count <- count + 1
+  }
+  return(result)
+}
+
 # Get need install name
 get.need.install <- function(config, db) {
-  need.install <- config$dependence[!config$dependence %in% show.installed(db)]
-  need.install.version <- config$dependence_version[!config$dependence %in% show.installed(db)]
+  fil1 <- check.need.install(config$dependence, config$dependence_version, db)
+  fil2 <- check.need.install(str_replace_all(config$dependence, "@", "_"), config$dependence_version, 
+    db)
+  need.install <- config$dependence[!(fil1 | fil2)]
+  need.install.version <- config$dependence_version[!(fil1 | fil2)]
   return(list(need.install = need.install, need.install.version = need.install.version))
 }
 
 # Install dependence
-install.dependence <- function(need.install, need.install.version, destdir) {
-  flog.info(sprintf("Try install the dependence:%s", paste0(need.install, collapse = ", ")))
-  install.status <- install.bioinfo(name = need.install, destdir = sprintf("%s/%s", 
-    dirname(destdir), need.install), version = need.install.version)
+install.dependence <- function(need.install, need.install.version, download.dir, 
+  destdir, verbose) {
+  info.msg(sprintf("Try install the dependence:%s", paste0(need.install, collapse = ", ")), 
+    verbose = verbose)
+  dest.path <- Sys.getenv("BIO_DEPENDENCE_DIR")
+  if (dest.path != "") {
+    dest.path <- normalizePath(dest.path, mustWork = F)
+    download.dir <- dest.path
+    destdir <- dest.path
+  }
+  download.dir = sprintf("%s/%s", download.dir, str_replace_all(need.install, "@", 
+    "_"))
+  install.status <- install.bioinfo(name = need.install, download.dir = download.dir, 
+    destdir = rep(destdir, length(download.dir)), version = need.install.version, 
+    verbose = verbose)
   fail.list <- install.status$fail.list
   if (!is.null(fail.list) && fail.list != "") {
     stop(sprintf("Dependence Error:%s install fail.", paste0(fail.list, collapse = ", ")))
   }
+  return(TRUE)
 }
 
 # Dependence processor
-process.dependence <- function(config, db, destdir, verbose) {
-  if (verbose) {
-    sprintf("Debug:Check and install dependence step.")
-  } else if (is.setted.dependence(config)) {
+process.dependence <- function(config, db, download.dir, destdir, verbose) {
+  status <- TRUE
+  if (is.setted.dependence(config)) {
     need.install <- get.need.install(config, db)$need.install
     need.install.version <- get.need.install(config, db)$need.install.version
     count <- 1
     if (is.need.dependence(need.install)) {
-      install.dependence(need.install, need.install.version, paste0(destdir, 
-        "/dependence/", need.install))
+      status <- install.dependence(need.install, need.install.version, destdir = destdir, 
+        download.dir = download.dir, verbose = verbose)
     }
   }
+  return(status)
 }
-
 
 # Check wheather will download a dir
 is.download.dir <- function(config) {
@@ -136,8 +173,12 @@ is.download.dir <- function(config) {
 # file to destfile
 download.dir.files <- function(config, source_url, destfile, showWarnings = FALSE, 
   url.all.download = TRUE) {
-  if (any(!file.exists(dirname(destfile)))) {
-    dir.create(dirname(destfile), showWarnings = FALSE, recursive = TRUE)
+  index <- !file.exists(dirname(destfile))
+  if (any(index)) {
+    need.create.dir <- dirname(destfile)[index]
+    sapply(need.create.dir, function(x) {
+      dir.create(x, showWarnings = showWarnings, recursive = TRUE)
+    })
   }
   is.dir <- is.download.dir(config)
   count <- 1
@@ -218,12 +259,16 @@ convert.bool <- function(flag) {
   }
 }
 
-git.download <- function(name, destdir, version, github_url, use_git2r, recursive_clone) {
-  msg <- sprintf("Now start to download %s in %s.", name, destdir)
-  flog.info(msg)
+git.download <- function(name, destdir, version, github_url, use_git2r, recursive_clone, 
+  verbose) {
+  msg <- sprintf("Now start to download %s in %s.", name, destdir, verbose)
+  info.msg(msg, verbose = verbose)
   use_git2r <- convert.bool(use_git2r)
   recursive_clone <- convert.bool(recursive_clone)
   if (use_git2r) {
+    if (!dir.exists(dirname(destdir))) {
+      dir.create(dirname(destdir))
+    }
     repo <- git2r::clone(github_url, destdir)
     if (version != "master") {
       text <- sprintf("git2r::checkout(git2r::tags(repo)[['%s']])", version)
@@ -255,4 +300,23 @@ git.download <- function(name, destdir, version, github_url, use_git2r, recursiv
     setwd(olddir)
   }
   return(status)
+}
+
+
+pre.process.dir <- function(name, destdir, download.dir, count) {
+  if (is.null.na(destdir[count]) && !is.null.na(download.dir[count])) {
+    download.dir[count] <- normalizePath(download.dir[count], mustWork = FALSE)
+    destdir[count] <- download.dir[count]
+  } else if (is.null.na(download.dir[count]) && !is.null.na(destdir[count])) {
+    destdir[count] <- normalizePath(destdir[count], mustWork = FALSE)
+    download.dir[count] <- destdir[count]
+  } else if (is.null.na(download.dir[count]) && is.null.na(destdir[count])) {
+    download.dir[count] <- sprintf("%s/%s", tempdir(), name)
+    destdir[count] <- download.dir[count]
+  } else {
+    download.dir[count] <- normalizePath(download.dir[count], mustWork = FALSE)
+    destdir[count] <- normalizePath(destdir[count], mustWork = FALSE)
+  }
+  processed.dirs <- list(des.dir = destdir[count], down.dir = download.dir[count])
+  return(processed.dirs)
 }
