@@ -12,9 +12,11 @@
 #'
 #' @docType package
 #' @name BioInstaller
-#' @import configr stringr futile.logger
+#' @import configr stringr futile.logger rvest
 #' @importFrom git2r clone checkout
+#' @importFrom stringi stri_rand_strings
 #' @importFrom RCurl getURL basicTextGatherer
 #' @importFrom R.utils gunzip gzip
 #' @importFrom utils unzip untar download.file
+#' @importFrom devtools install_github
 NULL

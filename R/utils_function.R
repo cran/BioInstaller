@@ -33,13 +33,34 @@ get.os <- function() {
   }
 }
 
-# Run shell cmd
+# Run shell or R cmd
 runcmd <- function(cmd, verbose = TRUE) {
   if (is.character(cmd) && cmd != "") {
-    cmd <- str_replace_all(cmd, fixed("-e \\\""), "-e \"")
-    cmd <- str_replace_all(cmd, fixed(")\\\""), ")\"")
-    info.msg(sprintf("Running CMD:%s", cmd), verbose = verbose)
-    system(cmd)
+    if (str_detect(cmd, "^\\#R\\#") && str_detect(cmd, "\\#R\\#$")) {
+      cmd <- str_replace_all(cmd, "^\\#R\\#", "")
+      cmd <- str_replace_all(cmd, "\\#R\\#$", "")
+      cmd <- str_replace_all(cmd, fixed("%'%"), "\"")
+      cmd <- str_split(cmd, "\\\\n")[[1]]
+      cmd <- paste0(cmd, collapse = ";")
+      cmd <- str_replace_all(cmd, ";;", ";")
+      cmd <- str_replace_all(cmd, fixed("{;"), fixed("{"))
+      info.msg(sprintf("Running R CMD:%s", cmd), verbose = verbose)
+      status <- -1
+      tryCatch(status <- eval(parse(text = cmd)), error = function(e) {
+        return(-1)
+      })
+      if (is.null(status) || is.na(status) || status != -1) {
+        return(0)
+      } else {
+        return(-1)
+      }
+    } else {
+      cmd <- str_replace_all(cmd, fixed("-e \\\""), "-e \"")
+      cmd <- str_replace_all(cmd, fixed(")\\\""), ")\"")
+      cmd <- str_replace_all(cmd, fixed("%'%"), "\"")
+      info.msg(sprintf("Running CMD:%s", cmd), verbose = verbose)
+      system(cmd)
+    }
   } else {
     return(0)
   }
@@ -100,11 +121,7 @@ extract.file <- function(file, destdir, decompress = TRUE) {
     files <- list.files(dirname(file))
     files.path <- sprintf("%s/%s", dirname(file), files)
     destfiles.path <- sprintf("%s/%s", destdir, files)
-    if (sum(length(list.files(files.path))) == 0) {
-      status <- file.copy(files.path, destfiles.path)
-    } else {
-      status <- file.copy(files.path, destdir, recursive = T)
-    }
+    status <- file.rename(files.path, destfiles.path)
     status <- all(status)
     return(status)
   }
@@ -127,6 +144,7 @@ extract.file <- function(file, destdir, decompress = TRUE) {
 }
 
 
+# Extract file and dirs if only one dir present after decomparessed
 drop_redundance_dir <- function(destdir) {
   files.parent <- list.files(destdir)
   if (length(files.parent) == 1) {
@@ -137,11 +155,7 @@ drop_redundance_dir <- function(destdir) {
     files.child <- list.files(files.parent)
     files.path <- sprintf("%s/%s", files.parent, files.child)
     destfiles.path <- sprintf("%s/%s", destdir, files.child)
-    if (sum(length(list.files(files.path))) == 0) {
-      status <- file.copy(files.path, destfiles.path)
-    } else {
-      status <- file.copy(files.path, destdir, recursive = T)
-    }
+    status <- file.rename(files.path, destfiles.path)
     unlink(files.parent, recursive = TRUE)
     files.parent <- list.files(destdir)
     if (length(files.parent) > 0) {
@@ -152,6 +166,8 @@ drop_redundance_dir <- function(destdir) {
   }
 }
 
+# Download from url, if is.dir is TRUE, it will get filenames first and download
+# them (FTP supported only)
 download.file.custom <- function(url = "", destfile = "", is.dir = FALSE, showWarnings = F, 
   ...) {
   status <- NULL
@@ -192,7 +208,12 @@ destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE) {
     strict) {
     flag <- "y"
     flag.input <- "N"
+    count <- 1
     while (flag.input == "N" || !flag.input %in% c("y", "n", "Y", "N")) {
+      if (count > 3) {
+        cat("More than 3 counts input, default is not to overwrite.\n")
+        return(FALSE)
+      }
       if (flag.input != "N" && !(flag.input %in% c("y", "n", "Y", "N"))) {
         cat("Please input y/n/Y/N!\n")
       }
@@ -200,6 +221,7 @@ destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE) {
         destdir))
       flag.input <- str_sub(flag.input, 1, 1)
       flag.input <- tolower(flag.input)
+      count <- count + 1
     }
     if (flag.input == "n") {
       return(FALSE)
@@ -210,7 +232,12 @@ destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE) {
   } else if (!download.only && file.exists(destdir) && !strict) {
     flag <- "y"
     flag.input <- "N"
+    count <- 1
     while (flag.input == "N" || !flag.input %in% c("y", "n", "Y", "N")) {
+      if (count > 3) {
+        cat("More than 3 counts input, default is not to overwrite.\n")
+        return(FALSE)
+      }
       if (flag.input != "N" && !(flag.input %in% c("y", "n", "Y", "N"))) {
         cat("Please input y/n/Y/N!\n")
       }
@@ -218,6 +245,7 @@ destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE) {
         destdir))
       flag.input <- str_sub(flag.input, 1, 1)
       flag.input <- tolower(flag.input)
+      count <- count + 1
     }
     if (flag.input == "n") {
       return(FALSE)

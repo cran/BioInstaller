@@ -31,10 +31,14 @@ test_that("drop_redundance_dir", {
   test.dir <- sprintf("%s/test_drop", tempdir())
   dir.create(test.dir)
   dir.create(sprintf("%s/a", test.dir))
+  file.create(sprintf("%s/a/b1", test.dir))
   dir.create(sprintf("%s/a/b", test.dir))
   dir.create(sprintf("%s/a/c", test.dir))
   x <- drop_redundance_dir(test.dir)
   expect_that(x, equals(TRUE))
+  expect_that(file.exists(sprintf("%s/b1", test.dir)), equals(TRUE))
+  expect_that(dir.exists(sprintf("%s/b", test.dir)), equals(TRUE))
+  expect_that(dir.exists(sprintf("%s/c", test.dir)), equals(TRUE))
   unlink(test.dir, recursive=TRUE, TRUE)
 })
 
@@ -67,6 +71,9 @@ test_that("runcmd & for_runcmd", {
   x <- for_runcmd(cmd, verbose = FALSE)
   expect_that(x, equals(rep(0,3)))
   unlink(sprintf('%s/123', destdir), TRUE)
+  cmd <- "#R#Sys.setenv(R_TEST= 'rtest')#R#"
+  runcmd(cmd, verbose = FALSE)
+  expect_that(Sys.getenv("R_TEST") == "rtest", equals(TRUE))
 })
 
 test_that("get.subconfig", {
@@ -113,5 +120,27 @@ test_that("is.null.na",{
   x <- is.null.na(NA)
   expect_that(x, equals(TRUE))
 })
+
+test_that("destdir.initial", {
+  test.dir <- sprintf('%s/destdir.initial', tempdir())
+  dir.create(test.dir)
+  x <- destdir.initial(test.dir, TRUE, FALSE)
+  expect_that(x, equals(TRUE))
+  file.create(sprintf('%s/1', test.dir))
+  x <- destdir.initial(test.dir, TRUE, FALSE)
+  expect_that(x, equals(FALSE))
+  x <- destdir.initial(test.dir, FALSE, FALSE)
+  expect_that(x, equals(FALSE))
+})
+
+test_that("download.file.custom is.dir", {
+ url <- "ftp://ftp.sjtu.edu.cn/pub/CPAN/clpa/"
+ x <- download.file.custom(url, tempdir(), TRUE)
+ expect_that(x, equals(0))
+ x <- file.exists(sprintf('%s/%s', tempdir(), c('README', 'index.html')))
+ expect_that(all(x), equals(TRUE))
+})
 temps <- list.files(tempdir(), ".*")
 unlink(sprintf("%s/%s", tempdir(), temps), recursive = TRUE, TRUE)
+
+

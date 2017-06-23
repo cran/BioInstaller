@@ -10,6 +10,8 @@ install.github(name = "", download.dir = NULL, destdir = NULL,
   "BioInstaller"), db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE",
   system.file("extdata", "softwares_db_demo.yaml", package = "BioInstaller")),
   download.only = FALSE, showWarnings = FALSE, dependence.need = TRUE,
+  extra.list = list(), rcmd.parse = TRUE, bash.parse = TRUE,
+  glue.parse = TRUE, glue.flag = "!!glue", save.to.db = TRUE,
   verbose = TRUE, ...)
 }
 \arguments{
@@ -37,6 +39,19 @@ system.file('extdata', 'softwares_db_demo.yaml', package = 'BioInstaller'))}
 \item{showWarnings}{Logical should the warnings on failure be shown?}
 
 \item{dependence.need}{Logical should the dependence should be installed}
+
+\item{extra.list}{A list that can replace the configuration file '{{debug}}' by list(debug = TRUE), and {{debug}} will be setted to TRUE}
+
+\item{rcmd.parse}{Logical wheather parse '@>@str_replace('abc', 'b', 'c')@<@' in config to 'acc'}
+
+\item{bash.parse}{Logical wheather parse '#>#echo $HOME#<#' in config to your HOME PATH}
+
+\item{glue.parse}{Logical wheather parse '!!glue{1:5}' in config to ['1','2','3','4','5']; 
+['nochange', '!!glue(1:5)', 'nochange'] => ['nochange', '1', '2', '3', '4', '5', 'nochange']}
+
+\item{glue.flag}{A character flage indicating wheater run glue() function to parse (Default is !!glue)}
+
+\item{save.to.db}{Ligical indicating wheather save the install infomation in db}
 
 \item{verbose}{Ligical indicating wheather show the log message}
 

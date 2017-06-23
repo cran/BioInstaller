@@ -1,3 +1,42 @@
+2017-06-23 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Cancel windows install step (Download still work)
+
+2017-06-22 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Use v0.3.0 configr: glue parse be supported
+		* inst/extdata/nongithub_databases_blast.toml be added
+		* inst/extdata/nongithub_databases_meta.toml be added
+
+2017-06-09 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Reduce the redundant step of extra files copy
+
+2017-06-08 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* multiple line of #R# CMD can be parsed
+
+2017-06-07 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* sleuth be supported (Differential analysis of RNA-Seq data)
+		* add no.need.download option in github.toml to control no download
+		from github url (e.g. use devtools to install)
+
+2017-06-07 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* #R# RCMD #R# can be run in configuration file
+
+2017-06-03 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+		
+		* extra.list, rcmd.parse and bash.parse, save.to.db parameters be added in
+		R/install.R install.bioinfo, install.github, install.nongithub
+		* show.all.versions be improved
+
+2017-06-01 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Non-Github softwares versions can be parsed from cfg or a parse function
+		* version_newest_fixed can be added
+
 2017-05-24 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
 
 		* Github softwares fetching versions by github API
