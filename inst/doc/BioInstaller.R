@@ -11,10 +11,6 @@ install.bioinfo(show.all.names = TRUE)
 # Fetching versions of softwares
 install.bioinfo('samtools', show.all.versions = TRUE)
 
-# Install 'demo' quite
-download.dir <- sprintf('%s/demo_1', tempdir())
-install.bioinfo('demo', download.dir = download.dir, verbose = FALSE)
-
 # Install 'demo' with debug infomation
 download.dir <- sprintf('%s/demo_2', tempdir())
 install.bioinfo('demo', download.dir = download.dir, verbose = TRUE)
@@ -35,8 +31,30 @@ install.bioinfo('demo', download.dir = download.dir, destdir = destdir)
 temp.db <- tempfile()
 set.biosoftwares.db(temp.db)
 is.biosoftwares.db.active(temp.db)
-params <- list(name = 'demo', comments = 'This is a demo.')
-do.call(change.info, params)
+
+# Install 'demo' quite
+download.dir <- sprintf('%s/demo_1', tempdir())
+install.bioinfo('demo', download.dir = download.dir, verbose = FALSE)
+config <- get.info('demo')
+config
+
+config <- configr::read.config(temp.db)
+config$demo$comments <- 'This is a demo.'
+params <- list(config.dat = config, file.path = temp.db)
+do.call(configr::write.config, params)
 get.info('demo')
 del.info('demo')
+
+## ------------------------------------------------------------------------
+download.dir <- sprintf('%s/github_demo_local', tempdir())
+install.bioinfo('github_demo', download.dir = download.dir, download.only = TRUE, verbose = FALSE)
+install.bioinfo('github_demo', local.source = download.dir)
+
+download.dir <- sprintf('%s/demo_local', tempdir())
+install.bioinfo('demo_2', download.dir = download.dir, download.only = TRUE, verbose = FALSE)
+install.bioinfo('demo_2', download.dir = download.dir, local.source = sprintf('%s/GRCh37_MT_ensGene.txt.gz', download.dir), decompress = TRUE)
+
+## ------------------------------------------------------------------------
+download.dir <- sprintf('%s/craw_all_versions', tempdir())
+craw.all.versions('demo', download.dir = download.dir)
 

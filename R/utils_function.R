@@ -68,6 +68,9 @@ runcmd <- function(cmd, verbose = TRUE) {
 
 # Run a group of cmd
 for_runcmd <- function(cmd_vector, verbose = TRUE) {
+  if (is.null(cmd_vector)) {
+    return(0)
+  }
   status.vector <- NULL
   for (i in cmd_vector) {
     if (i != "") {
@@ -203,7 +206,10 @@ download.file.custom <- function(url = "", destfile = "", is.dir = FALSE, showWa
 }
 
 # Check destdir and decide wheather overwrite
-destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE) {
+destdir.initial <- function(destdir, strict = TRUE, download.only = FALSE, local.source = NULL) {
+  if (!is.null(local.source)) {
+    return(TRUE)
+  }
   if (!download.only && file.exists(destdir) && length(list.files(destdir) != 0) && 
     strict) {
     flag <- "y"
