@@ -5,7 +5,7 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 library(configr)
 library(BioInstaller)
 blast.databases <- system.file('extdata', 
-  'nongithub_databases_blast.toml', package = 'BioInstaller')
+  'databases/blast.toml', package = 'BioInstaller')
 
 read.config(blast.databases)$blast_db_nr$source_url
 read.config(blast.databases, glue.parse = TRUE)$blast_db_nr$source_url

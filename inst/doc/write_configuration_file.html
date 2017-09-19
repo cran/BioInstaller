@@ -274,14 +274,14 @@ mac = [&quot;sed -i s/\&quot;## CFLAGS=&#39;-O3 -m64&#39; .*\&quot;/\&quot;CFLAG
 
 <h2>nongithub_databases_blast.toml</h2>
 
-<p>This configuration file can be used to download NCBI blast database: <code>install.bioinfo(nongithub.cfg = system.file(&#39;extdata&#39;, &#39;nongithub_databases_blast.toml&#39;, package = &#39;BioInstaller&#39;), show.all.names = TRUE)</code>.</p>
+<p>This configuration file can be used to download NCBI blast database: <code>install.bioinfo(nongithub.cfg = system.file(&#39;extdata&#39;, &#39;databases/blast.toml&#39;, package = &#39;BioInstaller&#39;), show.all.names = TRUE)</code>.</p>
 
 <p>BioInstaller use <a href="https://github.com/Miachol/configr">configr</a> <code>glue</code> to reduce the length of files name. That using less word to storage more files name. More useful databases FTP url can be accessed in the future. I hope you can set your own configuration file not only use the BioInstaller built-in configuration files.</p>
 
 <pre><code class="r">library(configr)
 library(BioInstaller)
 blast.databases &lt;- system.file(&#39;extdata&#39;, 
-  &#39;nongithub_databases_blast.toml&#39;, package = &#39;BioInstaller&#39;)
+  &#39;databases/blast.toml&#39;, package = &#39;BioInstaller&#39;)
 
 read.config(blast.databases)$blast_db_nr$source_url
 #&gt; [1] &quot;!!glue ftp://ftp.ncbi.nih.gov/blast/db/nr.{ids=sprintf(&#39;%02d&#39;, 0:68);rep(ids, 2)}.tar.gz{c(rep(&#39;&#39;, length(ids)), rep(&#39;.md5&#39;, length(ids)))}&quot;

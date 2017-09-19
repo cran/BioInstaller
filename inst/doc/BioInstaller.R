@@ -20,7 +20,7 @@ download.dir <- sprintf('%s/demo_3', tempdir())
 install.bioinfo('demo', download.dir = download.dir,
   download.only = TRUE, verbose = TRUE)
 
-# Set download.dir rrr destdir (destdir like /usr/local 
+# Set download.dir and destdir (destdir like /usr/local 
 # including bin, lib, include and others), 
 # destdir will work if install step {{destdir}} be used
 download.dir <- sprintf('%s/demo_source', tempdir())
@@ -57,4 +57,11 @@ install.bioinfo('demo_2', download.dir = download.dir, local.source = sprintf('%
 ## ------------------------------------------------------------------------
 download.dir <- sprintf('%s/craw_all_versions', tempdir())
 craw.all.versions('demo', download.dir = download.dir)
+
+## ------------------------------------------------------------------------
+download.dir <- sprintf('%s/ANNOVAR', tempdir())
+config.toml <- system.file("extdata", "databases/ANNOVAR.toml", 
+  package = "BioInstaller")
+install.bioinfo('raw_ucsc_refgene', download.dir = download.dir, 
+  nongithub.cfg = config.toml, extra.list = list(buildver = "hg19"))
 
