@@ -1,3 +1,18 @@
+2017-10-31 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* aRNApipe, trim_galore, multiqc, ngs_qc_toolkit be supported 
+
+2017-10-12 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* CSCD database be supported
+		(/inst/extdata/databases/cscd.toml)
+
+2017-10-09 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* strelka be added 
+		* mm9/mm10 be added in ucsc_reffa
+		* fix samtools-1.6 fail
+
 2017-09-18 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
 
 		* fix invalid test link
