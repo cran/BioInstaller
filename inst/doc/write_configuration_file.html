@@ -1,231 +1,81 @@
 <!DOCTYPE html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>github.toml and nongithub.toml</title>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Styles for R syntax highlighter -->
+<meta name="author" content="Jianfeng Li" />
+
+<meta name="date" content="2017-11-27" />
+
+<title>Examples of Templet Configuration File</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
-</style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
-}
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
 </style>
 
 
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%7D%0Apre%20%7B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
-<p>Templet configuration files in BioInstaller are important. All of softwares and databases source URL, install script and other information were stored in these configuration files. </p>
 
-<p>Most of configuration files be parsed by <a href="https://github.com/Miachol/configr">configr</a>. Compared with original configr package <code>#R# R CMD #R#</code> is a different point which can be used to mark those R format command. </p>
 
+
+
+<h1 class="title toc-ignore">Examples of Templet Configuration File</h1>
+<h4 class="author"><em>Jianfeng Li</em></h4>
+<h4 class="date"><em>2017-11-27</em></h4>
+
+
+
+<p>Templet configuration files in BioInstaller are important. All of softwares and databases source URL, install script and other information were stored in these configuration files.</p>
+<p>Most of configuration files be parsed by <a href="https://github.com/Miachol/configr">configr</a>. Compared with original configr package <code>#R# R CMD #R#</code> is a different point which can be used to mark those R format command.</p>
+<div id="github.toml-and-nongithub.toml" class="section level2">
 <h2>github.toml and nongithub.toml</h2>
-
 <p>Built-in configuration files: <code>github.toml</code> and <code>nongithub.toml</code> can be used to download and install several software and database. <code>install.bioinfo(show.all.names = TRUE)</code> can be used to get all of avaliable softwares and databases existed in github.toml and nongithub.toml.</p>
-
+<div id="github-softwares" class="section level3">
 <h3>Github Softwares</h3>
-
 <p>Some of item in github configuration file can be used to control the BioInstaller behavior:</p>
-
 <ul>
 <li><code>use_git2r</code> be setted to <code>false</code>, BioInstaller will use the <a href="https://en.wikipedia.org/wiki/Git">git</a> of your system.</li>
 <li><code>use_git2r</code> be setted to <code>false</code> and <code>recursive_clone</code> be setted to <code>true</code>, BioInstaller will do that <code>git clone --recursive https://path/repo</code></li>
 <li><code>before_install</code> can be used to finish some pre-process step</li>
-<li><code>install</code> is the mainly item to control the install step. Moreover, you can use your install script saved in a file and run it by <code>#R# system(&#39;/path/yourscript&#39;)#R#</code></li>
+<li><code>install</code> is the mainly item to control the install step. Moreover, you can use your install script saved in a file and run it by <code>#R# system('/path/yourscript')#R#</code></li>
 <li><code>make_dir</code> is the compile directory of softwares which depend on your install script, workdir of R default be setted to <code>download.dir</code> and will be changed to <code>make_dir</code> when running install step.</li>
 <li><code>bin_dir</code> will be saved when finish install step</li>
 </ul>
-
-<pre><code class="toml">[bwa]
+<pre class="toml"><code>[bwa]
 github_url = &quot;https://github.com/lh3/bwa&quot;
-after_failure = &quot;echo &#39;fail!&#39;&quot;
-after_success = &quot;echo &#39;successful!&#39;&quot;
+after_failure = &quot;echo 'fail!'&quot;
+after_success = &quot;echo 'successful!'&quot;
 make_dir = [&quot;./&quot;]
 bin_dir = [&quot;./&quot;]
 
@@ -235,28 +85,18 @@ mac = &quot;&quot;
 
 [bwa.install]
 linux = &quot;make&quot;
-mac = &quot;make&quot;
-</code></pre>
-
+mac = &quot;make&quot;</code></pre>
 <p>Github softwares version control can be done by <code>git2r</code> package and github tag <a href="https://developer.github.com/v3">API</a>. Source url of softwares or files deposited in github can be found by <code>github_url</code> in <code>github.toml</code>.</p>
-
+</div>
+<div id="non-github-softwares-or-databases" class="section level3">
 <h3>Non-Github Softwares or Databases</h3>
-
-<p>Configuration file of non-github softwares and databases are similar to githubs:</p>
-
-<ul>
-<li><code>github_url</code> be replaced by <code>source_url</code> </li>
-<li><code>url_all_download</code> be setted to <code>true</code> if you want to download mulitple files. </li>
-<li><a href="https://cran.r-project.org/package=rvest">rvest</a> and <a href="https://cran.r-project.org/package=RCurl">RCurl</a> packages can be used to parse the version infomation of non-github softwares or databases.</li>
-<li><code>version_order_fixed</code> can be setted to <code>true</code> if you don&#39;t want to use the built-in version reorder function. If you set <code>url_all_download</code> to <code>false</code>, which can let us using multiple mirror to avoid one of invalid URL.</li>
-</ul>
-
-<pre><code class="toml">[gmap]
+<p>Configuration file of non-github softwares and databases are similar to githubs: - <code>github_url</code> be replaced by <code>source_url</code> - <code>url_all_download</code> be setted to <code>true</code> if you want to download mulitple files. - <a href="https://cran.r-project.org/package=rvest">rvest</a> and <a href="https://cran.r-project.org/package=RCurl">RCurl</a> packages can be used to parse the version infomation of non-github softwares or databases. - <code>version_order_fixed</code> can be setted to <code>true</code> if you don’t want to use the built-in version reorder function. If you set <code>url_all_download</code> to <code>false</code>, which can let us using multiple mirror to avoid one of invalid URL.</p>
+<pre class="toml"><code>[gmap]
 # {{version}} will be parsed to your install.bioinfo `version` parameter
 # or the newest version parsed from fetched data.
 source_url = &quot;http://research-pub.gene.com/gmap/src/{{version}}.tar.gz&quot;
-after_failure = &quot;echo &#39;fail!&#39;&quot;
-after_success = &quot;echo &#39;successful!&#39;&quot;
+after_failure = &quot;echo 'fail!'&quot;
+after_success = &quot;echo 'successful!'&quot;
 make_dir = [&quot;./&quot;]
 bin_dir = [&quot;./&quot;]
 
@@ -266,202 +106,210 @@ mac = &quot;&quot;
 
 [gmap.install]
 linux = &quot;./configure --prefix=`pwd` &amp;&amp; make &amp;&amp; make install&quot;
-mac = [&quot;sed -i s/\&quot;## CFLAGS=&#39;-O3 -m64&#39; .*\&quot;/\&quot;CFLAGS=&#39;-O3 -m64&#39;\&quot;/ config.site&quot;,
-&quot;./configure --prefix=`pwd` &amp;&amp; make &amp;&amp; make install&quot;]
-</code></pre>
-
+mac = [&quot;sed -i s/\&quot;## CFLAGS='-O3 -m64' .*\&quot;/\&quot;CFLAGS='-O3 -m64'\&quot;/ config.site&quot;,
+&quot;./configure --prefix=`pwd` &amp;&amp; make &amp;&amp; make install&quot;]</code></pre>
 <p>Version control of non-github softwares and databases need a function parsing URL and use <code>{{version}}</code> to replace in the <code>source_url</code>.</p>
-
+</div>
+</div>
+<div id="nongithub_databases_blast.toml" class="section level2">
 <h2>nongithub_databases_blast.toml</h2>
-
-<p>This configuration file can be used to download NCBI blast database: <code>install.bioinfo(nongithub.cfg = system.file(&#39;extdata&#39;, &#39;databases/blast.toml&#39;, package = &#39;BioInstaller&#39;), show.all.names = TRUE)</code>.</p>
-
+<p>This configuration file can be used to download NCBI blast database: <code>install.bioinfo(nongithub.cfg = system.file('extdata', 'databases/blast.toml', package = 'BioInstaller'), show.all.names = TRUE)</code>.</p>
 <p>BioInstaller use <a href="https://github.com/Miachol/configr">configr</a> <code>glue</code> to reduce the length of files name. That using less word to storage more files name. More useful databases FTP url can be accessed in the future. I hope you can set your own configuration file not only use the BioInstaller built-in configuration files.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(configr)
+<span class="kw">library</span>(BioInstaller)
+blast.databases &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">'extdata'</span>, 
+  <span class="st">'config/db/db_blast.toml'</span>, <span class="dt">package =</span> <span class="st">'BioInstaller'</span>)
 
-<pre><code class="r">library(configr)
-library(BioInstaller)
-blast.databases &lt;- system.file(&#39;extdata&#39;, 
-  &#39;databases/blast.toml&#39;, package = &#39;BioInstaller&#39;)
-
-read.config(blast.databases)$blast_db_nr$source_url
-#&gt; [1] &quot;!!glue ftp://ftp.ncbi.nih.gov/blast/db/nr.{ids=sprintf(&#39;%02d&#39;, 0:68);rep(ids, 2)}.tar.gz{c(rep(&#39;&#39;, length(ids)), rep(&#39;.md5&#39;, length(ids)))}&quot;
-read.config(blast.databases, glue.parse = TRUE)$blast_db_nr$source_url
-#&gt;   [1] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.00.tar.gz&quot;    
-#&gt;   [2] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.01.tar.gz&quot;    
-#&gt;   [3] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.02.tar.gz&quot;    
-#&gt;   [4] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.03.tar.gz&quot;    
-#&gt;   [5] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.04.tar.gz&quot;    
-#&gt;   [6] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.05.tar.gz&quot;    
-#&gt;   [7] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.06.tar.gz&quot;    
-#&gt;   [8] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.07.tar.gz&quot;    
-#&gt;   [9] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.08.tar.gz&quot;    
-#&gt;  [10] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.09.tar.gz&quot;    
-#&gt;  [11] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.10.tar.gz&quot;    
-#&gt;  [12] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.11.tar.gz&quot;    
-#&gt;  [13] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.12.tar.gz&quot;    
-#&gt;  [14] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.13.tar.gz&quot;    
-#&gt;  [15] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.14.tar.gz&quot;    
-#&gt;  [16] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.15.tar.gz&quot;    
-#&gt;  [17] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.16.tar.gz&quot;    
-#&gt;  [18] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.17.tar.gz&quot;    
-#&gt;  [19] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.18.tar.gz&quot;    
-#&gt;  [20] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.19.tar.gz&quot;    
-#&gt;  [21] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.20.tar.gz&quot;    
-#&gt;  [22] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.21.tar.gz&quot;    
-#&gt;  [23] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.22.tar.gz&quot;    
-#&gt;  [24] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.23.tar.gz&quot;    
-#&gt;  [25] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.24.tar.gz&quot;    
-#&gt;  [26] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.25.tar.gz&quot;    
-#&gt;  [27] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.26.tar.gz&quot;    
-#&gt;  [28] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.27.tar.gz&quot;    
-#&gt;  [29] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.28.tar.gz&quot;    
-#&gt;  [30] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.29.tar.gz&quot;    
-#&gt;  [31] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.30.tar.gz&quot;    
-#&gt;  [32] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.31.tar.gz&quot;    
-#&gt;  [33] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.32.tar.gz&quot;    
-#&gt;  [34] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.33.tar.gz&quot;    
-#&gt;  [35] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.34.tar.gz&quot;    
-#&gt;  [36] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.35.tar.gz&quot;    
-#&gt;  [37] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.36.tar.gz&quot;    
-#&gt;  [38] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.37.tar.gz&quot;    
-#&gt;  [39] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.38.tar.gz&quot;    
-#&gt;  [40] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.39.tar.gz&quot;    
-#&gt;  [41] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.40.tar.gz&quot;    
-#&gt;  [42] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.41.tar.gz&quot;    
-#&gt;  [43] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.42.tar.gz&quot;    
-#&gt;  [44] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.43.tar.gz&quot;    
-#&gt;  [45] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.44.tar.gz&quot;    
-#&gt;  [46] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.45.tar.gz&quot;    
-#&gt;  [47] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.46.tar.gz&quot;    
-#&gt;  [48] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.47.tar.gz&quot;    
-#&gt;  [49] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.48.tar.gz&quot;    
-#&gt;  [50] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.49.tar.gz&quot;    
-#&gt;  [51] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.50.tar.gz&quot;    
-#&gt;  [52] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.51.tar.gz&quot;    
-#&gt;  [53] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.52.tar.gz&quot;    
-#&gt;  [54] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.53.tar.gz&quot;    
-#&gt;  [55] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.54.tar.gz&quot;    
-#&gt;  [56] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.55.tar.gz&quot;    
-#&gt;  [57] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.56.tar.gz&quot;    
-#&gt;  [58] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.57.tar.gz&quot;    
-#&gt;  [59] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.58.tar.gz&quot;    
-#&gt;  [60] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.59.tar.gz&quot;    
-#&gt;  [61] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.60.tar.gz&quot;    
-#&gt;  [62] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.61.tar.gz&quot;    
-#&gt;  [63] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.62.tar.gz&quot;    
-#&gt;  [64] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.63.tar.gz&quot;    
-#&gt;  [65] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.64.tar.gz&quot;    
-#&gt;  [66] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.65.tar.gz&quot;    
-#&gt;  [67] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.66.tar.gz&quot;    
-#&gt;  [68] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.67.tar.gz&quot;    
-#&gt;  [69] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.68.tar.gz&quot;    
-#&gt;  [70] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.00.tar.gz.md5&quot;
-#&gt;  [71] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.01.tar.gz.md5&quot;
-#&gt;  [72] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.02.tar.gz.md5&quot;
-#&gt;  [73] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.03.tar.gz.md5&quot;
-#&gt;  [74] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.04.tar.gz.md5&quot;
-#&gt;  [75] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.05.tar.gz.md5&quot;
-#&gt;  [76] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.06.tar.gz.md5&quot;
-#&gt;  [77] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.07.tar.gz.md5&quot;
-#&gt;  [78] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.08.tar.gz.md5&quot;
-#&gt;  [79] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.09.tar.gz.md5&quot;
-#&gt;  [80] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.10.tar.gz.md5&quot;
-#&gt;  [81] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.11.tar.gz.md5&quot;
-#&gt;  [82] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.12.tar.gz.md5&quot;
-#&gt;  [83] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.13.tar.gz.md5&quot;
-#&gt;  [84] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.14.tar.gz.md5&quot;
-#&gt;  [85] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.15.tar.gz.md5&quot;
-#&gt;  [86] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.16.tar.gz.md5&quot;
-#&gt;  [87] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.17.tar.gz.md5&quot;
-#&gt;  [88] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.18.tar.gz.md5&quot;
-#&gt;  [89] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.19.tar.gz.md5&quot;
-#&gt;  [90] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.20.tar.gz.md5&quot;
-#&gt;  [91] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.21.tar.gz.md5&quot;
-#&gt;  [92] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.22.tar.gz.md5&quot;
-#&gt;  [93] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.23.tar.gz.md5&quot;
-#&gt;  [94] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.24.tar.gz.md5&quot;
-#&gt;  [95] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.25.tar.gz.md5&quot;
-#&gt;  [96] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.26.tar.gz.md5&quot;
-#&gt;  [97] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.27.tar.gz.md5&quot;
-#&gt;  [98] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.28.tar.gz.md5&quot;
-#&gt;  [99] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.29.tar.gz.md5&quot;
-#&gt; [100] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.30.tar.gz.md5&quot;
-#&gt; [101] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.31.tar.gz.md5&quot;
-#&gt; [102] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.32.tar.gz.md5&quot;
-#&gt; [103] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.33.tar.gz.md5&quot;
-#&gt; [104] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.34.tar.gz.md5&quot;
-#&gt; [105] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.35.tar.gz.md5&quot;
-#&gt; [106] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.36.tar.gz.md5&quot;
-#&gt; [107] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.37.tar.gz.md5&quot;
-#&gt; [108] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.38.tar.gz.md5&quot;
-#&gt; [109] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.39.tar.gz.md5&quot;
-#&gt; [110] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.40.tar.gz.md5&quot;
-#&gt; [111] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.41.tar.gz.md5&quot;
-#&gt; [112] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.42.tar.gz.md5&quot;
-#&gt; [113] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.43.tar.gz.md5&quot;
-#&gt; [114] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.44.tar.gz.md5&quot;
-#&gt; [115] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.45.tar.gz.md5&quot;
-#&gt; [116] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.46.tar.gz.md5&quot;
-#&gt; [117] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.47.tar.gz.md5&quot;
-#&gt; [118] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.48.tar.gz.md5&quot;
-#&gt; [119] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.49.tar.gz.md5&quot;
-#&gt; [120] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.50.tar.gz.md5&quot;
-#&gt; [121] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.51.tar.gz.md5&quot;
-#&gt; [122] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.52.tar.gz.md5&quot;
-#&gt; [123] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.53.tar.gz.md5&quot;
-#&gt; [124] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.54.tar.gz.md5&quot;
-#&gt; [125] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.55.tar.gz.md5&quot;
-#&gt; [126] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.56.tar.gz.md5&quot;
-#&gt; [127] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.57.tar.gz.md5&quot;
-#&gt; [128] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.58.tar.gz.md5&quot;
-#&gt; [129] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.59.tar.gz.md5&quot;
-#&gt; [130] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.60.tar.gz.md5&quot;
-#&gt; [131] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.61.tar.gz.md5&quot;
-#&gt; [132] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.62.tar.gz.md5&quot;
-#&gt; [133] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.63.tar.gz.md5&quot;
-#&gt; [134] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.64.tar.gz.md5&quot;
-#&gt; [135] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.65.tar.gz.md5&quot;
-#&gt; [136] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.66.tar.gz.md5&quot;
-#&gt; [137] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.67.tar.gz.md5&quot;
-#&gt; [138] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.68.tar.gz.md5&quot;
-mask.github &lt;- tempfile()
-file.create(mask.github)
-#&gt; [1] TRUE
-install.bioinfo(nongithub.cfg = blast.databases, github.cfg = mask.github,
-  show.all.names = TRUE)
-#&gt;  [1] &quot;blast_db_env_nr&quot;                  &quot;blast_db_est_human&quot;              
-#&gt;  [3] &quot;blast_db_est_mouse&quot;               &quot;blast_db_est_others&quot;             
-#&gt;  [5] &quot;blast_db_gss&quot;                     &quot;blast_db_htgs&quot;                   
-#&gt;  [7] &quot;blast_db_human_genomic&quot;           &quot;blast_db_landmark&quot;               
-#&gt;  [9] &quot;blast_db_mouse_genomic&quot;           &quot;blast_db_nr&quot;                     
-#&gt; [11] &quot;blast_db_nt&quot;                      &quot;blast_db_other_genomic&quot;          
-#&gt; [13] &quot;blast_db_pataa&quot;                   &quot;blast_db_patnt&quot;                  
-#&gt; [15] &quot;blast_db_pdbaa&quot;                   &quot;blast_db_pdbnt&quot;                  
-#&gt; [17] &quot;blast_db_ref_prok_rep_genomes&quot;    &quot;blast_db_ref_viroids_rep_genomes&quot;
-#&gt; [19] &quot;blast_db_ref_viruses_rep_genomes&quot; &quot;blast_db_refseq_genomic&quot;         
-#&gt; [21] &quot;blast_db_refseq_protein&quot;          &quot;blast_db_refseq_rna&quot;             
-#&gt; [23] &quot;blast_db_refseqgene&quot;              &quot;blast_db_sts&quot;                    
-#&gt; [25] &quot;blast_db_swissprot&quot;               &quot;blast_db_taxdb&quot;                  
-#&gt; [27] &quot;blast_db_tsa_nr&quot;                  &quot;blast_db_tsa_nt&quot;                 
-#&gt; [29] &quot;blast_db_vector&quot;
-</code></pre>
-
+<span class="kw">read.config</span>(blast.databases)$db_blast_nr$source_url
+<span class="co">#&gt; [1] &quot;!!glue ftp://ftp.ncbi.nih.gov/blast/db/nr.{ids=sprintf('%02d', 0:68);rep(ids, 2)}.tar.gz{c(rep('', length(ids)), rep('.md5', length(ids)))}&quot;</span>
+<span class="kw">read.config</span>(blast.databases, <span class="dt">glue.parse =</span> <span class="ot">TRUE</span>)$db_blast_nr$source_url
+<span class="co">#&gt;   [1] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.00.tar.gz&quot;    </span>
+<span class="co">#&gt;   [2] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.01.tar.gz&quot;    </span>
+<span class="co">#&gt;   [3] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.02.tar.gz&quot;    </span>
+<span class="co">#&gt;   [4] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.03.tar.gz&quot;    </span>
+<span class="co">#&gt;   [5] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.04.tar.gz&quot;    </span>
+<span class="co">#&gt;   [6] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.05.tar.gz&quot;    </span>
+<span class="co">#&gt;   [7] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.06.tar.gz&quot;    </span>
+<span class="co">#&gt;   [8] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.07.tar.gz&quot;    </span>
+<span class="co">#&gt;   [9] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.08.tar.gz&quot;    </span>
+<span class="co">#&gt;  [10] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.09.tar.gz&quot;    </span>
+<span class="co">#&gt;  [11] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.10.tar.gz&quot;    </span>
+<span class="co">#&gt;  [12] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.11.tar.gz&quot;    </span>
+<span class="co">#&gt;  [13] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.12.tar.gz&quot;    </span>
+<span class="co">#&gt;  [14] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.13.tar.gz&quot;    </span>
+<span class="co">#&gt;  [15] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.14.tar.gz&quot;    </span>
+<span class="co">#&gt;  [16] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.15.tar.gz&quot;    </span>
+<span class="co">#&gt;  [17] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.16.tar.gz&quot;    </span>
+<span class="co">#&gt;  [18] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.17.tar.gz&quot;    </span>
+<span class="co">#&gt;  [19] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.18.tar.gz&quot;    </span>
+<span class="co">#&gt;  [20] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.19.tar.gz&quot;    </span>
+<span class="co">#&gt;  [21] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.20.tar.gz&quot;    </span>
+<span class="co">#&gt;  [22] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.21.tar.gz&quot;    </span>
+<span class="co">#&gt;  [23] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.22.tar.gz&quot;    </span>
+<span class="co">#&gt;  [24] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.23.tar.gz&quot;    </span>
+<span class="co">#&gt;  [25] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.24.tar.gz&quot;    </span>
+<span class="co">#&gt;  [26] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.25.tar.gz&quot;    </span>
+<span class="co">#&gt;  [27] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.26.tar.gz&quot;    </span>
+<span class="co">#&gt;  [28] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.27.tar.gz&quot;    </span>
+<span class="co">#&gt;  [29] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.28.tar.gz&quot;    </span>
+<span class="co">#&gt;  [30] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.29.tar.gz&quot;    </span>
+<span class="co">#&gt;  [31] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.30.tar.gz&quot;    </span>
+<span class="co">#&gt;  [32] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.31.tar.gz&quot;    </span>
+<span class="co">#&gt;  [33] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.32.tar.gz&quot;    </span>
+<span class="co">#&gt;  [34] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.33.tar.gz&quot;    </span>
+<span class="co">#&gt;  [35] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.34.tar.gz&quot;    </span>
+<span class="co">#&gt;  [36] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.35.tar.gz&quot;    </span>
+<span class="co">#&gt;  [37] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.36.tar.gz&quot;    </span>
+<span class="co">#&gt;  [38] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.37.tar.gz&quot;    </span>
+<span class="co">#&gt;  [39] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.38.tar.gz&quot;    </span>
+<span class="co">#&gt;  [40] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.39.tar.gz&quot;    </span>
+<span class="co">#&gt;  [41] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.40.tar.gz&quot;    </span>
+<span class="co">#&gt;  [42] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.41.tar.gz&quot;    </span>
+<span class="co">#&gt;  [43] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.42.tar.gz&quot;    </span>
+<span class="co">#&gt;  [44] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.43.tar.gz&quot;    </span>
+<span class="co">#&gt;  [45] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.44.tar.gz&quot;    </span>
+<span class="co">#&gt;  [46] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.45.tar.gz&quot;    </span>
+<span class="co">#&gt;  [47] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.46.tar.gz&quot;    </span>
+<span class="co">#&gt;  [48] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.47.tar.gz&quot;    </span>
+<span class="co">#&gt;  [49] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.48.tar.gz&quot;    </span>
+<span class="co">#&gt;  [50] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.49.tar.gz&quot;    </span>
+<span class="co">#&gt;  [51] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.50.tar.gz&quot;    </span>
+<span class="co">#&gt;  [52] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.51.tar.gz&quot;    </span>
+<span class="co">#&gt;  [53] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.52.tar.gz&quot;    </span>
+<span class="co">#&gt;  [54] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.53.tar.gz&quot;    </span>
+<span class="co">#&gt;  [55] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.54.tar.gz&quot;    </span>
+<span class="co">#&gt;  [56] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.55.tar.gz&quot;    </span>
+<span class="co">#&gt;  [57] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.56.tar.gz&quot;    </span>
+<span class="co">#&gt;  [58] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.57.tar.gz&quot;    </span>
+<span class="co">#&gt;  [59] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.58.tar.gz&quot;    </span>
+<span class="co">#&gt;  [60] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.59.tar.gz&quot;    </span>
+<span class="co">#&gt;  [61] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.60.tar.gz&quot;    </span>
+<span class="co">#&gt;  [62] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.61.tar.gz&quot;    </span>
+<span class="co">#&gt;  [63] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.62.tar.gz&quot;    </span>
+<span class="co">#&gt;  [64] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.63.tar.gz&quot;    </span>
+<span class="co">#&gt;  [65] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.64.tar.gz&quot;    </span>
+<span class="co">#&gt;  [66] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.65.tar.gz&quot;    </span>
+<span class="co">#&gt;  [67] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.66.tar.gz&quot;    </span>
+<span class="co">#&gt;  [68] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.67.tar.gz&quot;    </span>
+<span class="co">#&gt;  [69] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.68.tar.gz&quot;    </span>
+<span class="co">#&gt;  [70] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.00.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [71] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.01.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [72] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.02.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [73] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.03.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [74] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.04.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [75] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.05.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [76] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.06.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [77] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.07.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [78] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.08.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [79] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.09.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [80] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.10.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [81] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.11.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [82] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.12.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [83] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.13.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [84] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.14.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [85] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.15.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [86] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.16.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [87] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.17.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [88] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.18.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [89] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.19.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [90] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.20.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [91] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.21.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [92] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.22.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [93] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.23.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [94] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.24.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [95] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.25.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [96] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.26.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [97] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.27.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [98] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.28.tar.gz.md5&quot;</span>
+<span class="co">#&gt;  [99] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.29.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [100] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.30.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [101] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.31.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [102] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.32.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [103] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.33.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [104] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.34.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [105] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.35.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [106] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.36.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [107] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.37.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [108] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.38.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [109] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.39.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [110] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.40.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [111] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.41.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [112] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.42.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [113] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.43.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [114] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.44.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [115] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.45.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [116] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.46.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [117] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.47.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [118] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.48.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [119] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.49.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [120] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.50.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [121] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.51.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [122] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.52.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [123] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.53.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [124] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.54.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [125] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.55.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [126] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.56.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [127] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.57.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [128] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.58.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [129] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.59.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [130] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.60.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [131] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.61.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [132] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.62.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [133] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.63.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [134] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.64.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [135] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.65.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [136] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.66.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [137] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.67.tar.gz.md5&quot;</span>
+<span class="co">#&gt; [138] &quot;ftp://ftp.ncbi.nih.gov/blast/db/nr.68.tar.gz.md5&quot;</span>
+mask.github &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
+<span class="kw">file.create</span>(mask.github)
+<span class="co">#&gt; [1] TRUE</span>
+<span class="kw">install.bioinfo</span>(<span class="dt">nongithub.cfg =</span> blast.databases, <span class="dt">github.cfg =</span> mask.github,
+  <span class="dt">show.all.names =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; Warning in fetch.config(github.cfg): Configuration file /tmp/RtmpWodq64/</span>
+<span class="co">#&gt; file951d7d03c91b is empty, please check the links.</span>
+<span class="co">#&gt;  [1] &quot;db_blast_env_nr&quot;                  &quot;db_blast_est_human&quot;              </span>
+<span class="co">#&gt;  [3] &quot;db_blast_est_mouse&quot;               &quot;db_blast_est_others&quot;             </span>
+<span class="co">#&gt;  [5] &quot;db_blast_gss&quot;                     &quot;db_blast_htgs&quot;                   </span>
+<span class="co">#&gt;  [7] &quot;db_blast_human_genomic&quot;           &quot;db_blast_landmark&quot;               </span>
+<span class="co">#&gt;  [9] &quot;db_blast_mouse_genomic&quot;           &quot;db_blast_nr&quot;                     </span>
+<span class="co">#&gt; [11] &quot;db_blast_nt&quot;                      &quot;db_blast_other_genomic&quot;          </span>
+<span class="co">#&gt; [13] &quot;db_blast_pataa&quot;                   &quot;db_blast_patnt&quot;                  </span>
+<span class="co">#&gt; [15] &quot;db_blast_pdbaa&quot;                   &quot;db_blast_pdbnt&quot;                  </span>
+<span class="co">#&gt; [17] &quot;db_blast_ref_prok_rep_genomes&quot;    &quot;db_blast_ref_viroids_rep_genomes&quot;</span>
+<span class="co">#&gt; [19] &quot;db_blast_ref_viruses_rep_genomes&quot; &quot;db_blast_refseq_genomic&quot;         </span>
+<span class="co">#&gt; [21] &quot;db_blast_refseq_protein&quot;          &quot;db_blast_refseq_rna&quot;             </span>
+<span class="co">#&gt; [23] &quot;db_blast_refseqgene&quot;              &quot;db_blast_sts&quot;                    </span>
+<span class="co">#&gt; [25] &quot;db_blast_swissprot&quot;               &quot;db_blast_taxdb&quot;                  </span>
+<span class="co">#&gt; [27] &quot;db_blast_tsa_nr&quot;                  &quot;db_blast_tsa_nt&quot;                 </span>
+<span class="co">#&gt; [29] &quot;db_blast_vector&quot;</span></code></pre>
+</div>
+<div id="automatic-parse-from-bio_softwares_db_active-database" class="section level2">
 <h2>Automatic parse from BIO_SOFTWARES_DB_ACTIVE database</h2>
-
 <p>To resolve the dependence and its path, BioInstall can automatic recogniztion the <code>{{key:value}}</code> format expression and get its real value from BioInstall <code>BIO_SOFWARES_DB_ACTIVE</code> database which were be setted by environment variable BIO_SOFTWARES_DB_ACTIVE and parameter <code>db</code>.</p>
-
-<p>For example, Pindel need the <code>htslib</code> to finish its install, and we use <code>./INSTALL {{htslib:source.dir}}</code> as the install step of Pindel that the value be setted in <code>system.file(&quot;extdata&quot;, &quot;github.toml&quot;, package = &quot;BioInstaller&quot;)</code> file Pindel section. In R, the <code>{{htslib:source.dir}}</code> will be replaced by the value that were stored in BIO_SOFTWARES_DB_ACTIVE or <code>db</code>, a parameter of <code>install.bioinfo</code> function, which indicating the BioInstall Database PATH. More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> <code>parse.extra</code> &#39;other.config&#39; parameter.</p>
-
+<p>For example, Pindel need the <code>htslib</code> to finish its install, and we use <code>./INSTALL {{htslib:source.dir}}</code> as the install step of Pindel that the value be setted in <code>system.file(&quot;extdata&quot;, &quot;github.toml&quot;, package = &quot;BioInstaller&quot;)</code> file Pindel section. In R, the <code>{{htslib:source.dir}}</code> will be replaced by the value that were stored in BIO_SOFTWARES_DB_ACTIVE or <code>db</code>, a parameter of <code>install.bioinfo</code> function, which indicating the BioInstall Database PATH. More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> <code>parse.extra</code> ‘other.config’ parameter.</p>
+</div>
+<div id="automatic-parse-from-install.bioinfo-parameter-extra.list" class="section level2">
 <h2>Automatic parse from install.bioinfo parameter extra.list</h2>
-
 <p>To improve the flexibility of configuration templet, BioInstall can automatic recogniztion the <code>{{parameters}}</code> format expression and get its value if its existed in <code>install.bioinfo</code> extra.list parameter and <code>name</code>, <code>version</code>, <code>os.version</code>, <code>destdir</code> were default be setted.</p>
-
-<p>For example, GMAP source_url need to point the <code>version</code> value, and we use <code>source_url = &quot;http://research-pub.gene.com/gmap/src/{{version}}.tar.gz&quot;</code> as the download URL and can be used to install different version GMAP that the value be setted in <code>system.file(&quot;extdata&quot;, &quot;nongithub.toml&quot;, package = &quot;BioInstaller&quot;)</code> file gmap section. In R, the <code>{{version}}</code> will be replaced by the <code>version</code> parameter value of <code>install.bioinfo</code> (if version were <code>NULL</code>, it will be setted to be the newst version). More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> <code>parse.extra</code> &#39;extra.list&#39; parameter.</p>
-
+<p>For example, GMAP source_url need to point the <code>version</code> value, and we use <code>source_url = &quot;http://research-pub.gene.com/gmap/src/{{version}}.tar.gz&quot;</code> as the download URL and can be used to install different version GMAP that the value be setted in <code>system.file(&quot;extdata&quot;, &quot;nongithub.toml&quot;, package = &quot;BioInstaller&quot;)</code> file gmap section. In R, the <code>{{version}}</code> will be replaced by the <code>version</code> parameter value of <code>install.bioinfo</code> (if version were <code>NULL</code>, it will be setted to be the newst version). More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> <code>parse.extra</code> ‘extra.list’ parameter.</p>
+</div>
+<div id="automatic-parse-from-r-cmd" class="section level2">
 <h2>Automatic parse from R CMD</h2>
+<p>For example, <code>@&gt;@ str_replace('{{version}}', '-linux64', '') @&lt;@</code>. If this expression <code>{{version}}</code> be parsed to <code>1.2.0-linux64</code> in configuration file, the full expression will be parsed to <code>1.2.0</code>. So, you can write yourself install scripts or config file conveniently. More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> ‘rcmd.parse’ parameter.</p>
+</div>
 
-<p>For example, <code>@&gt;@ str_replace(&#39;{{version}}&#39;, &#39;-linux64&#39;, &#39;&#39;) @&lt;@</code>. If this expression <code>{{version}}</code> be parsed to <code>1.2.0-linux64</code> in configuration file, the full expression will be parsed to <code>1.2.0</code>. So, you can write yourself install scripts or config file conveniently. More example can be founded in <a href="https://github.com/Miachol/configr">configr</a> &#39;rcmd.parse&#39; parameter.</p>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

@@ -1,575 +1,1192 @@
 <!DOCTYPE html>
-<html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<title>Introduction</title>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
 
-<script type="text/javascript">
-window.onload = function() {
-  var imgs = document.getElementsByTagName('img'), i, img;
-  for (i = 0; i < imgs.length; i++) {
-    img = imgs[i];
-    // center an image if it is the only element of its parent
-    if (img.parentElement.childElementCount === 1)
-      img.parentElement.style.textAlign = 'center';
-  }
-};
-</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Styles for R syntax highlighter -->
+<meta name="author" content="Jianfeng Li" />
+
+<meta name="date" content="2017-11-27" />
+
+<title>Introduction to BioInstaller</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
-   pre .operator,
-   pre .paren {
-     color: rgb(104, 118, 135)
-   }
-
-   pre .literal {
-     color: #990073
-   }
-
-   pre .number {
-     color: #099;
-   }
-
-   pre .comment {
-     color: #998;
-     font-style: italic
-   }
-
-   pre .keyword {
-     color: #900;
-     font-weight: bold
-   }
-
-   pre .identifier {
-     color: rgb(0, 0, 0);
-   }
-
-   pre .string {
-     color: #d14;
-   }
-</style>
-
-<!-- R syntax highlighter -->
-<script type="text/javascript">
-var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
-hljs.initHighlightingOnLoad();
-</script>
-
-
-
-<style type="text/css">
-body, td {
-   font-family: sans-serif;
-   background-color: white;
-   font-size: 13px;
-}
-
-body {
-  max-width: 800px;
-  margin: auto;
-  padding: 1em;
-  line-height: 20px;
-}
-
-tt, code, pre {
-   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
-}
-
-h1 {
-   font-size:2.2em;
-}
-
-h2 {
-   font-size:1.8em;
-}
-
-h3 {
-   font-size:1.4em;
-}
-
-h4 {
-   font-size:1.0em;
-}
-
-h5 {
-   font-size:0.9em;
-}
-
-h6 {
-   font-size:0.8em;
-}
-
-a:visited {
-   color: rgb(50%, 0%, 50%);
-}
-
-pre, img {
-  max-width: 100%;
-}
-pre {
-  overflow-x: auto;
-}
-pre code {
-   display: block; padding: 0.5em;
-}
-
-code {
-  font-size: 92%;
-  border: 1px solid #ccc;
-}
-
-code[class] {
-  background-color: #F8F8F8;
-}
-
-table, td, th {
-  border: none;
-}
-
-blockquote {
-   color:#666666;
-   margin:0;
-   padding-left: 1em;
-   border-left: 0.5em #EEE solid;
-}
-
-hr {
-   height: 0px;
-   border-bottom: none;
-   border-top-width: thin;
-   border-top-style: dotted;
-   border-top-color: #999999;
-}
-
-@media print {
-   * {
-      background: transparent !important;
-      color: black !important;
-      filter:none !important;
-      -ms-filter: none !important;
-   }
-
-   body {
-      font-size:12pt;
-      max-width:100%;
-   }
-
-   a, a:visited {
-      text-decoration: underline;
-   }
-
-   hr {
-      visibility: hidden;
-      page-break-before: always;
-   }
-
-   pre, blockquote {
-      padding-right: 1em;
-      page-break-inside: avoid;
-   }
-
-   tr, img {
-      page-break-inside: avoid;
-   }
-
-   img {
-      max-width: 100% !important;
-   }
-
-   @page :left {
-      margin: 15mm 20mm 15mm 10mm;
-   }
-
-   @page :right {
-      margin: 15mm 10mm 15mm 20mm;
-   }
-
-   p, h2, h3 {
-      orphans: 3; widows: 3;
-   }
-
-   h2, h3 {
-      page-break-after: avoid;
-   }
-}
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
 </style>
 
 
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%7D%0Apre%20%7B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
 
 </head>
 
 <body>
+
+
+
+
+<h1 class="title toc-ignore">Introduction to BioInstaller</h1>
+<h4 class="author"><em>Jianfeng Li</em></h4>
+<h4 class="date"><em>2017-11-27</em></h4>
+
+
+
+<div id="introduction" class="section level2">
 <h2>Introduction</h2>
-
 <p>BioInstaller is a downloader and installer of bio-softwares and bio-databases. The inspiration for this project comes from various types of convenient package manager, such as <a href="https://pypi.python.org/pypi/pip">pip</a> for Python package, <code>install.packages</code> for R package, biocLite for <a href="http://www.bioconductor.org">Bioconductor</a> R package, etc.</p>
-
 <p><strong>Why we do not have an integrated bioinformatics database and software package manager?</strong></p>
-
 <p>In fact, there are already some tools can complete part of the work:</p>
-
 <p><a href="https://conda.io/docs/intro.html">Conda</a> and <a href="http://bioconda.github.io">BioConda</a> have done a lot of work and we can use them to conveniently install some of bioinformatics softwares. But there are still many problems with these package managers, such as version updating not timely, incompatible to some precompiled programs, little support for the database and other non-software files.</p>
-
-<p><a href="https://www.docker.com/">docker</a> is another kind very promising tool to complete the migration of the analytical environment. But the root authority is required that it&#39;s difficult for you to always get root privileges.</p>
-
-<p>Futhermore, learning how to install and compile bioinformatics softwares is still necessary, because these &#39;unpleasant&#39; experience will help you to improve the ability to debug and modify programs.</p>
-
-<p>As for me, when starting some NGS analysis work in a new computer or operating system, I have to spend much time and energy to
-establish a complete set of softwares and dependent files and set the corresponding configuration file.</p>
-
+<p><a href="https://www.docker.com/">docker</a> is another kind very promising tool to complete the migration of the analytical environment. But the root authority is required that it’s difficult for you to always get root privileges.</p>
+<p>Futhermore, learning how to install and compile bioinformatics softwares is still necessary, because these ‘unpleasant’ experience will help you to improve the ability to debug and modify programs.</p>
+<p>As for me, when starting some NGS analysis work in a new computer or operating system, I have to spend much time and energy to establish a complete set of softwares and dependent files and set the corresponding configuration file.</p>
 <p>BioInstaller can help us to download, install and manage a variety of bioinformatics tools and databases more easily and systematically.</p>
-
-<p>What&#39;s more, BioInstaller provides a different way to download and install your files, softwares and databases for others, more detail can be found in another vignette <a href="https://CRAN.R-project.org/package=BioInstaller/vignettes/write_configuration_file.html">Examples of Templet Configuration File</a>.</p>
-
+<p>What’s more, BioInstaller provides a different way to download and install your files, softwares and databases for others, more detail can be found in another vignette <a href="https://CRAN.R-project.org/package=BioInstaller/vignettes/write_configuration_file.html">Examples of Templet Configuration File</a>.</p>
 <p><strong>Feature</strong>:</p>
-
 <ul>
 <li>Extendible</li>
 <li>Craw the source code and version information from the original site</li>
 <li>One step installation or download softwares and databases (Partial dependence supported)</li>
 </ul>
-
+</div>
+<div id="core-function-in-bioinstaller" class="section level2">
 <h2>Core function in BioInstaller</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(BioInstaller)
 
-<pre><code class="r">library(BioInstaller)
+<span class="co"># Show all avaliable softwares/dependece in default inst/extdata/config/github/github.toml </span>
+<span class="co"># and inst/extdata/config/nongithub/nongithub.toml</span>
+<span class="kw">install.bioinfo</span>(<span class="dt">show.all.names =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt;   [1] &quot;abyss&quot;                            &quot;arnapipe&quot;                        </span>
+<span class="co">#&gt;   [3] &quot;asap&quot;                             &quot;backspin&quot;                        </span>
+<span class="co">#&gt;   [5] &quot;bamtools&quot;                         &quot;bamutil&quot;                         </span>
+<span class="co">#&gt;   [7] &quot;bcftools&quot;                         &quot;bearscc&quot;                         </span>
+<span class="co">#&gt;   [9] &quot;bedtools&quot;                         &quot;bowtie&quot;                          </span>
+<span class="co">#&gt;  [11] &quot;bowtie2&quot;                          &quot;breakdancer&quot;                     </span>
+<span class="co">#&gt;  [13] &quot;brie&quot;                             &quot;bwa&quot;                             </span>
+<span class="co">#&gt;  [15] &quot;cnvkit&quot;                           &quot;cnvnator&quot;                        </span>
+<span class="co">#&gt;  [17] &quot;dart&quot;                             &quot;delly&quot;                           </span>
+<span class="co">#&gt;  [19] &quot;fastq_tools&quot;                      &quot;fastx_toolkit&quot;                   </span>
+<span class="co">#&gt;  [21] &quot;freebayes&quot;                        &quot;fsclvm&quot;                          </span>
+<span class="co">#&gt;  [23] &quot;github_demo&quot;                      &quot;hisat2&quot;                          </span>
+<span class="co">#&gt;  [25] &quot;htseq&quot;                            &quot;igraph&quot;                          </span>
+<span class="co">#&gt;  [27] &quot;isop&quot;                             &quot;jvarkit&quot;                         </span>
+<span class="co">#&gt;  [29] &quot;libgtextutils&quot;                    &quot;lofreq&quot;                          </span>
+<span class="co">#&gt;  [31] &quot;macs&quot;                             &quot;mdseq&quot;                           </span>
+<span class="co">#&gt;  [33] &quot;mimosca&quot;                          &quot;multiqc&quot;                         </span>
+<span class="co">#&gt;  [35] &quot;oases&quot;                            &quot;oncotator&quot;                       </span>
+<span class="co">#&gt;  [37] &quot;outrigger&quot;                        &quot;picard&quot;                          </span>
+<span class="co">#&gt;  [39] &quot;pindel&quot;                           &quot;pxz&quot;                             </span>
+<span class="co">#&gt;  [41] &quot;raceid&quot;                           &quot;rca&quot;                             </span>
+<span class="co">#&gt;  [43] &quot;rum&quot;                              &quot;samtools_old&quot;                    </span>
+<span class="co">#&gt;  [45] &quot;sclvm&quot;                            &quot;scnorm&quot;                          </span>
+<span class="co">#&gt;  [47] &quot;seqtk&quot;                            &quot;seurat&quot;                          </span>
+<span class="co">#&gt;  [49] &quot;singlesplice&quot;                     &quot;sleuth&quot;                          </span>
+<span class="co">#&gt;  [51] &quot;somaticsniper&quot;                    &quot;sparsehash&quot;                      </span>
+<span class="co">#&gt;  [53] &quot;speedseq&quot;                         &quot;star&quot;                            </span>
+<span class="co">#&gt;  [55] &quot;tmap&quot;                             &quot;tophat2&quot;                         </span>
+<span class="co">#&gt;  [57] &quot;tracer&quot;                           &quot;trimgalore&quot;                      </span>
+<span class="co">#&gt;  [59] &quot;trinityrnaseq&quot;                    &quot;varscan2&quot;                        </span>
+<span class="co">#&gt;  [61] &quot;vcflib&quot;                           &quot;vcftools&quot;                        </span>
+<span class="co">#&gt;  [63] &quot;vep&quot;                              &quot;zifa&quot;                            </span>
+<span class="co">#&gt;  [65] &quot;annovar&quot;                          &quot;armadillo&quot;                       </span>
+<span class="co">#&gt;  [67] &quot;bcl2fastq2&quot;                       &quot;blast&quot;                           </span>
+<span class="co">#&gt;  [69] &quot;blat&quot;                             &quot;bzip2&quot;                           </span>
+<span class="co">#&gt;  [71] &quot;cesa&quot;                             &quot;cnvnator_samtools&quot;               </span>
+<span class="co">#&gt;  [73] &quot;curl&quot;                             &quot;demo_2&quot;                          </span>
+<span class="co">#&gt;  [75] &quot;edena&quot;                            &quot;ensemble_grch37_reffa&quot;           </span>
+<span class="co">#&gt;  [77] &quot;ensemble_grch38_reffa&quot;            &quot;fastqc&quot;                          </span>
+<span class="co">#&gt;  [79] &quot;fatotwobit&quot;                       &quot;fusioncatcher&quot;                   </span>
+<span class="co">#&gt;  [81] &quot;fusioncatcher_reffa&quot;              &quot;gatk&quot;                            </span>
+<span class="co">#&gt;  [83] &quot;gatk_bundle&quot;                      &quot;gmap&quot;                            </span>
+<span class="co">#&gt;  [85] &quot;gridss&quot;                           &quot;hisat2_reffa&quot;                    </span>
+<span class="co">#&gt;  [87] &quot;htslib&quot;                           &quot;imagej&quot;                          </span>
+<span class="co">#&gt;  [89] &quot;interproscan&quot;                     &quot;liftover&quot;                        </span>
+<span class="co">#&gt;  [91] &quot;lzo&quot;                              &quot;lzop&quot;                            </span>
+<span class="co">#&gt;  [93] &quot;mapsplice2&quot;                       &quot;miniconda2&quot;                      </span>
+<span class="co">#&gt;  [95] &quot;miniconda3&quot;                       &quot;mutect&quot;                          </span>
+<span class="co">#&gt;  [97] &quot;ngs_qc_toolkit&quot;                   &quot;novoalign&quot;                       </span>
+<span class="co">#&gt;  [99] &quot;pcre&quot;                             &quot;pigz&quot;                            </span>
+<span class="co">#&gt; [101] &quot;prinseq&quot;                          &quot;r&quot;                               </span>
+<span class="co">#&gt; [103] &quot;reditools&quot;                        &quot;root&quot;                            </span>
+<span class="co">#&gt; [105] &quot;samstat&quot;                          &quot;samtools&quot;                        </span>
+<span class="co">#&gt; [107] &quot;snpeff&quot;                           &quot;solexaqa&quot;                        </span>
+<span class="co">#&gt; [109] &quot;sqlite&quot;                           &quot;sratools&quot;                        </span>
+<span class="co">#&gt; [111] &quot;srnanalyzer&quot;                      &quot;ssaha2&quot;                          </span>
+<span class="co">#&gt; [113] &quot;strelka&quot;                          &quot;svtoolkit&quot;                       </span>
+<span class="co">#&gt; [115] &quot;tvc&quot;                              &quot;ucsc_reffa&quot;                      </span>
+<span class="co">#&gt; [117] &quot;ucsc_utils&quot;                       &quot;velvet&quot;                          </span>
+<span class="co">#&gt; [119] &quot;xz&quot;                               &quot;zlib&quot;                            </span>
+<span class="co">#&gt; [121] &quot;db_biosystems&quot;                    &quot;db_civic&quot;                        </span>
+<span class="co">#&gt; [123] &quot;db_cscd&quot;                          &quot;db_denovo_db&quot;                    </span>
+<span class="co">#&gt; [125] &quot;db_dgidb&quot;                         &quot;db_differentialnet&quot;              </span>
+<span class="co">#&gt; [127] &quot;db_diseaseenhancer&quot;               &quot;db_drugbank&quot;                     </span>
+<span class="co">#&gt; [129] &quot;db_ecodrug&quot;                       &quot;db_expression_atlas&quot;             </span>
+<span class="co">#&gt; [131] &quot;db_funcoup&quot;                       &quot;db_gtex&quot;                         </span>
+<span class="co">#&gt; [133] &quot;db_hpo&quot;                           &quot;db_inbiomap&quot;                     </span>
+<span class="co">#&gt; [135] &quot;db_interpro&quot;                      &quot;db_medreaders&quot;                   </span>
+<span class="co">#&gt; [137] &quot;db_mndr&quot;                          &quot;db_msdd&quot;                         </span>
+<span class="co">#&gt; [139] &quot;db_omim&quot;                          &quot;db_oncotator&quot;                    </span>
+<span class="co">#&gt; [141] &quot;db_pancanqtl&quot;                     &quot;db_proteinatlas&quot;                 </span>
+<span class="co">#&gt; [143] &quot;db_remap&quot;                         &quot;db_remap2&quot;                       </span>
+<span class="co">#&gt; [145] &quot;db_rsnp3&quot;                         &quot;db_seecancer&quot;                    </span>
+<span class="co">#&gt; [147] &quot;db_srnanalyzer&quot;                   &quot;db_superdrug2&quot;                   </span>
+<span class="co">#&gt; [149] &quot;db_tumorfusions&quot;                  &quot;db_varcards&quot;                     </span>
+<span class="co">#&gt; [151] &quot;db_annovar_1000g&quot;                 &quot;db_annovar_1000g_sqlite&quot;         </span>
+<span class="co">#&gt; [153] &quot;db_annovar_avsift&quot;                &quot;db_annovar_avsnp&quot;                </span>
+<span class="co">#&gt; [155] &quot;db_annovar_avsnp_sqlite&quot;          &quot;db_annovar_cadd&quot;                 </span>
+<span class="co">#&gt; [157] &quot;db_annovar_cadd_sqlite&quot;           &quot;db_annovar_cg&quot;                   </span>
+<span class="co">#&gt; [159] &quot;db_annovar_clinvar&quot;               &quot;db_annovar_clinvar_sqlite&quot;       </span>
+<span class="co">#&gt; [161] &quot;db_annovar_cosmic&quot;                &quot;db_annovar_cosmic_sqlite&quot;        </span>
+<span class="co">#&gt; [163] &quot;db_annovar_cscd&quot;                  &quot;db_annovar_darned_sqlite&quot;        </span>
+<span class="co">#&gt; [165] &quot;db_annovar_dbnsfp&quot;                &quot;db_annovar_dbnsfp_sqlite&quot;        </span>
+<span class="co">#&gt; [167] &quot;db_annovar_dbscsnv11&quot;             &quot;db_annovar_eigen&quot;                </span>
+<span class="co">#&gt; [169] &quot;db_annovar_ensgene&quot;               &quot;db_annovar_epi_genes&quot;            </span>
+<span class="co">#&gt; [171] &quot;db_annovar_esp6500siv2&quot;           &quot;db_annovar_exac03&quot;               </span>
+<span class="co">#&gt; [173] &quot;db_annovar_fathmm&quot;                &quot;db_annovar_gerp&quot;                 </span>
+<span class="co">#&gt; [175] &quot;db_annovar_gme&quot;                   &quot;db_annovar_gnomad&quot;               </span>
+<span class="co">#&gt; [177] &quot;db_annovar_gwava&quot;                 &quot;db_annovar_hrcr1&quot;                </span>
+<span class="co">#&gt; [179] &quot;db_annovar_icgc21&quot;                &quot;db_annovar_icgc_sqlite&quot;          </span>
+<span class="co">#&gt; [181] &quot;db_annovar_intervar&quot;              &quot;db_annovar_intervar_sqlite&quot;      </span>
+<span class="co">#&gt; [183] &quot;db_annovar_kaviar&quot;                &quot;db_annovar_knowngene&quot;            </span>
+<span class="co">#&gt; [185] &quot;db_annovar_ljb26_all&quot;             &quot;db_annovar_mcap&quot;                 </span>
+<span class="co">#&gt; [187] &quot;db_annovar_mitimpact&quot;             &quot;db_annovar_nci60&quot;                </span>
+<span class="co">#&gt; [189] &quot;db_annovar_nci60_sqlite&quot;          &quot;db_annovar_normal_pool&quot;          </span>
+<span class="co">#&gt; [191] &quot;db_annovar_popfreq&quot;               &quot;db_annovar_radar_sqlite&quot;         </span>
+<span class="co">#&gt; [193] &quot;db_annovar_refgene&quot;               &quot;db_annovar_regsnpintron&quot;         </span>
+<span class="co">#&gt; [195] &quot;db_annovar_revel&quot;                 &quot;db_annovar_snp&quot;                  </span>
+<span class="co">#&gt; [197] &quot;db_annovar_varcards&quot;              &quot;db_ucsc_dnase_clustered&quot;         </span>
+<span class="co">#&gt; [199] &quot;db_ucsc_ensgene&quot;                  &quot;db_ucsc_knowngene&quot;               </span>
+<span class="co">#&gt; [201] &quot;db_ucsc_refgene&quot;                  &quot;db_ucsc_tfbs_clustered&quot;          </span>
+<span class="co">#&gt; [203] &quot;db_blast_env_nr&quot;                  &quot;db_blast_est_human&quot;              </span>
+<span class="co">#&gt; [205] &quot;db_blast_est_mouse&quot;               &quot;db_blast_est_others&quot;             </span>
+<span class="co">#&gt; [207] &quot;db_blast_gss&quot;                     &quot;db_blast_htgs&quot;                   </span>
+<span class="co">#&gt; [209] &quot;db_blast_human_genomic&quot;           &quot;db_blast_landmark&quot;               </span>
+<span class="co">#&gt; [211] &quot;db_blast_mouse_genomic&quot;           &quot;db_blast_nr&quot;                     </span>
+<span class="co">#&gt; [213] &quot;db_blast_nt&quot;                      &quot;db_blast_other_genomic&quot;          </span>
+<span class="co">#&gt; [215] &quot;db_blast_pataa&quot;                   &quot;db_blast_patnt&quot;                  </span>
+<span class="co">#&gt; [217] &quot;db_blast_pdbaa&quot;                   &quot;db_blast_pdbnt&quot;                  </span>
+<span class="co">#&gt; [219] &quot;db_blast_ref_prok_rep_genomes&quot;    &quot;db_blast_ref_viroids_rep_genomes&quot;</span>
+<span class="co">#&gt; [221] &quot;db_blast_ref_viruses_rep_genomes&quot; &quot;db_blast_refseq_genomic&quot;         </span>
+<span class="co">#&gt; [223] &quot;db_blast_refseq_protein&quot;          &quot;db_blast_refseq_rna&quot;             </span>
+<span class="co">#&gt; [225] &quot;db_blast_refseqgene&quot;              &quot;db_blast_sts&quot;                    </span>
+<span class="co">#&gt; [227] &quot;db_blast_swissprot&quot;               &quot;db_blast_taxdb&quot;                  </span>
+<span class="co">#&gt; [229] &quot;db_blast_tsa_nr&quot;                  &quot;db_blast_tsa_nt&quot;                 </span>
+<span class="co">#&gt; [231] &quot;db_blast_vector&quot;</span>
 
-# Show all avaliable softwares/dependece in default inst/extdata/github.toml 
-# and inst/extdata/nongithub.toml
-install.bioinfo(show.all.names = TRUE)
-#&gt;   [1] &quot;abyss&quot;                 &quot;arnapipe&quot;             
-#&gt;   [3] &quot;asap&quot;                  &quot;backspin&quot;             
-#&gt;   [5] &quot;bamtools&quot;              &quot;bamutil&quot;              
-#&gt;   [7] &quot;bcftools&quot;              &quot;bearscc&quot;              
-#&gt;   [9] &quot;bedtools&quot;              &quot;bowtie&quot;               
-#&gt;  [11] &quot;bowtie2&quot;               &quot;breakdancer&quot;          
-#&gt;  [13] &quot;brie&quot;                  &quot;bwa&quot;                  
-#&gt;  [15] &quot;cnvkit&quot;                &quot;cnvnator&quot;             
-#&gt;  [17] &quot;dart&quot;                  &quot;delly&quot;                
-#&gt;  [19] &quot;fastq_tools&quot;           &quot;fastx_toolkit&quot;        
-#&gt;  [21] &quot;freebayes&quot;             &quot;fsclvm&quot;               
-#&gt;  [23] &quot;github_demo&quot;           &quot;hisat2&quot;               
-#&gt;  [25] &quot;htseq&quot;                 &quot;igraph&quot;               
-#&gt;  [27] &quot;isop&quot;                  &quot;jvarkit&quot;              
-#&gt;  [29] &quot;libgtextutils&quot;         &quot;lofreq&quot;               
-#&gt;  [31] &quot;macs&quot;                  &quot;mdseq&quot;                
-#&gt;  [33] &quot;mimosca&quot;               &quot;multiqc&quot;              
-#&gt;  [35] &quot;oases&quot;                 &quot;oncotator&quot;            
-#&gt;  [37] &quot;outrigger&quot;             &quot;picard&quot;               
-#&gt;  [39] &quot;pindel&quot;                &quot;pxz&quot;                  
-#&gt;  [41] &quot;raceid&quot;                &quot;rca&quot;                  
-#&gt;  [43] &quot;rum&quot;                   &quot;samtools_old&quot;         
-#&gt;  [45] &quot;sclvm&quot;                 &quot;scnorm&quot;               
-#&gt;  [47] &quot;seqtk&quot;                 &quot;seurat&quot;               
-#&gt;  [49] &quot;singlesplice&quot;          &quot;sleuth&quot;               
-#&gt;  [51] &quot;somaticsniper&quot;         &quot;sparsehash&quot;           
-#&gt;  [53] &quot;speedseq&quot;              &quot;star&quot;                 
-#&gt;  [55] &quot;tmap&quot;                  &quot;tophat2&quot;              
-#&gt;  [57] &quot;tracer&quot;                &quot;trimgalore&quot;           
-#&gt;  [59] &quot;trinityrnaseq&quot;         &quot;varscan2&quot;             
-#&gt;  [61] &quot;vcflib&quot;                &quot;vcftools&quot;             
-#&gt;  [63] &quot;vep&quot;                   &quot;zifa&quot;                 
-#&gt;  [65] &quot;annovar&quot;               &quot;armadillo&quot;            
-#&gt;  [67] &quot;bcl2fastq2&quot;            &quot;blat&quot;                 
-#&gt;  [69] &quot;bzip2&quot;                 &quot;cesa&quot;                 
-#&gt;  [71] &quot;cnvnator_samtools&quot;     &quot;curl&quot;                 
-#&gt;  [73] &quot;demo_2&quot;                &quot;edena&quot;                
-#&gt;  [75] &quot;ensemble_grch37_reffa&quot; &quot;ensemble_grch38_reffa&quot;
-#&gt;  [77] &quot;fastqc&quot;                &quot;fatotwobit&quot;           
-#&gt;  [79] &quot;fusioncatcher&quot;         &quot;fusioncatcher_reffa&quot;  
-#&gt;  [81] &quot;gatk&quot;                  &quot;gatk_bundle&quot;          
-#&gt;  [83] &quot;gmap&quot;                  &quot;hisat2_reffa&quot;         
-#&gt;  [85] &quot;htslib&quot;                &quot;imagej&quot;               
-#&gt;  [87] &quot;liftover&quot;              &quot;lzo&quot;                  
-#&gt;  [89] &quot;lzop&quot;                  &quot;mapsplice2&quot;           
-#&gt;  [91] &quot;miniconda2&quot;            &quot;miniconda3&quot;           
-#&gt;  [93] &quot;mutect&quot;                &quot;ngs_qc_toolkit&quot;       
-#&gt;  [95] &quot;novoalign&quot;             &quot;pcre&quot;                 
-#&gt;  [97] &quot;pigz&quot;                  &quot;prinseq&quot;              
-#&gt;  [99] &quot;r&quot;                     &quot;reditools&quot;            
-#&gt; [101] &quot;root&quot;                  &quot;samstat&quot;              
-#&gt; [103] &quot;samtools&quot;              &quot;snpeff&quot;               
-#&gt; [105] &quot;solexaqa&quot;              &quot;sqlite&quot;               
-#&gt; [107] &quot;sratools&quot;              &quot;ssaha2&quot;               
-#&gt; [109] &quot;strelka&quot;               &quot;svtoolkit&quot;            
-#&gt; [111] &quot;tvc&quot;                   &quot;ucsc_reffa&quot;           
-#&gt; [113] &quot;ucsc_utils&quot;            &quot;velvet&quot;               
-#&gt; [115] &quot;xz&quot;                    &quot;zlib&quot;
+<span class="co"># Fetching versions of softwares</span>
+<span class="kw">install.bioinfo</span>(<span class="st">'samtools'</span>, <span class="dt">show.all.versions =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; INFO [2017-11-27 00:18:18] Fetching samtools versions....</span>
+<span class="co">#&gt;  [1] &quot;1.6&quot;        &quot;1.5&quot;        &quot;1.4.1&quot;      &quot;1.4&quot;        &quot;1.3.1&quot;     </span>
+<span class="co">#&gt;  [6] &quot;1.3&quot;        &quot;1.2&quot;        &quot;1.1&quot;        &quot;1.0&quot;        &quot;0.2.0-rc12&quot;</span>
+<span class="co">#&gt; [11] &quot;0.2.0-rc11&quot; &quot;0.2.0-rc10&quot; &quot;0.2.0-rc9&quot;  &quot;0.2.0-rc8&quot;  &quot;0.2.0-rc7&quot; </span>
+<span class="co">#&gt; [16] &quot;0.2.0-rc6&quot;  &quot;0.2.0-rc5&quot;  &quot;0.2.0-rc4&quot;  &quot;0.2.0-rc3&quot;  &quot;0.2.0-rc2&quot; </span>
+<span class="co">#&gt; [21] &quot;0.2.0-rc1&quot;  &quot;0.1.20&quot;     &quot;0.1.19&quot;     &quot;0.1.18&quot;     &quot;0.1.17&quot;    </span>
+<span class="co">#&gt; [26] &quot;0.1.16&quot;     &quot;0.1.15&quot;     &quot;0.1.14&quot;     &quot;0.1.13&quot;     &quot;master&quot;</span>
 
-# Fetching versions of softwares
-install.bioinfo(&#39;samtools&#39;, show.all.versions = TRUE)
-#&gt; INFO [2017-10-31 16:11:47] Fetching samtools versions....
-#&gt;  [1] &quot;1.6&quot;        &quot;1.5&quot;        &quot;1.4.1&quot;      &quot;1.4&quot;        &quot;1.3.1&quot;     
-#&gt;  [6] &quot;1.3&quot;        &quot;1.2&quot;        &quot;1.1&quot;        &quot;1.0&quot;        &quot;0.2.0-rc12&quot;
-#&gt; [11] &quot;0.2.0-rc11&quot; &quot;0.2.0-rc10&quot; &quot;0.2.0-rc9&quot;  &quot;0.2.0-rc8&quot;  &quot;0.2.0-rc7&quot; 
-#&gt; [16] &quot;0.2.0-rc6&quot;  &quot;0.2.0-rc5&quot;  &quot;0.2.0-rc4&quot;  &quot;0.2.0-rc3&quot;  &quot;0.2.0-rc2&quot; 
-#&gt; [21] &quot;0.2.0-rc1&quot;  &quot;0.1.20&quot;     &quot;0.1.19&quot;     &quot;0.1.18&quot;     &quot;0.1.17&quot;    
-#&gt; [26] &quot;0.1.16&quot;     &quot;0.1.15&quot;     &quot;0.1.14&quot;     &quot;0.1.13&quot;     &quot;master&quot;
+<span class="co"># Install 'demo' with debug infomation</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_2'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:19] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:20] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:20] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:20] Now start to install demo in /tmp/RtmpWodq64/demo_2.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:20] Running before install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:20] Now start to download demo in /tmp/RtmpWodq64/demo_2.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:22] Running install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:22] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:22] Running CMD:echo 'successful!'</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:22] Running change.info for demo and be saved to ~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:Install by Non Github configuration file: demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Installed successful list: demo</span>
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;demo&quot;</span>
 
-# Install &#39;demo&#39; with debug infomation
-download.dir &lt;- sprintf(&#39;%s/demo_2&#39;, tempdir())
-install.bioinfo(&#39;demo&#39;, download.dir = download.dir, verbose = TRUE)
-#&gt; INFO [2017-10-31 16:11:48] Debug:name:demo
-#&gt; INFO [2017-10-31 16:11:48] Debug:destdir:
-#&gt; INFO [2017-10-31 16:11:48] Debug:db:~/.BioInstaller
-#&gt; INFO [2017-10-31 16:11:48] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:11:48] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/nongithub.toml
-#&gt; INFO [2017-10-31 16:11:49] Fetching demo versions....
-#&gt; INFO [2017-10-31 16:11:49] Install versions:GRCh37
-#&gt; INFO [2017-10-31 16:11:49] Now start to install demo in /tmp/Rtmphb4wYO/demo_2.
-#&gt; INFO [2017-10-31 16:11:49] Running before install steps.
-#&gt; INFO [2017-10-31 16:11:49] Now start to download demo in /tmp/Rtmphb4wYO/demo_2.
-#&gt; INFO [2017-10-31 16:11:51] Running install steps.
-#&gt; INFO [2017-10-31 16:11:52] Running after install successful steps.
-#&gt; INFO [2017-10-31 16:11:52] Running CMD:echo &#39;successful!&#39;
-#&gt; INFO [2017-10-31 16:11:52] Running change.info for demo and be saved to ~/.BioInstaller
-#&gt; INFO [2017-10-31 16:11:56] Debug:Install by Github configuration file: 
-#&gt; INFO [2017-10-31 16:11:56] Debug:Install by Non Github configuration file: demo
-#&gt; INFO [2017-10-31 16:11:56] Installed successful list: demo
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;demo&quot;
+<span class="co"># Download demo source code</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_3'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir,
+  <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:25] Now start to download demo in /tmp/RtmpWodq64/demo_3.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] demo be downloaded in /tmp/RtmpWodq64/demo_3 successful</span>
+<span class="co">#&gt; [1] TRUE</span>
 
-# Download demo source code
-download.dir &lt;- sprintf(&#39;%s/demo_3&#39;, tempdir())
-install.bioinfo(&#39;demo&#39;, download.dir = download.dir,
-  download.only = TRUE, verbose = TRUE)
-#&gt; INFO [2017-10-31 16:11:56] Debug:name:demo
-#&gt; INFO [2017-10-31 16:11:56] Debug:destdir:
-#&gt; INFO [2017-10-31 16:11:56] Debug:db:~/.BioInstaller
-#&gt; INFO [2017-10-31 16:11:56] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:11:56] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/nongithub.toml
-#&gt; INFO [2017-10-31 16:11:57] Fetching demo versions....
-#&gt; INFO [2017-10-31 16:11:57] Install versions:GRCh37
-#&gt; INFO [2017-10-31 16:11:57] Now start to download demo in /tmp/Rtmphb4wYO/demo_3.
-#&gt; INFO [2017-10-31 16:11:58] demo be downloaded in /tmp/Rtmphb4wYO/demo_3 successful
-#&gt; [1] TRUE
-
-# Set download.dir and destdir (destdir like /usr/local 
-# including bin, lib, include and others), 
-# destdir will work if install step {{destdir}} be used
-download.dir &lt;- sprintf(&#39;%s/demo_source&#39;, tempdir())
-destdir &lt;- sprintf(&#39;%s/demo&#39;, tempdir())
-install.bioinfo(&#39;demo&#39;, download.dir = download.dir, destdir = destdir)
-#&gt; INFO [2017-10-31 16:11:59] Debug:name:demo
-#&gt; INFO [2017-10-31 16:11:59] Debug:destdir:/tmp/Rtmphb4wYO/demo
-#&gt; INFO [2017-10-31 16:11:59] Debug:db:~/.BioInstaller
-#&gt; INFO [2017-10-31 16:11:59] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:11:59] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/nongithub.toml
-#&gt; INFO [2017-10-31 16:11:59] Fetching demo versions....
-#&gt; INFO [2017-10-31 16:11:59] Install versions:GRCh37
-#&gt; INFO [2017-10-31 16:11:59] Now start to install demo in /tmp/Rtmphb4wYO/demo.
-#&gt; INFO [2017-10-31 16:11:59] Running before install steps.
-#&gt; INFO [2017-10-31 16:11:59] Now start to download demo in /tmp/Rtmphb4wYO/demo_source.
-#&gt; INFO [2017-10-31 16:12:02] Running install steps.
-#&gt; INFO [2017-10-31 16:12:03] Running after install successful steps.
-#&gt; INFO [2017-10-31 16:12:03] Running CMD:echo &#39;successful!&#39;
-#&gt; INFO [2017-10-31 16:12:03] Running change.info for demo and be saved to ~/.BioInstaller
-#&gt; INFO [2017-10-31 16:12:07] Debug:Install by Github configuration file: 
-#&gt; INFO [2017-10-31 16:12:07] Debug:Install by Non Github configuration file: demo
-#&gt; INFO [2017-10-31 16:12:07] Installed successful list: demo
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;demo&quot;
-</code></pre>
-
+<span class="co"># Set download.dir and destdir (destdir like /usr/local </span>
+<span class="co"># including bin, lib, include and others), </span>
+<span class="co"># destdir will work if install step {{destdir}} be used</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_source'</span>, <span class="kw">tempdir</span>())
+destdir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">destdir =</span> destdir)
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:destdir:/tmp/RtmpWodq64/demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Now start to install demo in /tmp/RtmpWodq64/demo.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Running before install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:27] Now start to download demo in /tmp/RtmpWodq64/demo_source.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:29] Running install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:29] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:31] Running CMD:echo 'successful!'</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:31] Running change.info for demo and be saved to ~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:34] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:34] Debug:Install by Non Github configuration file: demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:34] Installed successful list: demo</span>
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;demo&quot;</span></code></pre>
+</div>
+<div id="storing-useful-information-of-databases-and-softwares" class="section level2">
 <h2>Storing useful information of databases and softwares</h2>
-
-<p>It takes time to find the routes of the softwares and databases after downloading and installing them, what’s worse is that you would be in really dire straits if you didn&#39;t save the useful information. </p>
-
+<p>It takes time to find the routes of the softwares and databases after downloading and installing them, what’s worse is that you would be in really dire straits if you didn’t save the useful information.</p>
 <p>Fortunately, version, path, source code path and update time will be saved in BIO_SOFWARES_DB_ACTIVE database, a YAML format file, if you did that work with BioInstaller.</p>
+<pre class="sourceCode r"><code class="sourceCode r">temp.db &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
+<span class="kw">set.biosoftwares.db</span>(temp.db)
+<span class="kw">is.biosoftwares.db.active</span>(temp.db)
+<span class="co">#&gt; [1] TRUE</span>
 
-<pre><code class="r">temp.db &lt;- tempfile()
-set.biosoftwares.db(temp.db)
-is.biosoftwares.db.active(temp.db)
-#&gt; [1] TRUE
-
-# Install &#39;demo&#39; quite
-download.dir &lt;- sprintf(&#39;%s/demo_1&#39;, tempdir())
-install.bioinfo(&#39;demo&#39;, download.dir = download.dir, verbose = FALSE)
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;demo&quot;
-config &lt;- get.info(&#39;demo&#39;)
+<span class="co"># Install 'demo' quite</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_1'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;demo&quot;</span>
+config &lt;-<span class="st"> </span><span class="kw">get.info</span>(<span class="st">'demo'</span>)
 config
-#&gt; $installed
-#&gt; [1] TRUE
-#&gt; 
-#&gt; $source.dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $bin_dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $executable_files
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $install.dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $version
-#&gt; [1] &quot;GRCh37&quot;
-#&gt; 
-#&gt; $last.update.time
-#&gt; [1] &quot;2017-10-31 16:12:11&quot;
-#&gt; 
-#&gt; attr(,&quot;config&quot;)
-#&gt; [1] &quot;demo&quot;
-#&gt; attr(,&quot;configtype&quot;)
-#&gt; [1] &quot;yaml&quot;
-#&gt; attr(,&quot;file&quot;)
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/file1b94e339b60ba&quot;
+<span class="co">#&gt; $installed</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $source.dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $bin_dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $executable_files</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $install.dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $version</span>
+<span class="co">#&gt; [1] &quot;GRCh37&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $last.update.time</span>
+<span class="co">#&gt; [1] &quot;2017-11-27 00:18:37&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,&quot;config&quot;)</span>
+<span class="co">#&gt; [1] &quot;demo&quot;</span>
+<span class="co">#&gt; attr(,&quot;configtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;yaml&quot;</span>
+<span class="co">#&gt; attr(,&quot;file&quot;)</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/file951d8295358&quot;</span>
 
-config &lt;- configr::read.config(temp.db)
-config$demo$comments &lt;- &#39;This is a demo.&#39;
-params &lt;- list(config.dat = config, file.path = temp.db)
-do.call(configr::write.config, params)
-#&gt; [1] TRUE
-get.info(&#39;demo&#39;)
-#&gt; $installed
-#&gt; [1] &quot;TRUE&quot;
-#&gt; 
-#&gt; $source.dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $bin_dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $executable_files
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $install.dir
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/demo_1&quot;
-#&gt; 
-#&gt; $version
-#&gt; [1] &quot;GRCh37&quot;
-#&gt; 
-#&gt; $last.update.time
-#&gt; [1] &quot;2017-10-31 16:12:11&quot;
-#&gt; 
-#&gt; $comments
-#&gt; [1] &quot;This is a demo.&quot;
-#&gt; 
-#&gt; attr(,&quot;config&quot;)
-#&gt; [1] &quot;demo&quot;
-#&gt; attr(,&quot;configtype&quot;)
-#&gt; [1] &quot;ini&quot;
-#&gt; attr(,&quot;file&quot;)
-#&gt; [1] &quot;/tmp/Rtmphb4wYO/file1b94e339b60ba&quot;
-del.info(&#39;demo&#39;)
-#&gt; [1] TRUE
-</code></pre>
-
+config &lt;-<span class="st"> </span>configr::<span class="kw">read.config</span>(temp.db)
+config$demo$comments &lt;-<span class="st"> 'This is a demo.'</span>
+params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">config.dat =</span> config, <span class="dt">file.path =</span> temp.db)
+<span class="kw">do.call</span>(configr::write.config, params)
+<span class="co">#&gt; [1] TRUE</span>
+<span class="kw">get.info</span>(<span class="st">'demo'</span>)
+<span class="co">#&gt; $installed</span>
+<span class="co">#&gt; [1] &quot;TRUE&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $source.dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $bin_dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $executable_files</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $install.dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/demo_1&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $version</span>
+<span class="co">#&gt; [1] &quot;GRCh37&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $last.update.time</span>
+<span class="co">#&gt; [1] &quot;2017-11-27 00:18:37&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $comments</span>
+<span class="co">#&gt; [1] &quot;This is a demo.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; attr(,&quot;config&quot;)</span>
+<span class="co">#&gt; [1] &quot;demo&quot;</span>
+<span class="co">#&gt; attr(,&quot;configtype&quot;)</span>
+<span class="co">#&gt; [1] &quot;ini&quot;</span>
+<span class="co">#&gt; attr(,&quot;file&quot;)</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpWodq64/file951d8295358&quot;</span>
+<span class="kw">del.info</span>(<span class="st">'demo'</span>)
+<span class="co">#&gt; [1] TRUE</span></code></pre>
+</div>
+<div id="install-softwares-from-local-source" class="section level2">
 <h2>Install softwares from local source</h2>
-
 <p>BioInstaller can be used to install softwares from local source. To install github softwares, a cloned directory were required, and nongithub softwares can be installed from decompressed directory or a compressed archive.</p>
+<pre class="sourceCode r"><code class="sourceCode r">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/github_demo_local'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'github_demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+<span class="co">#&gt; cloning into '/tmp/RtmpWodq64/github_demo_local'...</span>
+<span class="co">#&gt; Receiving objects:  16% (1/6),    0 kb</span>
+<span class="co">#&gt; Receiving objects:  33% (2/6),    0 kb</span>
+<span class="co">#&gt; Receiving objects:  50% (3/6),    0 kb</span>
+<span class="co">#&gt; Receiving objects:  66% (4/6),    0 kb</span>
+<span class="co">#&gt; Receiving objects:  83% (5/6),    0 kb</span>
+<span class="co">#&gt; Receiving objects: 100% (6/6),    0 kb, done.</span>
+<span class="co">#&gt; [1] TRUE</span>
+<span class="kw">install.bioinfo</span>(<span class="st">'github_demo'</span>, <span class="dt">local.source =</span> download.dir)
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:name:github_demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:db:/tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:40] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:41] Fetching github_demo versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:41] Install versions:master</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Now start to install github_demo in /tmp/RtmpWodq64/github_demo.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Running before install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Running install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Running CMD:echo 'successful!'</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Running change.info for github_demo and be saved to /tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Debug:Install by Github configuration file: github_demo</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Debug:Install by Non Github configuration file: </span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:42] Installed successful list: github_demo</span>
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;github_demo&quot;</span>
 
-<pre><code class="r">download.dir &lt;- sprintf(&#39;%s/github_demo_local&#39;, tempdir())
-install.bioinfo(&#39;github_demo&#39;, download.dir = download.dir, download.only = TRUE, verbose = FALSE)
-#&gt; cloning into &#39;/tmp/Rtmphb4wYO/github_demo_local&#39;...
-#&gt; Receiving objects:  16% (1/6),    0 kb
-#&gt; Receiving objects:  33% (2/6),    0 kb
-#&gt; Receiving objects:  50% (3/6),    0 kb
-#&gt; Receiving objects:  66% (4/6),    0 kb
-#&gt; Receiving objects:  83% (5/6),    0 kb
-#&gt; Receiving objects: 100% (6/6),    0 kb, done.
-#&gt; [1] TRUE
-install.bioinfo(&#39;github_demo&#39;, local.source = download.dir)
-#&gt; INFO [2017-10-31 16:12:14] Debug:name:github_demo
-#&gt; INFO [2017-10-31 16:12:14] Debug:destdir:
-#&gt; INFO [2017-10-31 16:12:14] Debug:db:/tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:14] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:12:14] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/nongithub.toml
-#&gt; INFO [2017-10-31 16:12:14] Fetching github_demo versions....
-#&gt; INFO [2017-10-31 16:12:15] Install versions:master
-#&gt; INFO [2017-10-31 16:12:15] Now start to install github_demo in /tmp/Rtmphb4wYO/github_demo.
-#&gt; INFO [2017-10-31 16:12:15] Running before install steps.
-#&gt; INFO [2017-10-31 16:12:16] Running install steps.
-#&gt; INFO [2017-10-31 16:12:16] Running after install successful steps.
-#&gt; INFO [2017-10-31 16:12:16] Running CMD:echo &#39;successful!&#39;
-#&gt; INFO [2017-10-31 16:12:16] Running change.info for github_demo and be saved to /tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:16] Debug:Install by Github configuration file: github_demo
-#&gt; INFO [2017-10-31 16:12:16] Debug:Install by Non Github configuration file: 
-#&gt; INFO [2017-10-31 16:12:16] Installed successful list: github_demo
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;github_demo&quot;
-
-download.dir &lt;- sprintf(&#39;%s/demo_local&#39;, tempdir())
-install.bioinfo(&#39;demo_2&#39;, download.dir = download.dir, download.only = TRUE, verbose = FALSE)
-#&gt; [1] FALSE
-install.bioinfo(&#39;demo_2&#39;, download.dir = download.dir, local.source = sprintf(&#39;%s/GRCh37_MT_ensGene.txt.gz&#39;, download.dir), decompress = TRUE)
-#&gt; INFO [2017-10-31 16:12:18] Debug:name:demo_2
-#&gt; INFO [2017-10-31 16:12:18] Debug:destdir:
-#&gt; INFO [2017-10-31 16:12:18] Debug:db:/tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:18] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:12:18] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/nongithub.toml
-#&gt; INFO [2017-10-31 16:12:19] Fetching demo_2 versions....
-#&gt; INFO [2017-10-31 16:12:19] Install versions:GRCh37
-#&gt; INFO [2017-10-31 16:12:19] Now start to install demo_2 in /tmp/Rtmphb4wYO/demo_local.
-#&gt; INFO [2017-10-31 16:12:19] Running before install steps.
-#&gt; INFO [2017-10-31 16:12:21] Running install steps.
-#&gt; INFO [2017-10-31 16:12:21] Running after install successful steps.
-#&gt; INFO [2017-10-31 16:12:21] Running CMD:echo &#39;successful!&#39;
-#&gt; INFO [2017-10-31 16:12:21] Running change.info for demo_2 and be saved to /tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:22] Debug:Install by Github configuration file: 
-#&gt; INFO [2017-10-31 16:12:22] Debug:Install by Non Github configuration file: demo_2
-#&gt; INFO [2017-10-31 16:12:22] Installed successful list: demo_2
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;demo_2&quot;
-</code></pre>
-
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_local'</span>, <span class="kw">tempdir</span>())
+<span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+<span class="co">#&gt; [1] FALSE</span>
+<span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">local.source =</span> <span class="kw">sprintf</span>(<span class="st">'%s/GRCh37_MT_ensGene.txt.gz'</span>, download.dir), <span class="dt">decompress =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:name:demo_2</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:db:/tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Fetching demo_2 versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:44] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:45] Now start to install demo_2 in /tmp/RtmpWodq64/demo_local.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:45] Running before install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Running install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Running CMD:echo 'successful!'</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Running change.info for demo_2 and be saved to /tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Debug:Install by Non Github configuration file: demo_2</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Installed successful list: demo_2</span>
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;demo_2&quot;</span></code></pre>
+</div>
+<div id="craw-all-versions-of-softwares-or-databases" class="section level2">
 <h2>Craw all versions of softwares or databases</h2>
-
 <p>BioInstaller provide a <code>craw.all.version</code> function to try download all avaliable URL files in nongithub part.</p>
+<pre class="sourceCode r"><code class="sourceCode r">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/craw_all_versions'</span>, <span class="kw">tempdir</span>())
+<span class="kw">craw.all.versions</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir)
+<span class="co">#&gt; INFO [2017-11-27 00:18:46] Fetching demo versions....</span></code></pre>
+</div>
+<div id="get-meta-information-of-softwares-and-databases" class="section level2">
+<h2>Get meta information of softwares and databases</h2>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Get all meta source files</span>
+meta_files &lt;-<span class="st"> </span><span class="kw">get.meta.files</span>()
+meta_files
+<span class="co">#&gt; $db_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
 
-<pre><code class="r">download.dir &lt;- sprintf(&#39;%s/craw_all_versions&#39;, tempdir())
-craw.all.versions(&#39;demo&#39;, download.dir = download.dir)
-#&gt; INFO [2017-10-31 16:12:22] Fetching demo versions....
-</code></pre>
+<span class="co"># Get all of meta informaton in BioInstaller</span>
+meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>()
+meta
+<span class="co">#&gt; $db_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web_meta_file</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db</span>
+<span class="co">#&gt; $db$cfg_meta</span>
+<span class="co">#&gt; $db$cfg_meta$avaliable_cfg</span>
+<span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$cfg_meta$cfg_dir</span>
+<span class="co">#&gt; [1] &quot;@&gt;@system.file('extdata', 'config/db', package = 'BioInstaller')@&lt;@&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$cfg_meta$prefix_url</span>
+<span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item</span>
+<span class="co">#&gt; $db$item$biosystems</span>
+<span class="co">#&gt; $db$item$biosystems$description</span>
+<span class="co">#&gt; [1] &quot;A biosystem, or biological system, is a group of molecules that interact in a biological system. One type of biosystem is a biological pathway, which can consist of interacting genes, proteins, and small molecules. Another type of biosystem is a disease, which can involve components such as genes, biomarkers, and drugs. A number of databases provide diagrams showing the components and products of biological pathways along with corresponding annotations and links to literature. The NCBI BioSystems Database was developed as a complementary project to (1) serve as a centralized repository of data; (2) connect the biosystem records with associated literature, molecular, and chemical data throughout the EntrezBI BioSystems record for arachidonic acid metabolism, for example, displays the name and description of the biosystem along with a thumbnail image of the pathway diagram that links to the full size illustration on the source database's web site. In addition, the BioSystems record lists and categorizes the genes, proteins, and small molecules involved in the biological system, along with related biosystems and citations, and allows instant retrieval of the those data sets through a wide range of Links. Integrating the data in this way makes it possible to search across all the pathways to answer broad questions such as the \\\&quot;how to\\\&quot; examples shown below. The companion FLink icon FLink tool, in turn, allows you to input a list of proteins, genes, or small molecules and retrieve a ranked list of biosystems. The NCBI BioSystems Database currently contains records from several source databases: KEGG, BioCyc (including its Tier 1 EcoCyc and MetaCyc databases, and its Tier 2 databases), Reactome, the National Cancer Institute's Pathway Interaction Database, WikiPathways, and Gene Ontology (GO). The BioSystems database includes several types of records such as pathways, structural complexes, and functional sets, and is desiged to accomodate other record types, such as diseases, as data become available. Through these collaborations, the BioSystems database facilitates access to, and provides the ability to compute on, a wide range of biosystems data. Detailed diagrams and annotations for individual biosystems are then available on the web sites of the source databases.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$biosystems$publication</span>
+<span class="co">#&gt; [1] &quot;Geer L Y, Marchler-Bauer A, Geer R C, et al. The NCBI biosystems database[J]. Nucleic acids research, 2009, 38(suppl_1): D492-D496.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$biosystems$url</span>
+<span class="co">#&gt; [1] &quot;https://www.ncbi.nlm.nih.gov/biosystems&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$civic</span>
+<span class="co">#&gt; $db$item$civic$description</span>
+<span class="co">#&gt; [1] &quot;Realizing precision medicine will require this information to be centralized, debated and interpreted for application in the clinic. CIViC is an open access, open source, community-driven web resource for Clinical Interpretation of Variants in Cancer. Our goal is to enable precision medicine by providing an educational forum for dissemination of knowledge and active discussion of the clinical significance of cancer genome alterations. For more details refer to the 2017 CIViC publication in Nature Genetics.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$civic$publication</span>
+<span class="co">#&gt; [1] &quot;Griffith, Malachi, et al. \\\&quot;CIViC is a community knowledgebase for expert crowdsourcing the clinical interpretation of variants in cancer.\\\&quot; Nature genetics 49.2 (2017): 170-174.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$civic$url</span>
+<span class="co">#&gt; [1] &quot;https://civic.genome.wustl.edu/home&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_blast</span>
+<span class="co">#&gt; $db$item$db_blast$description</span>
+<span class="co">#&gt; [1] &quot;All of blast required databases&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_blast$title</span>
+<span class="co">#&gt; [1] &quot;Basic Local Alignment Search Tool Databases&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_blast$url</span>
+<span class="co">#&gt; [1] &quot;ftp://ftp.ncbi.nih.gov/blast/db/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_cscd</span>
+<span class="co">#&gt; $db$item$db_cscd$description</span>
+<span class="co">#&gt; [1] &quot;Circular RNA (circRNA) is a large group of RNA family extensively existed in cells and tissues. High-throughput sequencing provides a way to view circRNAs across different samples, especially in various diseases. However, there is still no comprehensive database for exploring the cancer-specific circRNAs. Researchers at Wuhan University collected 228 total RNA or polyA(-) RNA-seq samples from both cancer and normal cell lines, and identified 272 152 cancer-specific circRNAs. A total of 950 962 circRNAs were identified in normal samples only, and 170 909 circRNAs were identified in both tumor and normal samples, which could be further used as non-tumor background. The researchers constructed a cancer-specific circRNA database. To understand the functional effects of circRNAs, they predicted the microRNA response element sites and RNA binding protein sites for each circRNA. They further predicted potential open reading frames to highlight translatable circRNAs. To understand the association between the linear splicing and the back-splicing, the researchers also predicted the splicing events in linear transcripts of each circRNA. As the first comprehensive cancer-specific circRNA database, they believe CSCD could significantly contribute to the research for the function and regulation of cancer-associated circRNAs.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_cscd$publication</span>
+<span class="co">#&gt; [1] &quot;XiaS , Feng J, Chen K, Ma Y, Gong J, Cai FF, Jin Y, Gao Y, Xia L, Chang H, Wei L, Han L, He C. (2017) CSCD: a database for cancer-specific circular RNAs. Nucleic Acids Research&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$db_cscd$url</span>
+<span class="co">#&gt; [1] &quot;http://gb.whu.edu.cn/CSCD/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$denovo_db</span>
+<span class="co">#&gt; $db$item$denovo_db$description</span>
+<span class="co">#&gt; [1] &quot;denovo-db is a collection of germline de novo variants identified in the human genome. de novo variants are those present in children but not their parents (see figure to right). With the advancements in whole-exome and whole-genome sequencing we are now able to assess 1000s of these variants. To provide a landing place for de novo variation we created denovo-db, which has been assembled using the published literature. Many large exome and genome studies have focused on neurodevelopmental disorders and while we are very interested in these disorders we have not limited our database to only these phenotypes. The information types present in denovo-db have been refined to include what we think is highly relevant for genetic studies (for example basic functional annotation, CADD scores, and validation status). Our goal is to provide a compendium of all de novo variants to benefit the larger researcher community and to allow researchers to ask various scientific questions such as: 1. Which sites in the human genome have de novo mutations? 2. Which sites are highly mutable to de novo mutation? 3. What are features of de novo variants generally and in disease? 4. What kinds of phenotypes are represented by de novo variants?&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$denovo_db$publication</span>
+<span class="co">#&gt; [1] &quot;Turner T N, Yi Q, Krumm N, et al. denovo-db: a compendium of human de novo variants[J]. Nucleic acids research, 2017, 45(D1): D804-D811.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$denovo_db$url</span>
+<span class="co">#&gt; [1] &quot;http://denovo-db.gs.washington.edu/denovo-db&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$dgidb</span>
+<span class="co">#&gt; $db$item$dgidb$description</span>
+<span class="co">#&gt; [1] &quot;The Drug-Gene Interaction database (DGIdb) mines existing resources that generate hypotheses about how mutated genes might be targeted therapeutically or prioritized for drug development. It provides an interface for searching lists of genes against a compendium of drug-gene interactions and potentially ‘druggable’ genes. DGIdb can be accessed at http://dgidb.org/.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$dgidb$publication</span>
+<span class="co">#&gt; [1] &quot;Griffith, M., et al. DGIdb: mining the druggable genome. Nat Methods 2013;10(12):1209-1210. &quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$dgidb$url</span>
+<span class="co">#&gt; [1] &quot;http://dgidb.org/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$diseaseenhancer</span>
+<span class="co">#&gt; $db$item$diseaseenhancer$description</span>
+<span class="co">#&gt; [1] &quot;Genetic alterations/variants of enhancers make an essential contribution to disease progression. And more than 3 million of enhancers generated by international consortiums indicated that disease-associated enhancers will open a brand new view of pathophysiology.DiseaseEnhancer provides a comprehensive map of manually curated disease-associated enhancers, which includes 847 disease-associated enhancers in 143 human diseases, involving 896 unique enhancer-gene interactions. We also manually collected their dysregulated target genes and mechanistic-related information, such as the associated variant types (including single nucleotide variant, somatic mutation, indel and copy number alteration) and affected transcription factor bindings. Additional genome data were also integrated into DiseaseEnhancer to help characterize disease-associated enhancers.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$diseaseenhancer$publication</span>
+<span class="co">#&gt; [1] &quot;Zhang G, Shi J, Zhu S, et al. DiseaseEnhancer: a resource of human disease-associated enhancer catalog[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$diseaseenhancer$url</span>
+<span class="co">#&gt; [1] &quot;http://biocc.hrbmu.edu.cn/DiseaseEnhancer/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$drugbank</span>
+<span class="co">#&gt; $db$item$drugbank$description</span>
+<span class="co">#&gt; [1] &quot;The DrugBank database is a comprehensive, freely accessible, online database containing information on drugs and drug targets. As both a bioinformatics and a cheminformatics resource, DrugBank combines detailed drug (i.e. chemical, pharmacological and pharmaceutical) data with comprehensive drug target (i.e. sequence, structure, and pathway) information. Because of its broad scope, comprehensive referencing and unusually detailed data descriptions, DrugBank is more akin to a drug encyclopedia than a drug database. As a result, links to DrugBank are maintained for nearly all drugs listed in Wikipedia. DrugBank is widely used by the drug industry, medicinal chemists, pharmacists, physicians, students and the general public. Its extensive drug and drug-target data has enabled the discovery and repurposing of a number of existing drugs to treat rare and newly identified illnesses.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$drugbank$publication</span>
+<span class="co">#&gt; [1] &quot;Wishart D S, Knox C, Guo A C, et al. DrugBank: a comprehensive resource for in silico drug discovery and exploration[J]. Nucleic acids research, 2006, 34(suppl_1): D668-D672.&quot;                                                                                                                                                              </span>
+<span class="co">#&gt; [2] &quot;Wishart D S, Knox C, Guo A C, et al. DrugBank: a knowledgebase for drugs, drug actions and drug targets[J]. Nucleic acids research, 2007, 36(suppl_1): D901-D906.&quot;                                                                                                                                                                           </span>
+<span class="co">#&gt; [3] &quot;Knox C, Law V, Jewison T, et al. DrugBank 3.0: a comprehensive resource for ‘omics’ research on drugs[J]. Nucleic acids research, 2010, 39(suppl_1): D1035-D1041.&quot;                                                                                                                                                                           </span>
+<span class="co">#&gt; [4] &quot;Law V, Knox C, Djoumbou Y, et al. DrugBank 4.0: shedding new light on drug metabolism[J]. Nucleic acids research, 2013, 42(D1): D1091-D1097.&quot;                                                                                                                                                                                                </span>
+<span class="co">#&gt; [5] &quot;Wishart DS, Feunang YD, Guo AC, Lo EJ, Marcu A, Grant JR, Sajed T, Johnson D, Li C, Sayeeda Z, Assempour N, Iynkkaran I, Liu Y, Maciejewski A, Gale N, Wilson A, Chin L, Cummings R, Le D, Pon A, Knox C, Wilson M. DrugBank 5.0: a major update to the DrugBank database for 2018. Nucleic Acids Res. 2017 Nov 8. doi: 10.1093/nar/gkx1037.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$drugbank$url</span>
+<span class="co">#&gt; [1] &quot;https://www.drugbank.ca&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$ecodrug</span>
+<span class="co">#&gt; $db$item$ecodrug$description</span>
+<span class="co">#&gt; [1] &quot;The ECOdrug database contains information on the Evolutionary Conservation Of human Drug targets in over 600 eukaryotic species The interface allows users to identify human drug targets to 1000+ legacy drugs and explore integrated orthologue predictions for the drug targets, transparently showing the confidence in the predictions both across methods and taxonomic groups.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$ecodrug$publication</span>
+<span class="co">#&gt; [1] &quot;Verbruggen B, Gunnarsson L, Kristiansson E, et al. ECOdrug: a database connecting drugs and conservation of their targets across species[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$ecodrug$url</span>
+<span class="co">#&gt; [1] &quot;http://www.ecodrug.org/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$expression_atlas</span>
+<span class="co">#&gt; $db$item$expression_atlas$description</span>
+<span class="co">#&gt; [1] &quot;Expression Atlas is an open science resource that gives users a powerful way to find information about gene and protein expression across species and biological conditions such as different tissues, cell types, developmental stages and diseases among others. Expression Atlas aims to help answering questions such as ‘where is a certain gene expressed?’ or ‘how does its expression change in a disease?’&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$expression_atlas$publication</span>
+<span class="co">#&gt; [1] &quot;Papatheodorou, I., et al. Expression Atlas: gene and protein expression across multiple studies and organisms. Nucleic Acids Res 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$expression_atlas$url</span>
+<span class="co">#&gt; [1] &quot;https://www.ebi.ac.uk/gxa/home/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$funcoup</span>
+<span class="co">#&gt; $db$item$funcoup$description</span>
+<span class="co">#&gt; [1] &quot;This release of the FunCoup database (http://funcoup.sbc.su.se) is the fourth generation of one of the most comprehensive databases for genome-wide functional association networks. These functional associations are inferred via integrating various data types using a naive Bayesian algorithm and orthology based information transfer across different species. This approach provides high coverage of the included genomes as well as high quality of inferred interactions. In this update of FunCoup we introduce four new eukaryotic species: Schizosaccharomyces pombe, Plasmodium falciparum, Bos taurus, Oryza sativa and open the database to the prokaryotic domain by including networks for Escherichia coli and Bacillus subtilis. The latter allows us to also introduce a new class of functional association between genes - co-occurrence in the same operon. We also supplemented the existing classes of functional association: metabolic, signaling, complex and physical protein interaction with up-to-date information. In this release we switched to InParanoid v8 as the source of orthology and base for calculation of phylogenetic profiles. While populating all other evidence types with new data we introduce a new evidence type based on quantitative mass spectrometry data. Finally, the new JavaScript based network viewer provides the user an intuitive and responsive platform to further evaluate the results.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$funcoup$publication</span>
+<span class="co">#&gt; [1] &quot;Ogris, C., et al. FunCoup 4: new species, data, and visualization. Nucleic Acids Res 2017.&quot;                                                                               </span>
+<span class="co">#&gt; [2] &quot;Schmitt, T., Ogris, C., &amp; Sonnhammer, E. L. (2013). FunCoup 3.0: database of genome-wide functional coupling networks. Nucleic Acids Research, 42(Database issue), D380-8&quot;</span>
+<span class="co">#&gt; [3] &quot;Alexeyenko, A., Schmitt, T., E. L. (2012). Comparative interactomics with Funcoup 2.0. Nucleic Acids Research, 40(Database issue), D821-8&quot;                                </span>
+<span class="co">#&gt; [4] &quot;Alexeyenko, A., &amp; Sonnhammer, E. L. (2009). Global networks of functional coupling in eukaryotes from comprehensive data integration. Genome Research, 19(6), 1107-1116&quot;  </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$funcoup$url</span>
+<span class="co">#&gt; [1] &quot;http://funcoup.sbc.su.se/search/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$gtex</span>
+<span class="co">#&gt; $db$item$gtex$description</span>
+<span class="co">#&gt; [1] &quot;Correlations between genotype and tissue-specific gene expression levels will help identify regions of the genome that influence whether and how much a gene is expressed. GTEx will help researchers to understand inherited susceptibility to disease and will be a resource database and tissue bank for many studies in the future. The Genotype-Tissue Expression (GTEx) project aims to provide to the scientific community a resource with which to study human gene expression and regulation and its relationship to genetic variation. This project will collect and analyze multiple human tissues from donors who are also densely genotyped, to assess genetic variation within their genomes. By analyzing global RNA expression within individual tissues and treating the expression levels of genes as quantitative traits, variations in gene expression that are highly correlated with genetic variation can be identified as expression quantitative trait loci, or eQTLs. Despite the rapid progress achieved using genome-wide association studies (GWAS; See: http://www.genome.gov/26525384 ) to identify genetic changes associated with common human diseases, such as heart disease, cancer, diabetes, asthma, and stroke, a large majority of these genetic changes lies outside of the protein-coding regions of genes and often even outside of the genes themselves, making it difficult to discern which genes are affected and by what mechanism. The comprehensive identification of human eQTLs will greatly help to identify genes whose expression is affected by genetic variation, and will provide a valuable basis on which to study the mechanism of that gene regulation. The project will also involve consultation and research into the ethical, legal and social issues raised by the research, support for statistical methods development, and creation of a database to house existing and GTEx-generated eQTL data . The database will allow users to view and download computed eQTL results and provide a controlled access system for de-identified individual-level genotype, expression, and clinical data. The associated tissue repository will also serve as a resource for many additional kinds of analyses.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$gtex$publication</span>
+<span class="co">#&gt; [1] &quot;Consortium G. Human genomics. The Genotype-Tissue Expression (GTEx) pilot analysis: multitissue gene regulation in humans[J]. Science, 2015, 348(6235):648-60.&quot;</span>
+<span class="co">#&gt; [2] &quot;Consortium G, Battle A, Brown C D, et al. Genetic effects on gene expression across human tissues[J]. Nature, 2017, 550(7675):204.&quot;                            </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$gtex$url</span>
+<span class="co">#&gt; [1] &quot;https://www.gtexportal.org&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$hpo</span>
+<span class="co">#&gt; $db$item$hpo$description</span>
+<span class="co">#&gt; [1] &quot;The Human Phenotype Ontology (HPO) aims to provide a standardized vocabulary of phenotypic abnormalities encountered in human disease. Each term in the HPO describes a phenotypic abnormality, such as atrial septal defect. The HPO is currently being developed using the medical literature, Orphanet, DECIPHER, and OMIM. HPO currently contains approximately 11,000 terms (still growing) and over 115,000 annotations to hereditary diseases. The HPO also provides a large set of HPO annotations to approximately 4000 common diseases.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$hpo$publication</span>
+<span class="co">#&gt; [1] &quot;Kohler, S., et al. The Human Phenotype Ontology project: linking molecular biology and disease through phenotype data. Nucleic Acids Res 2014;42(Database issue):D966-974.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$hpo$url</span>
+<span class="co">#&gt; [1] &quot;http://human-phenotype-ontology.github.io&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$inbiomap</span>
+<span class="co">#&gt; $db$item$inbiomap$description</span>
+<span class="co">#&gt; [1] &quot;InBio Map™ is a high coverage, high quality, convenient and transparent platform for investigating and visualizing protein-protein interactions. InBio Map™ and the corresponding InWeb_InBioMap PPI database are developed, owned and continuously maintained by Intomics A/S&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$inbiomap$publication</span>
+<span class="co">#&gt; [1] &quot;Li, T., et al. A scored human protein-protein interaction network to catalyze genomic interpretation. Nat Methods 2017;14(1):61-64.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$inbiomap$url</span>
+<span class="co">#&gt; [1] &quot;https://www.intomics.com/inbio/map&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$interpro</span>
+<span class="co">#&gt; $db$item$interpro$description</span>
+<span class="co">#&gt; [1] &quot;InterPro provides functional analysis of proteins by classifying them into families and predicting domains and important sites. We combine protein signatures from a number of member databases into a single searchable resource, capitalising on their individual strengths to produce a powerful integrated database and diagnostic tool.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$interpro$publication</span>
+<span class="co">#&gt; [1] &quot;Apweiler R, Attwood T K, Bairoch A, et al. The InterPro database, an integrated documentation resource for protein families, domains and functional sites[J]. Nucleic acids research, 2001, 29(1): 37-40.&quot;</span>
+<span class="co">#&gt; [2] &quot;Mulder N, Apweiler R. InterPro and InterProScan: tools for protein sequence classification and comparison[J]. Comparative genomics, 2007: 59-70.&quot;                                                         </span>
+<span class="co">#&gt; [3] &quot;Jones P, Binns D, Chang H Y, et al. InterProScan 5: genome-scale protein function classification[J]. Bioinformatics, 2014, 30(9): 1236-1240.&quot;                                                             </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$interpro$url</span>
+<span class="co">#&gt; [1] &quot;http://www.ebi.ac.uk/interpro&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$medreaders</span>
+<span class="co">#&gt; $db$item$medreaders$description</span>
+<span class="co">#&gt; [1] &quot;MeDReaders: A database for transcription factors that bind to methylated DNA&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$medreaders$publication</span>
+<span class="co">#&gt; [1] &quot;Wang G, Luo X, Wang J, et al. MeDReaders: a database for transcription factors that bind to methylated DNA[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$medreaders$url</span>
+<span class="co">#&gt; [1] &quot;http://medreader.org&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$mndr</span>
+<span class="co">#&gt; $db$item$mndr$description</span>
+<span class="co">#&gt; [1] &quot;Accumulated evidences suggest diverse non-coding RNAs (ncRNAs) involved in a wide variety of diseases progression. Hence, we have updated the MNDR v2.0 database by integrating experimental and prediction diverse ncRNA-disease associations from manual literatures curation and other resources under one common framework. The new developments in MNDR v2.0 include (1) over 220-fold ncRNA-disease associations enhancement than previous version (including lncRNA, miRNA, piRNA, snoRNA and more than 1,400 diseases); (2) integrating experimental and prediction evidence from 14 resources and prediction algorithms for each ncRNA-disease association; (3) mapping disease name to the Disease Ontology and Medical Subject Headings (MeSH); (4) providing a confidence score for each ncRNA-disease association; and (5) an increase of species coverage to 6 mammals.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$mndr$publication</span>
+<span class="co">#&gt; [1] &quot;Cui T, Zhang L, Huang Y, et al. MNDR v2. 0: an updated resource of ncRNA–disease associations in mammals[J]. Nucleic Acids Research, 2017.&quot;                    </span>
+<span class="co">#&gt; [2] &quot;Wang Y, Chen L, Chen B, et al. Mammalian ncRNA-disease repository: a global view of ncRNA-mediated disease network[J]. Cell death &amp; disease, 2013, 4(8): e765.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$mndr$url</span>
+<span class="co">#&gt; [1] &quot;http://www.rna-society.org/mndr&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$msdd</span>
+<span class="co">#&gt; $db$item$msdd$description</span>
+<span class="co">#&gt; [1] &quot;MSDD provides two maps that enable users to download data by clicking on the appropriate area. The left map classifies data according to the organ and the right map displays the hotspot data.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$msdd$publication</span>
+<span class="co">#&gt; [1] &quot;Yue M, Zhou D, Zhi H, et al. MSDD: a manually curated database of experimentally supported associations among miRNAs, SNPs and human diseases[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$msdd$url</span>
+<span class="co">#&gt; [1] &quot;http://www.bio-bigdata.com/msdd&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$omim</span>
+<span class="co">#&gt; $db$item$omim$description</span>
+<span class="co">#&gt; [1] &quot;OMIM is a comprehensive, authoritative compendium of human genes and genetic phenotypes that is freely available and updated daily. The full-text, referenced overviews in OMIM contain information on all known mendelian disorders and over 15,000 genes. OMIM focuses on the relationship between phenotype and genotype. It is updated daily, and the entries contain copious links to other genetics resources.\\nThis database was initiated in the early 1960s by Dr. Victor A. McKusick as a catalog of mendelian traits and disorders, entitled Mendelian Inheritance in Man (MIM). Twelve book editions of MIM were published between 1966 and 1998. The online version, OMIM, was created in 1985 by a collaboration between the National Library of Medicine and the William H. Welch Medical Library at Johns Hopkins. It was made generally available on the internet starting in 1987. In 1995, OMIM was developed for the World Wide Web by NCBI, the National Center for Biotechnology Information.\\n\\nOMIM is authored and edited at the McKusick-Nathans Institute of Genetic Medicine, Johns Hopkins University School of Medicine, under the direction of Dr. Ada Hamosh.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$omim$publication</span>
+<span class="co">#&gt; [1] &quot;Hamosh A, Scott A F, Amberger J S, et al. Online Mendelian Inheritance in Man (OMIM), a knowledgebase of human genes and genetic disorders[J]. Nucleic acids research, 2005, 33(suppl_1): D514-D517.&quot;                   </span>
+<span class="co">#&gt; [2] &quot;Amberger J, Bocchini C A, Scott A F, et al. McKusick's online Mendelian inheritance in man (OMIM®)[J]. Nucleic acids research, 2008, 37(suppl_1): D793-D796.&quot;                                                           </span>
+<span class="co">#&gt; [3] &quot;Amberger J S, Bocchini C A, Schiettecatte F, et al. OMIM. org: Online Mendelian Inheritance in Man (OMIM®), an online catalog of human genes and genetic disorders[J]. Nucleic acids research, 2014, 43(D1): D789-D798.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$omim$url</span>
+<span class="co">#&gt; [1] &quot;https://omim.org/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$pancanqtl</span>
+<span class="co">#&gt; $db$item$pancanqtl$description</span>
+<span class="co">#&gt; [1] &quot;Expression quantitative trait loci (eQTLs) are regions of the genome containing DNA sequence variants that influence the expression level of one or more genes. PancanQTL aims to comprehensively provide cis-eQTLs (SNPs affect local gene expression) and trans-eQTLs (SNPs affect distant gene expression) in 33 cancer types from The Cancer Genome Atlas (TCGA).&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$pancanqtl$publication</span>
+<span class="co">#&gt; [1] &quot;Gong J, Mei S, Liu C, et al. PancanQTL: systematic identification of cis-eQTLs and trans-eQTLs in 33 cancer types[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$pancanqtl$url</span>
+<span class="co">#&gt; [1] &quot;http://bioinfo.life.hust.edu.cn/PancanQTL&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$proteinatlas</span>
+<span class="co">#&gt; $db$item$proteinatlas$description</span>
+<span class="co">#&gt; [1] &quot;The Human Protein Atlas (HPA) is a Swedish-based program started in 2003 with the aim to map of all the human proteins in cells, tissues and organs using integration of various omics technologies, including antibody-based imaging, mass spectrometry-based proteomics, transcriptomics and systems biology. All the data in the knowledge resource is open access to allow scientists both in academia and industry to freely access the data for exploration of the human proteome. The Human Protein Atlas consists of three separate parts, each focusing on a particular aspect of the genome-wide analysis of the human proteins; the Tissue Atlas showing the distribution of the proteins across all major tissues and organs in the human body, the Cell Atlas showing the subcellular localization of proteins in single cells, and finally the Pathology Atlas showing the impact of protein levels for survival of patients with cancer. The Human Protein Atlas program has already contributed to several thousands of publications in the field of human biology and disease and it is selected by the organization ELIXIR (www.elixir-europe.org) as a European core resource due to its fundamental importance for a wider life science community. The HPA consortium is funded by the Knut and Alice Wallenberg Foundation.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$proteinatlas$publication</span>
+<span class="co">#&gt; [1] &quot;U..M et al, 2015. Tissue-based map of the human proteome. Science PubMed: 25613900 DOI: 10.1126/science.1260419&quot;                 </span>
+<span class="co">#&gt; [2] &quot;Thul PJ et al, 2017. A subcellular map of the human proteome. Science. PubMed: 28495876 DOI: 10.1126/science.aal3321&quot;            </span>
+<span class="co">#&gt; [3] &quot;Uhlen M et al, 2017. A pathology atlas of the human cancer transcriptome. Science. PubMed: 28818916 DOI: 10.1126/science.aan2507&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$proteinatlas$url</span>
+<span class="co">#&gt; [1] &quot;https://www.proteinatlas.org/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$remap2</span>
+<span class="co">#&gt; $db$item$remap2$description</span>
+<span class="co">#&gt; [1] &quot;ReMap, an integrative analysis of transcriptional regulators ChIP-seq experiments from both Public and Encode datasets. The ReMap atlas consits of 80 million peaks from 485 transcription factors (TFs), transcription coactivators (TCAs) and chromatin-remodeling factors (CRFs). The atlas is available to browse or download either for a given TF or cell line, or for the entire dataset. &quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$remap2$publication</span>
+<span class="co">#&gt; [1] &quot;Integrative analysis of public ChIP-seq experiments reveals a complex multi-cell regulatory landscape.Griffon, A., Barbier, Q., Dalino, J., van Helden, J., Spicuglia, S., Ballester, B. Nucleic Acids Research, Volume 43, Issue 4, 27 February 2015 &quot; </span>
+<span class="co">#&gt; [2] &quot;ReMap 2018: An updated regulatory regions atlas from an integrative analysis of DNA-binding ChIP-seq experiments. Cheneby J., Gheorghe M., Artufel M., Mathelier A., Ballester, B. Nucleic Acids Research, gkx1092, https://doi.org/10.1093/nar/gkx1092&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$remap2$url</span>
+<span class="co">#&gt; [1] &quot;http://tagc.univ-mrs.fr/remap/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$rsnp3</span>
+<span class="co">#&gt; $db$item$rsnp3$description</span>
+<span class="co">#&gt; [1] &quot;SNP related regulatory elements, element-gene pairs &amp; SNP-based regulatory network&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$rsnp3$publication</span>
+<span class="co">#&gt; [1] &quot;Guo L, Wang J. rSNPBase 3.0: an updated database of SNP-related regulatory elements, element-gene pairs and SNP-based gene regulatory networks[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$rsnp3$url</span>
+<span class="co">#&gt; [1] &quot;http://rsnp3.psych.ac.cn/index.do&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$seecancer</span>
+<span class="co">#&gt; $db$item$seecancer$description</span>
+<span class="co">#&gt; [1] &quot;Cancer is driven by accumulating somatic alterations which confer normal cells fitness advantage to evolve from a premalignant status to malignant tumor. The SEECancer database presents the comprehensive cancer evolutionary stage-specific somatic events (including early-specific, late-specific, relapse-specific, metastasis-specific, drug-resistant and drug-induced genomic events) and their temporal orders.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$seecancer$publication</span>
+<span class="co">#&gt; [1] &quot;(Zhang and Luo, 2017) SEECancer: a resource for somatic events in evolution of cancer genome. DOI: 10.1093/nar/gkx964&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$seecancer$url</span>
+<span class="co">#&gt; [1] &quot;http://biocc.hrbmu.edu.cn/SEECancer&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$srnanalyzer</span>
+<span class="co">#&gt; $db$item$srnanalyzer$description</span>
+<span class="co">#&gt; [1] &quot;sRNAnalyzer is a flexible, modular pipeline for the analysis of small RNA sequencing data.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$srnanalyzer$publication</span>
+<span class="co">#&gt; [1] &quot;Wu X, Kim TK, Baxter D, Scherler K, Gordon A, Fong O, Etheridge A, Galas DJ, Wang K. (2017) sRNAnalyzer—a flexible and customizable small RNA sequencing data analysis pipeline. Nucleic Acids Research&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$srnanalyzer$url</span>
+<span class="co">#&gt; [1] &quot;http://srnanalyzer.systemsbiology.net/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$superdrug2</span>
+<span class="co">#&gt; $db$item$superdrug2$description</span>
+<span class="co">#&gt; [1] &quot;SuperDRUG2 database is a unique, one-stop resource for approved/marketed drugs, containing more than 4,500 active pharmaceutical ingredients. We annotated drugs with regulatory details, chemical structures (2D and 3D), dosage, biological targets, physicochemical properties, external identifiers, side-effects and pharmacokinetic data. Different search mechanisms allow navigation through the chemical space of approved drugs. A 2D chemical structure search is provided in addition to a 3D superposition feature that superposes a drug with ligands already known to be found in the experimentally determined protein-ligand complexes. For the first time, we introduced simulation of \\\&quot;physiologically-based\\\&quot; pharmacokinetics of drugs. Our interaction check feature not only identifies potential drug-drug interactions but also provides alternative recommendations for elderly patients.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$superdrug2$publication</span>
+<span class="co">#&gt; [1] &quot;GB/T 7714 Siramshetty V B, Eckert O A, Gohlke B O, et al. SuperDRUG2: a one stop resource for approved/marketed drugs[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$superdrug2$url</span>
+<span class="co">#&gt; [1] &quot;http://cheminfo.charite.de/superdrug2&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$tumorfusions</span>
+<span class="co">#&gt; $db$item$tumorfusions$description</span>
+<span class="co">#&gt; [1] &quot;Gene fusion represents a class of molecular aberrations in cancer and has been exploited for therapeutic purposes. In this paper we describe TumorFusions, a data portal that catalogues 20 731 gene fusions detected in 9966 well characterized cancer samples and 648 normal specimens from The Cancer Genome Atlas (TCGA). The portal spans 33 cancer types in TCGA. Fusion transcripts were identified via a uniform pipeline, including filtering against a list of 3838 transcript fusions detected in a panel of 648 non-neoplastic samples. Fusions were mapped to somatic DNA rearrangements identified using whole genome sequencing data from 561 cancer samples as a means of validation. We observed that 65% of transcript fusions were associated with a chromosomal alteration, which is annotated in the portal. Other features of the portal include links to SNP array-based copy number levels and mutational patterns, exon and transcript level expressions of the partner genes, and a network-based centrality score for prioritizing functional fusions. Our portal aims to be a broadly applicable and user friendly resource for cancer gene annotation and is publicly available at http://www.tumorfusions.org.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$tumorfusions$publication</span>
+<span class="co">#&gt; [1] &quot;Hu X, Wang Q, Tang M, et al. TumorFusions: an integrative resource for cancer-associated transcript fusions[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$tumorfusions$url</span>
+<span class="co">#&gt; [1] &quot;http://www.tumorfusions.org&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$varcards</span>
+<span class="co">#&gt; $db$item$varcards$description</span>
+<span class="co">#&gt; [1] &quot;VarCards: an integrated genetic and clinical database for coding variants in the human genome&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$varcards$publication</span>
+<span class="co">#&gt; [1] &quot;Li J, Shi L, Zhang K, et al. VarCards: an integrated genetic and clinical database for coding variants in the human genome[J]. Nucleic Acids Research, 2017.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $db$item$varcards$url</span>
+<span class="co">#&gt; [1] &quot;http://varcards.biols.ac.cn&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github</span>
+<span class="co">#&gt; $github$cfg_meta</span>
+<span class="co">#&gt; $github$cfg_meta$avaliable_cfg</span>
+<span class="co">#&gt; [1] &quot;github.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$cfg_meta$cfg_dir</span>
+<span class="co">#&gt; [1] &quot;@&gt;@system.file('extdata', 'config/github', package = 'BioInstaller')@&lt;@&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$cfg_meta$prefix_url</span>
+<span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/github&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item</span>
+<span class="co">#&gt; $github$item$arnapipe</span>
+<span class="co">#&gt; $github$item$arnapipe$tag</span>
+<span class="co">#&gt; [1] &quot;QC&quot;      &quot;RNA-seq&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$arnapipe$title</span>
+<span class="co">#&gt; [1] &quot;a project-oriented pipeline for processing of RNA-seq data in high performance cluster environments&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa</span>
+<span class="co">#&gt; $github$item$bwa$description</span>
+<span class="co">#&gt; [1] &quot;BWA is a software package for mapping DNA sequences against a large reference genome, such as the human genome. It consists of three algorithms: BWA-backtrack, BWA-SW and BWA-MEM. The first algorithm is designed for Illumina sequence reads up to 100bp, while the rest two for longer sequences ranged from 70bp to a few megabases. BWA-MEM and BWA-SW share similar features such as the support of long reads and chimeric alignment, but BWA-MEM, which is the latest, is generally recommended as it is faster and more accurate. BWA-MEM also has better performance than BWA-backtrack for 70-100bp Illumina reads.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa$publication</span>
+<span class="co">#&gt; [1] &quot;Li H. and Durbin R. (2009) Fast and accurate short read alignment with Burrows-Wheeler transform. Bioinformatics, 25, 1754-1760. [PMID: 19451168]&quot;</span>
+<span class="co">#&gt; [2] &quot;Li H. and Durbin R. (2010) Fast and accurate long-read alignment with Burrows-Wheeler transform. Bioinformatics, 26, 589-595. [PMID: 20080505]&quot;   </span>
+<span class="co">#&gt; [3] &quot;Li H. (2013) Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv:1303.3997v2 [q-bio.GN]&quot;                            </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa$publication_date</span>
+<span class="co">#&gt; [1] 2009 2010 2013</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa$publication_doi</span>
+<span class="co">#&gt; [1] &quot;10.1093/bioinformatics/btp324&quot; &quot;10.1093/bioinformatics/btp698&quot;</span>
+<span class="co">#&gt; [3] &quot;&quot;                             </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa$tag</span>
+<span class="co">#&gt; [1] &quot;Genomics&quot;                &quot;NGS&quot;                    </span>
+<span class="co">#&gt; [3] &quot;Genomic alignment&quot;       &quot;DNA-seq&quot;                </span>
+<span class="co">#&gt; [5] &quot;Whole exome sequencing&quot;  &quot;WES&quot;                    </span>
+<span class="co">#&gt; [7] &quot;Whole genome sequencing&quot; &quot;WGS&quot;                    </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$bwa$title</span>
+<span class="co">#&gt; [1] &quot;Burrow-Wheeler Aligner for pairwise alignment between DNA sequences&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$multiqc</span>
+<span class="co">#&gt; $github$item$multiqc$tag</span>
+<span class="co">#&gt; [1] &quot;QC&quot;  &quot;NGS&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$multiqc$title</span>
+<span class="co">#&gt; [1] &quot;Aggregate results from bioinformatics analyses across many samples into a single report.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$ngs_qc_toolkit</span>
+<span class="co">#&gt; $github$item$ngs_qc_toolkit$tag</span>
+<span class="co">#&gt; [1] &quot;QC&quot;  &quot;NGS&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$ngs_qc_toolkit$title</span>
+<span class="co">#&gt; [1] &quot;A toolkit for the quality control (QC) of next generation sequencing (NGS) data&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$trimgalore</span>
+<span class="co">#&gt; $github$item$trimgalore$tag</span>
+<span class="co">#&gt; [1] &quot;QC&quot;  &quot;NGS&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $github$item$trimgalore$title</span>
+<span class="co">#&gt; [1] &quot;A wrapper around Cutadapt and FastQC to consistently apply adapter and quality trimming to FastQ files, with extra functionality for RRBS data&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub</span>
+<span class="co">#&gt; $nongithub$cfg_meta</span>
+<span class="co">#&gt; $nongithub$cfg_meta$avaliable_cfg</span>
+<span class="co">#&gt; [1] &quot;nongithub.toml&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$cfg_meta$cfg_dir</span>
+<span class="co">#&gt; [1] &quot;@&gt;@system.file('extdata', 'config/nongithub', package = 'BioInstaller')@&lt;@&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$cfg_meta$prefix_url</span>
+<span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/nongithub&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item</span>
+<span class="co">#&gt; $nongithub$item$gmap</span>
+<span class="co">#&gt; $nongithub$item$gmap$description</span>
+<span class="co">#&gt; [1] &quot;The programs GMAP and GSNAP, for aligning RNA-Seq and DNA-Seq datasets to genomes, have evolved along with advances in biological methodology to handle longer reads, larger volumes of data, and new types of biological assays. The genomic representation has been improved to include linear genomes that can compare sequences using single-instruction multiple-data (SIMD) instructions, compressed genomic hash tables with fast access using SIMD instructions, handling of large genomes with more than four billion bp, and enhanced suffix arrays (ESAs) with novel data structures for fast access. Improvements to the algorithms have included a greedy match-and-extend algorithm using suffix arrays, segment chaining using genomic hash tables, diagonalization using segmental hash tables, and nucleotide-level dynamic programming procedures that use SIMD instructions and eliminate the need for F-loop calculations. Enhancements to the functionality of the programs include standardization of indel positions, handling of ambiguous splicing, clipping and merging of overlapping paired-end reads, and alignments to circular chromosomes and alternate scaffolds. The programs have been adapted for use in pipelines by integrating their usage into R/Bioconductor packages such as gmapR and HTSeqGenie, and these pipelines have facilitated the discovery of numerous biological phenomena.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gmap$publication</span>
+<span class="co">#&gt; [1] &quot;Wu T D, Watanabe C K. GMAP: a genomic mapping and alignment program for mRNA and EST sequences[J]. Bioinformatics, 2005, 21(9): 1859-1875.&quot;                                                            </span>
+<span class="co">#&gt; [2] &quot;Wu T D, Reeder J, Lawrence M, et al. GMAP and GSNAP for genomic sequence alignment: enhancements to speed, accuracy, and functionality[J]. Statistical Genomics: Methods and Protocols, 2016: 283-334.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gmap$publication_date</span>
+<span class="co">#&gt; [1] 2005 2016</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gmap$publication_doi</span>
+<span class="co">#&gt; [1] &quot;10.1093/bioinformatics/bti310&quot; &quot;10.1007/978-1-4939-3578-9_15&quot; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gmap$tag</span>
+<span class="co">#&gt; [1] &quot;Genomics&quot;                       &quot;NGS&quot;                           </span>
+<span class="co">#&gt; [3] &quot;Genomic alignment&quot;              &quot;DNA-seq&quot;                       </span>
+<span class="co">#&gt; [5] &quot;RNA-seq&quot;                        &quot;mRNA&quot;                          </span>
+<span class="co">#&gt; [7] &quot;Whole Transcriptome Sequencing&quot; &quot;EST&quot;                           </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gmap$title</span>
+<span class="co">#&gt; [1] &quot;GMAP: A Genomic Mapping and Alignment Program for mRNA and EST Sequences, and GSNAP: Genomic Short-read Nucleotide Alignment Program&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gridss</span>
+<span class="co">#&gt; $nongithub$item$gridss$tag</span>
+<span class="co">#&gt; [1] &quot;NGS&quot; &quot;SV&quot; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$gridss$title</span>
+<span class="co">#&gt; [1] &quot;GRIDSS: sensitive and specific genomic rearrangement detection using positional de Bruijn graph assembly.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$interproscan</span>
+<span class="co">#&gt; $nongithub$item$interproscan$description</span>
+<span class="co">#&gt; [1] &quot;InterProScan is the software package that allows sequences (protein and nucleic) to be scanned against InterPro's signatures. Signatures are predictive models, provided by several different databases, that make up the InterPro consortium.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$interproscan$tag</span>
+<span class="co">#&gt; [1] &quot;Protein&quot;        &quot;Classification&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $nongithub$item$interproscan$title</span>
+<span class="co">#&gt; [1] &quot;Protein sequence analysis &amp; classification&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $title</span>
+<span class="co">#&gt; [1] &quot;A library of useful WEB URL resource.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web</span>
+<span class="co">#&gt; $web$item</span>
+<span class="co">#&gt; $web$item$cbioportal</span>
+<span class="co">#&gt; $web$item$cbioportal$url</span>
+<span class="co">#&gt; [1] &quot;http://www.cbioportal.org/index.do&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$ensembl</span>
+<span class="co">#&gt; $web$item$ensembl$ftp</span>
+<span class="co">#&gt; [1] &quot;ftp://ftp.ensembl.org/pub/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$ensembl$url</span>
+<span class="co">#&gt; [1] &quot;http://www.ensembl.org/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$kegg</span>
+<span class="co">#&gt; $web$item$kegg$ftp</span>
+<span class="co">#&gt; [1] &quot;ftp://ftp.genome.jp/pub&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$kegg$url</span>
+<span class="co">#&gt; [1] &quot;http://www.kegg.jp/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$ncbi</span>
+<span class="co">#&gt; $web$item$ncbi$ftp</span>
+<span class="co">#&gt; [1] &quot;ftp://ftp.ncbi.nih.gov/pub&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$ncbi$url</span>
+<span class="co">#&gt; [1] &quot;https://www.ncbi.nlm.nih.gov/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$rsnp3</span>
+<span class="co">#&gt; $web$item$rsnp3$ftp</span>
+<span class="co">#&gt; [1] &quot;ftp://rv.psych.ac.cn/pub/rsnp3/&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$rsnp3$url</span>
+<span class="co">#&gt; [1] &quot;http://rsnp3.psych.ac.cn/index.do&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$tcga_gdc</span>
+<span class="co">#&gt; $web$item$tcga_gdc$url</span>
+<span class="co">#&gt; [1] &quot;https://portal.gdc.cancer.gov/search/s?facetTab=cases&amp;filters=%7B%22op%22:%22and%22,%22content%22:%5B%7B%22op%22:%22in%22,%22content%22:%7B%22field%22:%22cases.project.program.name%22,%22value%22:%5B%22TCGA%22%5D%7D%7D%5D%7D&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$uniprot</span>
+<span class="co">#&gt; $web$item$uniprot$ftp</span>
+<span class="co">#&gt; [1] &quot;ftp://ftp.uniprot.org/pub/databases/uniprot&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $web$item$uniprot$url</span>
+<span class="co">#&gt; [1] &quot;http://www.uniprot.org/&quot;</span>
 
-<h2>Download ANNOVAR databases</h2>
+<span class="co"># Examples of get.meta</span>
+db_cfg_meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">value =</span> <span class="st">&quot;cfg_meta&quot;</span>, <span class="dt">config =</span> <span class="st">'db'</span>)
+db_cfg_meta
+<span class="co">#&gt; $avaliable_cfg</span>
+<span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $cfg_dir</span>
+<span class="co">#&gt; [1] &quot;@&gt;@system.file('extdata', 'config/db', package = 'BioInstaller')@&lt;@&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prefix_url</span>
+<span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/&quot;</span>
 
-<pre><code class="r">download.dir &lt;- sprintf(&#39;%s/ANNOVAR&#39;, tempdir())
-config.toml &lt;- system.file(&quot;extdata&quot;, &quot;databases/ANNOVAR.toml&quot;, 
-  package = &quot;BioInstaller&quot;)
-install.bioinfo(&#39;raw_ucsc_refgene&#39;, download.dir = download.dir, 
-  nongithub.cfg = config.toml, extra.list = list(buildver = &quot;hg19&quot;))
-#&gt; INFO [2017-10-31 16:12:24] Debug:name:raw_ucsc_refgene
-#&gt; INFO [2017-10-31 16:12:24] Debug:destdir:
-#&gt; INFO [2017-10-31 16:12:24] Debug:db:/tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:24] Debug:github.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/github.toml
-#&gt; INFO [2017-10-31 16:12:24] Debug:nongithub.cfg:/tmp/RtmpTQQMYN/Rinst1b93d3af5b7bf/BioInstaller/extdata/databases/ANNOVAR.toml
-#&gt; INFO [2017-10-31 16:12:24] Fetching raw_ucsc_refgene versions....
-#&gt; INFO [2017-10-31 16:12:25] Install versions:refgene
-#&gt; INFO [2017-10-31 16:12:25] Now start to install raw_ucsc_refgene in /tmp/Rtmphb4wYO/ANNOVAR.
-#&gt; INFO [2017-10-31 16:12:25] Running before install steps.
-#&gt; INFO [2017-10-31 16:12:25] Now start to download raw_ucsc_refgene in /tmp/Rtmphb4wYO/ANNOVAR.
-#&gt; INFO [2017-10-31 16:12:33] Running install steps.
-#&gt; INFO [2017-10-31 16:12:33] Running after install successful steps.
-#&gt; INFO [2017-10-31 16:12:33] Running CMD:mv refGene.txt ucsc_hg19_refGene.txt
-#&gt; INFO [2017-10-31 16:12:34] Running change.info for raw_ucsc_refgene and be saved to /tmp/Rtmphb4wYO/file1b94e339b60ba
-#&gt; INFO [2017-10-31 16:12:34] Debug:Install by Github configuration file: 
-#&gt; INFO [2017-10-31 16:12:34] Debug:Install by Non Github configuration file: raw_ucsc_refgene
-#&gt; INFO [2017-10-31 16:12:34] Installed successful list: raw_ucsc_refgene
-#&gt; $fail.list
-#&gt; [1] &quot;&quot;
-#&gt; 
-#&gt; $success.list
-#&gt; [1] &quot;raw_ucsc_refgene&quot;
-</code></pre>
+db_cfg_meta_parsed &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">value =</span> <span class="st">'cfg_meta'</span>, <span class="dt">config =</span> <span class="st">'db'</span>, <span class="dt">read.config.params =</span> <span class="kw">list</span>(<span class="dt">rcmd.parse =</span> <span class="ot">TRUE</span>))
+db_cfg_meta_parsed
+<span class="co">#&gt; $avaliable_cfg</span>
+<span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $cfg_dir</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $prefix_url</span>
+<span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/&quot;</span>
+
+db_cfg_meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'github'</span>, <span class="dt">value =</span> <span class="st">'item'</span>)
+db_cfg_meta$bwa
+<span class="co">#&gt; $description</span>
+<span class="co">#&gt; [1] &quot;BWA is a software package for mapping DNA sequences against a large reference genome, such as the human genome. It consists of three algorithms: BWA-backtrack, BWA-SW and BWA-MEM. The first algorithm is designed for Illumina sequence reads up to 100bp, while the rest two for longer sequences ranged from 70bp to a few megabases. BWA-MEM and BWA-SW share similar features such as the support of long reads and chimeric alignment, but BWA-MEM, which is the latest, is generally recommended as it is faster and more accurate. BWA-MEM also has better performance than BWA-backtrack for 70-100bp Illumina reads.&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $publication</span>
+<span class="co">#&gt; [1] &quot;Li H. and Durbin R. (2009) Fast and accurate short read alignment with Burrows-Wheeler transform. Bioinformatics, 25, 1754-1760. [PMID: 19451168]&quot;</span>
+<span class="co">#&gt; [2] &quot;Li H. and Durbin R. (2010) Fast and accurate long-read alignment with Burrows-Wheeler transform. Bioinformatics, 26, 589-595. [PMID: 20080505]&quot;   </span>
+<span class="co">#&gt; [3] &quot;Li H. (2013) Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM. arXiv:1303.3997v2 [q-bio.GN]&quot;                            </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $publication_date</span>
+<span class="co">#&gt; [1] 2009 2010 2013</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $publication_doi</span>
+<span class="co">#&gt; [1] &quot;10.1093/bioinformatics/btp324&quot; &quot;10.1093/bioinformatics/btp698&quot;</span>
+<span class="co">#&gt; [3] &quot;&quot;                             </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $tag</span>
+<span class="co">#&gt; [1] &quot;Genomics&quot;                &quot;NGS&quot;                    </span>
+<span class="co">#&gt; [3] &quot;Genomic alignment&quot;       &quot;DNA-seq&quot;                </span>
+<span class="co">#&gt; [5] &quot;Whole exome sequencing&quot;  &quot;WES&quot;                    </span>
+<span class="co">#&gt; [7] &quot;Whole genome sequencing&quot; &quot;WGS&quot;                    </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $title</span>
+<span class="co">#&gt; [1] &quot;Burrow-Wheeler Aligner for pairwise alignment between DNA sequences&quot;</span>
+
+<span class="co"># Get databases meta file</span>
+db_meta_file &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'db_meta_file'</span>)
+db_meta_file
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+db_meta_file &lt;-<span class="st"> </span>meta_files[[<span class="st">&quot;db_meta_file&quot;</span>]]
+db_meta_file
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></code></pre>
+</div>
+<div id="download-databases" class="section level2">
+<h2>Download databases</h2>
+<p>You can use <code>install.bioinfo</code> directly download the supported databases (since v0.3.0) or use the <code>inst/config/db</code> files (exclude db_meta.toml) as the <code>nongithub.cfg</code> parameter value.</p>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="co"># get all database name</span>
+<span class="kw">library</span>(stringr)
+x &lt;-<span class="st"> </span><span class="kw">install.bioinfo</span>(<span class="dt">show.all.names =</span> T)
+x &lt;-<span class="st"> </span>x[<span class="kw">str_detect</span>(x, <span class="st">&quot;^db_&quot;</span>)]
+x
+<span class="co">#&gt;   [1] &quot;db_biosystems&quot;                    &quot;db_civic&quot;                        </span>
+<span class="co">#&gt;   [3] &quot;db_cscd&quot;                          &quot;db_denovo_db&quot;                    </span>
+<span class="co">#&gt;   [5] &quot;db_dgidb&quot;                         &quot;db_differentialnet&quot;              </span>
+<span class="co">#&gt;   [7] &quot;db_diseaseenhancer&quot;               &quot;db_drugbank&quot;                     </span>
+<span class="co">#&gt;   [9] &quot;db_ecodrug&quot;                       &quot;db_expression_atlas&quot;             </span>
+<span class="co">#&gt;  [11] &quot;db_funcoup&quot;                       &quot;db_gtex&quot;                         </span>
+<span class="co">#&gt;  [13] &quot;db_hpo&quot;                           &quot;db_inbiomap&quot;                     </span>
+<span class="co">#&gt;  [15] &quot;db_interpro&quot;                      &quot;db_medreaders&quot;                   </span>
+<span class="co">#&gt;  [17] &quot;db_mndr&quot;                          &quot;db_msdd&quot;                         </span>
+<span class="co">#&gt;  [19] &quot;db_omim&quot;                          &quot;db_oncotator&quot;                    </span>
+<span class="co">#&gt;  [21] &quot;db_pancanqtl&quot;                     &quot;db_proteinatlas&quot;                 </span>
+<span class="co">#&gt;  [23] &quot;db_remap&quot;                         &quot;db_remap2&quot;                       </span>
+<span class="co">#&gt;  [25] &quot;db_rsnp3&quot;                         &quot;db_seecancer&quot;                    </span>
+<span class="co">#&gt;  [27] &quot;db_srnanalyzer&quot;                   &quot;db_superdrug2&quot;                   </span>
+<span class="co">#&gt;  [29] &quot;db_tumorfusions&quot;                  &quot;db_varcards&quot;                     </span>
+<span class="co">#&gt;  [31] &quot;db_annovar_1000g&quot;                 &quot;db_annovar_1000g_sqlite&quot;         </span>
+<span class="co">#&gt;  [33] &quot;db_annovar_avsift&quot;                &quot;db_annovar_avsnp&quot;                </span>
+<span class="co">#&gt;  [35] &quot;db_annovar_avsnp_sqlite&quot;          &quot;db_annovar_cadd&quot;                 </span>
+<span class="co">#&gt;  [37] &quot;db_annovar_cadd_sqlite&quot;           &quot;db_annovar_cg&quot;                   </span>
+<span class="co">#&gt;  [39] &quot;db_annovar_clinvar&quot;               &quot;db_annovar_clinvar_sqlite&quot;       </span>
+<span class="co">#&gt;  [41] &quot;db_annovar_cosmic&quot;                &quot;db_annovar_cosmic_sqlite&quot;        </span>
+<span class="co">#&gt;  [43] &quot;db_annovar_cscd&quot;                  &quot;db_annovar_darned_sqlite&quot;        </span>
+<span class="co">#&gt;  [45] &quot;db_annovar_dbnsfp&quot;                &quot;db_annovar_dbnsfp_sqlite&quot;        </span>
+<span class="co">#&gt;  [47] &quot;db_annovar_dbscsnv11&quot;             &quot;db_annovar_eigen&quot;                </span>
+<span class="co">#&gt;  [49] &quot;db_annovar_ensgene&quot;               &quot;db_annovar_epi_genes&quot;            </span>
+<span class="co">#&gt;  [51] &quot;db_annovar_esp6500siv2&quot;           &quot;db_annovar_exac03&quot;               </span>
+<span class="co">#&gt;  [53] &quot;db_annovar_fathmm&quot;                &quot;db_annovar_gerp&quot;                 </span>
+<span class="co">#&gt;  [55] &quot;db_annovar_gme&quot;                   &quot;db_annovar_gnomad&quot;               </span>
+<span class="co">#&gt;  [57] &quot;db_annovar_gwava&quot;                 &quot;db_annovar_hrcr1&quot;                </span>
+<span class="co">#&gt;  [59] &quot;db_annovar_icgc21&quot;                &quot;db_annovar_icgc_sqlite&quot;          </span>
+<span class="co">#&gt;  [61] &quot;db_annovar_intervar&quot;              &quot;db_annovar_intervar_sqlite&quot;      </span>
+<span class="co">#&gt;  [63] &quot;db_annovar_kaviar&quot;                &quot;db_annovar_knowngene&quot;            </span>
+<span class="co">#&gt;  [65] &quot;db_annovar_ljb26_all&quot;             &quot;db_annovar_mcap&quot;                 </span>
+<span class="co">#&gt;  [67] &quot;db_annovar_mitimpact&quot;             &quot;db_annovar_nci60&quot;                </span>
+<span class="co">#&gt;  [69] &quot;db_annovar_nci60_sqlite&quot;          &quot;db_annovar_normal_pool&quot;          </span>
+<span class="co">#&gt;  [71] &quot;db_annovar_popfreq&quot;               &quot;db_annovar_radar_sqlite&quot;         </span>
+<span class="co">#&gt;  [73] &quot;db_annovar_refgene&quot;               &quot;db_annovar_regsnpintron&quot;         </span>
+<span class="co">#&gt;  [75] &quot;db_annovar_revel&quot;                 &quot;db_annovar_snp&quot;                  </span>
+<span class="co">#&gt;  [77] &quot;db_annovar_varcards&quot;              &quot;db_ucsc_dnase_clustered&quot;         </span>
+<span class="co">#&gt;  [79] &quot;db_ucsc_ensgene&quot;                  &quot;db_ucsc_knowngene&quot;               </span>
+<span class="co">#&gt;  [81] &quot;db_ucsc_refgene&quot;                  &quot;db_ucsc_tfbs_clustered&quot;          </span>
+<span class="co">#&gt;  [83] &quot;db_blast_env_nr&quot;                  &quot;db_blast_est_human&quot;              </span>
+<span class="co">#&gt;  [85] &quot;db_blast_est_mouse&quot;               &quot;db_blast_est_others&quot;             </span>
+<span class="co">#&gt;  [87] &quot;db_blast_gss&quot;                     &quot;db_blast_htgs&quot;                   </span>
+<span class="co">#&gt;  [89] &quot;db_blast_human_genomic&quot;           &quot;db_blast_landmark&quot;               </span>
+<span class="co">#&gt;  [91] &quot;db_blast_mouse_genomic&quot;           &quot;db_blast_nr&quot;                     </span>
+<span class="co">#&gt;  [93] &quot;db_blast_nt&quot;                      &quot;db_blast_other_genomic&quot;          </span>
+<span class="co">#&gt;  [95] &quot;db_blast_pataa&quot;                   &quot;db_blast_patnt&quot;                  </span>
+<span class="co">#&gt;  [97] &quot;db_blast_pdbaa&quot;                   &quot;db_blast_pdbnt&quot;                  </span>
+<span class="co">#&gt;  [99] &quot;db_blast_ref_prok_rep_genomes&quot;    &quot;db_blast_ref_viroids_rep_genomes&quot;</span>
+<span class="co">#&gt; [101] &quot;db_blast_ref_viruses_rep_genomes&quot; &quot;db_blast_refseq_genomic&quot;         </span>
+<span class="co">#&gt; [103] &quot;db_blast_refseq_protein&quot;          &quot;db_blast_refseq_rna&quot;             </span>
+<span class="co">#&gt; [105] &quot;db_blast_refseqgene&quot;              &quot;db_blast_sts&quot;                    </span>
+<span class="co">#&gt; [107] &quot;db_blast_swissprot&quot;               &quot;db_blast_taxdb&quot;                  </span>
+<span class="co">#&gt; [109] &quot;db_blast_tsa_nr&quot;                  &quot;db_blast_tsa_nt&quot;                 </span>
+<span class="co">#&gt; [111] &quot;db_blast_vector&quot;</span>
+
+<span class="co"># all databases config </span>
+db_cfg_meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'db'</span>, <span class="dt">value =</span> <span class="st">'cfg_meta'</span>, 
+                        <span class="dt">read.config.params=</span><span class="kw">list</span>(<span class="dt">rcmd.parse =</span> <span class="ot">TRUE</span>))
+cfg_dir &lt;-<span class="st"> </span>db_cfg_meta$cfg_dir
+cfg_dir
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db&quot;</span>
+avaliable_cfg &lt;-<span class="st"> </span>db_cfg_meta$avaliable_cfg
+avaliable_cfg
+<span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;</span>
+<span class="kw">sprintf</span>(<span class="st">&quot;%s/%s&quot;</span>, cfg_dir, avaliable_cfg)
+<span class="co">#&gt; [1] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_annovar.toml&quot;</span>
+<span class="co">#&gt; [2] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_blast.toml&quot;  </span>
+<span class="co">#&gt; [3] &quot;/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml&quot;</span>
+
+<span class="co"># ANNOVAR</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/db_annovar'</span>, <span class="kw">tempdir</span>())
+config.toml &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;config/db/db_annovar.toml&quot;</span>, 
+  <span class="dt">package =</span> <span class="st">&quot;BioInstaller&quot;</span>)
+<span class="co">#install.bioinfo('db_ucsc_refgene', download.dir = download.dir, </span>
+<span class="co">#  nongithub.cfg = config.toml, extra.list = list(buildver = &quot;hg19&quot;))</span>
+
+<span class="co"># db_main</span>
+download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/db_main'</span>, <span class="kw">tempdir</span>())
+config.toml &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;config/db/db_main.toml&quot;</span>, 
+  <span class="dt">package =</span> <span class="st">&quot;BioInstaller&quot;</span>)
+<span class="kw">install.bioinfo</span>(<span class="st">'db_diseaseenhancer'</span>, <span class="dt">download.dir =</span> download.dir, 
+  <span class="dt">nongithub.cfg =</span> config.toml)
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Debug:name:db_diseaseenhancer</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Debug:db:/tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Debug:github.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Debug:nongithub.cfg:/tmp/RtmphlotFD/Rinst94b1385a400f/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Fetching db_diseaseenhancer versions....</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:48] Install versions:diseaseEnh5.1</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:49] Now start to install db_diseaseenhancer in /tmp/RtmpWodq64/db_main.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:49] Running before install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:49] Now start to download db_diseaseenhancer in /tmp/RtmpWodq64/db_main.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Running install steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Running change.info for db_diseaseenhancer and be saved to /tmp/RtmpWodq64/file951d8295358</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Debug:Install by Non Github configuration file: db_diseaseenhancer</span>
+<span class="co">#&gt; INFO [2017-11-27 00:18:50] Installed successful list: db_diseaseenhancer</span>
+<span class="co">#&gt; $fail.list</span>
+<span class="co">#&gt; [1] &quot;&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; $success.list</span>
+<span class="co">#&gt; [1] &quot;db_diseaseenhancer&quot;</span></code></pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 
 </body>
-
 </html>

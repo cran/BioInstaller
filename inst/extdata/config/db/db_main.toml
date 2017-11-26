@@ -1,0 +1,177 @@
+title = "BioInstaller databases main repo."
+
+[db_oncotator]
+source_url = "ftp://gsapubftp-anonymous@ftp.broadinstitute.org/bundle/oncotator/oncotator_{{version}}.tar.gz"
+version_available = ["v1_ds_April052016"]
+
+[db_srnanalyzer]
+source_url = "http://srnanalyzer.systemsbiology.net/downloads/{{version}}.tar.gz"
+version_available = ["sRNA_DBs", "MainDBs", "NCBI_NonHuman"]
+version_description = ["small RNA Databases", "Human and Exogenous Databases", "NCBI Non-Human Databases"]
+
+[db_cscd]
+source_url="http://gb.whu.edu.cn/CSCD/public/static/download/{{version}}.tar.gz"
+
+version_available = ["hg19-cancer-circrna", "hg19-cancer-circrna-mre", "hg19-cancer-circrna-rbp", "hg19-cancer-circrna-orf", "hg19-normal-circrna", "hg19-normal-circrna-mre", "hg19-normal-circrna-rbp", "hg19-normal-circrna-orf", "hg19-common-circrna", "hg19-common-circrna-mre", "hg19-common-circrna-rbp", "hg19-common-circrna-orf", "hg38-cancer-circrna", "hg38-cancer-circrna-mre", "hg38-cancer-circrna-rbp", "hg38-cancer-circrna-orf", "hg38-normal-circrna", "hg38-normal-circrna-mre", "hg38-normal-circrna-rbp", "hg38-normal-circrna-orf", "hg38-common-circrna", "hg38-common-circrna-mre", "hg38-common-circrna-rbp", "hg38-common-circrna-orf"]
+
+[db_differentialnet]
+source_url = "http://netbio.bgu.ac.il/diffnet-interactomes/@>@str_replace('{{version}}', '_.*', '')@<@/@>@str_replace('{{version}}', '.*_', '')@<@.tsv"
+decompress = false
+version_available = ["HPA_Adrenal", "HPA_Appendix", "HPA_Bonemarrow", "HPA_Brain", "HPA_Colon", "HPA_Endometrium", "HPA_Esophagus", "HPA_FallopianTube", "HPA_Fat", "HPA_Gallbladder", "HPA_Heart", "HPA_Kidney", "HPA_Liver", "HPA_Lung", "HPA_LymphNode", "HPA_Ovary", "HPA_Placenta", "HPA_Prostate", "HPA_Rectum", "HPA_SalivaryGland", "HPA_SkeletalMuscle", "HPA_Skin", "HPA_SmallIntestine", "HPA_SmoothMuscle", "HPA_Spleen", "HPA_Stomach", "HPA_Testis", "HPA_Thyroid", "HPA_Tonsil", "GTEx_Adipose - Subcutaneous", "GTEx_Adipose - Visceral (Omentum)", "GTEx_Artery - Aorta", "GTEx_Artery - Coronary", "GTEx_Artery - Tibial", "GTEx_Brain - Amygdala", "GTEx_Brain - Anterior cingulate cortex (BA24)", "GTEx_Brain - Caudate (basal ganglia)", "GTEx_Brain - Cerebellar Hemisphere", "GTEx_Brain - Cerebellum", "GTEx_Brain - Cortex", "GTEx_Brain - Frontal Cortex (BA9)", "GTEx_Brain - Hippocampus", "GTEx_Brain - Hypothalamus", "GTEx_Brain - Nucleus accumbens (basal ganglia)", "GTEx_Brain - Putamen (basal ganglia)", "GTEx_Brain - Spinal cord (cervical c-1)", "GTEx_Brain - Substantia nigra", "GTEx_Breast - Mammary Tissue", "GTEx_Cells - EBV-transformed lymphocytes", "GTEx_Cells - Transformed fibroblasts", "GTEx_Colon - Sigmoid", "GTEx_Esophagus - Gastroesophageal Junction", "GTEx_Esophagus - Mucosa", "GTEx_Esophagus - Muscularis", "GTEx_Heart - Atrial Appendage", "GTEx_Heart - Left Ventricle", "GTEx_Liver", "GTEx_Lung", "GTEx_Minor Salivary Gland", "GTEx_Muscle - Skeletal", "GTEx_Nerve - Tibial", "GTEx_Ovary", "GTEx_Pituitary", "GTEx_Prostate", "GTEx_Skin - Not Sun Exposed (Suprapubic)", "GTEx_Skin - Sun Exposed (Lower leg)", "GTEx_Stomach", "GTEx_Testis", "GTEx_Thyroid", "GTEx_Uterus", "GTEx_Vagina", "GTEx_Whole Blood", "GTEx_Whole Brain"]
+
+[db_seecancer]
+source_url = "http://biocc.hrbmu.edu.cn/SEECancer/download/{{version}}.txt"
+decompress = false
+version_available = ["early_events", "late_events", "relapse_events", "metastasis_events", 
+                     "drug_resistant_events", "drug_induced_events", "temporal_sequence"]
+
+[db_diseaseenhancer]
+source_url = "http://biocc.hrbmu.edu.cn/DiseaseEnhancer/RFunctions/diseaseEnh5.1.txt"
+version_available = ["diseaseEnh5.1", "enhInfo", "enh2target"]
+
+[db_pancanqtl]
+source_url = "http://bioinfo.life.hust.edu.cn/PancanQTL/static/download/{{version}}.xls"
+version_available = ["ACC_tumor.cis_eQTL", "BLCA_tumor.cis_eQTL", "BRCA_tumor.cis_eQTL", 
+"CESC_tumor.cis_eQTL", "CHOL_tumor.cis_eQTL", "COAD_tumor.cis_eQTL", "DLBC_tumor.cis_eQTL", 
+"ESCA_tumor.cis_eQTL", "GBM_tumor.cis_eQTL", "HNSC_tumor.cis_eQTL", "KICH_tumor.cis_eQTL", 
+"KIRC_tumor.cis_eQTL", "KIRP_tumor.cis_eQTL", "LAML_tumor.cis_eQTL", "LGG_tumor.cis_eQTL", 
+"LIHC_tumor.cis_eQTL", "LUAD_tumor.cis_eQTL", "LUSC_tumor.cis_eQTL", "MESO_tumor.cis_eQTL", 
+"OV_tumor.cis_eQTL", "PAAD_tumor.cis_eQTL", "PCPG_tumor.cis_eQTL", "PRAD_tumor.cis_eQTL", 
+"READ_tumor.cis_eQTL", "SARC_tumor.cis_eQTL", "SKCM_tumor.cis_eQTL", "STAD_tumor.cis_eQTL", 
+"TGCT_tumor.cis_eQTL", "THCA_tumor.cis_eQTL", "THYM_tumor.cis_eQTL", "UCEC_tumor.cis_eQTL", 
+"UCS_tumor.cis_eQTL", "UVM_tumor.cis_eQTL", "ACC_tumor.trans_eQTL", "BLCA_tumor.trans_eQTL", 
+"BRCA_tumor.trans_eQTL", "CESC_tumor.trans_eQTL", "CHOL_tumor.trans_eQTL", "COAD_tumor.trans_eQTL", 
+"DLBC_tumor.trans_eQTL", "ESCA_tumor.trans_eQTL", "GBM_tumor.trans_eQTL", "HNSC_tumor.trans_eQTL", 
+"KICH_tumor.trans_eQTL", "KIRC_tumor.trans_eQTL", "KIRP_tumor.trans_eQTL", "LAML_tumor.trans_eQTL", 
+"LGG_tumor.trans_eQTL", "LIHC_tumor.trans_eQTL", "LUAD_tumor.trans_eQTL", "LUSC_tumor.trans_eQTL", 
+"MESO_tumor.trans_eQTL", "OV_tumor.trans_eQTL", "PAAD_tumor.trans_eQTL", "PCPG_tumor.trans_eQTL", 
+"PRAD_tumor.trans_eQTL", "READ_tumor.trans_eQTL", "SARC_tumor.trans_eQTL", "SKCM_tumor.trans_eQTL", 
+"STAD_tumor.trans_eQTL", "TGCT_tumor.trans_eQTL", "THCA_tumor.trans_eQTL", "THYM_tumor.trans_eQTL", 
+"UCEC_tumor.trans_eQTL", "UCS_tumor.trans_eQTL", "UVM_tumor.trans_eQTL"]
+
+[db_msdd]
+source_url = "http://www.bio-bigdata.com/msdd/download/{{version}}.zip"
+version_available = "msdd"
+
+[db_mndr]
+source_url = "http://www.rna-society.org/mndr/php/download.php?file={{version}}.zip"
+version_available = ["All ncRNA-disease", "miRNA-disease", "lncRNA-disease"]
+
+[db_rsnp3]
+source_url = "ftp://rv.psych.ac.cn/pub/rsnp3/rSNP_info_{{version}}.tar.gz"
+version_available = "all"
+
+[db_ecodrug]
+source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/ecodrug/ECOdrug_{{version}}.csv.gz"
+version_available = ["eggnog", "ensembl", "inparanoid", "majority_vote"]
+
+[db_medreaders]
+source_url = ["http://bioinfo.rjh.com.cn/download/bioinstaller/medreader/paper.TF.PWM.tar.gz", 
+              "http://bioinfo.rjh.com.cn/download/bioinstaller/medreader/paper.TF.summary.xlsx.gz"]
+version_available = "newst"
+
+[db_superdrug2]
+source_url = ["http://bioinfo.rjh.com.cn/download/bioinstaller/superdrug2/{{version}}.csv.zip", 
+              "http://bioinfo.rjh.com.cn/download/bioinstaller/superdrug2/{{version}}.zip"]
+url_all_download = false
+version_available = ["all_drugs_2D_structures", "all_drugs_3D_structures", "all_drugs_chemical_structure_identifiers", "all_drugs_extlinks", "all_drugs_molecular_properties", "approved_drugs_chemical_structure_identifiers", "approved_drugs_extlinks", "approved_drugs_molecular_properties"]
+
+[db_varcards]
+source_url = ["http://159.226.67.237/sun/varcards/resource/download/variant/{{version}}.variant.annotation.xls.gz",
+              "http://bioinfo.rjh.com.cn/download/bioinstaller/varcards/{{version}}.variant.annotation.xls.gz"]
+url_all_download = false
+version_available = ["chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10", "chr11", "chr12", "chr13", "chr14", "chr15", "chr16", "chr17", "chr18", "chr19", "chr20", "chr21", "chr22", "chrX", "chrY"]
+
+[db_civic]
+source_url = "https://civic.genome.wustl.edu/downloads/nightly/nightly-{{version}}.tsv"
+decompress = false
+version_available = ["GeneSummaries", "VariantSummaries", "VariantGroupSummaries", "ClinicalEvidenceSummaries"]
+
+[db_expression_atlas]
+source_url = "ftp://ftp.ebi.ac.uk/pub/databases/microarray/data/atlas/experiments/atlas-{{version}}-data.tar.gz"
+version_available = "latest"
+
+[db_remap2]
+source_url = ["http://tagc.univ-mrs.fr/remap/download/MACS/ReMap2_TF_{{version}}Peaks.tar.gz", 
+              "http://tagc.univ-mrs.fr/remap/download/MACS/ReMap2_{{version}}Peaks.bed.gz",
+              "http://tagc.univ-mrs.fr/remap/download/MACS/ReMap2_{{version}}.bed.gz", 
+              "@<@if (str_detect('{{version}}', 'hg19')) {str_replace('{{version}}', '_hg19', '');'http://tagc.univ-mrs.fr/remap/download/MACS_lifted_hg19/ReMap2_TF_{{version}}Peaks_hg19.tar.gz'}@<@",
+              "@<@if (str_detect('{{version}}', 'hg19')) {str_replace('{{version}}', '_hg19', '');'http://tagc.univ-mrs.fr/remap/download/MACS_lifted_hg19/ReMap2_{{version}}Peaks_hg19.bed.gz'}@<@", 
+              "@<@if (str_detect('{{version}}', 'hg19')) {str_replace('{{version}}', '_hg19', '');'http://tagc.univ-mrs.fr/remap/download/MACS_lifted_hg19/ReMap2_{{version}}_hg19.bed.gz'}@<@"]
+
+version_available = ["archive_all", "archive_nr", 
+                     "archive_all_hg19", "archive_nr_hg19", 
+                     "public_all", "public_crm", "public_nr", 
+                     "encode_all", "encode_crm", "encode_nr", 
+                     "all", "crm", "nr"]
+
+[db_remap]
+source_url = ["http://tagc.univ-mrs.fr/remap/download/remap1/ReMap2015_TF_{{version}}Peaks.tar.gz",
+              "http://tagc.univ-mrs.fr/remap/download/ReMap1_lifted_hg38/{{version}}.bed.gz",
+              "http://tagc.univ-mrs.fr/remap/download/remap1/All/{{version}}.bed.gz"]
+version_available = ["archive_all", "archive_nr", "filPeaks_public", "filPeaks_all", "nrPeaks_public", "nrPeaks_all", 
+                     "hg38_allPeaks", "hg38_nrPeaks"]
+
+[db_funcoup]
+source_url = "http://funcoup.sbc.su.se/downloads/download.action?type=network&instanceID=7617155&fileName={{version}}.gz"
+version_available = ["FC4.0_A.thaliana_full", "FC4.0_B.subtilis_full", "FC4.0_B.taurus_full", "FC4.0_C.elegans_full", "FC4.0_C.familiaris_full", "FC4.0_C.intestinalis_full", "FC4.0_D.melanogaster_full", "FC4.0_D.rerio_full", "FC4.0_E.coli_full", "FC4.0_G.gallus_full", "FC4.0_H.sapiens_full", "FC4.0_M.musculus_full", "FC4.0_O.sativa_full", "FC4.0_P.falciparum_full", "FC4.0_R.norvegicus_full", "FC4.0_S.cerevisiae_full", "FC4.0_S.pombe_full", "FC4.0_A.thaliana_compact", "FC4.0_B.subtilis_compact", "FC4.0_B.taurus_compact", "FC4.0_C.elegans_compact", "FC4.0_C.familiaris_compact", "FC4.0_C.intestinalis_compact", "FC4.0_D.melanogaster_compact", "FC4.0_D.rerio_compact", "FC4.0_E.coli_compact", "FC4.0_G.gallus_compact", "FC4.0_H.sapiens_compact", "FC4.0_M.musculus_compact", "FC4.0_O.sativa_compact", "FC4.0_P.falciparum_compact", "FC4.0_R.norvegicus_compact", "FC4.0_S.cerevisiae_compact", "FC4.0_S.pombe_compact"]
+
+[db_proteinatlas]
+source_url = ["https://www.proteinatlas.org/download/{{version}}.tsv.zip",
+              "https://www.proteinatlas.org/download/{{version}}.gz",
+              "https://www.proteinatlas.org/images_static/{{version}}"]
+decompress = [true, true, false]
+url_all_download = false
+version_available = ["normal_tissue", "pathology", "subcellular_location", 
+                     "rna_tissue", "transcript_rna_tissue", "transcript_rna_celline", 
+                     "proteinatlas", "proteinatlas.xml", "proteinatlas.trig", "cell.svg"]
+
+[db_dgidb]
+source_url = "http://www.dgidb.org/data/{{version}}"
+version_available = ["interactions.tsv", "genes.tsv", "drugs.tsv", 
+                      "categories.tsv", "data/dGene_04-16-2013_2257.tsv", 
+                      "data.sql"]
+
+[db_drugbank]
+source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/drugbank/{{version}}.xml.zip"
+version_available = "drugbank_all_full_database"
+
+[db_interpro]
+source_url = "ftp://ftp.ebi.ac.uk/pub/databases/interpro/{{version}}"
+version_available = ["entry.list", "interpro.xml.gz", "match_complete.xml.gz", 
+                     "uniparc_match.tar.gz", "protein2ipr.dat.gz", "ParentChildTreeFile.txt", 
+                     "interpro2go", "release_notes.txt"]
+
+[db_inbiomap]
+source_url = "https://www.intomics.com/inbio/map/api/get_data?file=InBio_Map_core_{{version}}.tar.gz"
+version_available = ["2016_09_12", "2016_05_31", "2016_02_05", "2015_11_02"]
+
+[db_omim]
+source_url = [
+             "https://omim.org/static/omim/data/{{version}}.txt",
+             "https://raw.githubusercontent.com/macarthur-lab/omim/master/data/{{version}}.txt"
+             ]
+version_available = ["mim2gene", "full_omim_table", "gene_symbol_thesaurus", "use_omim_table"]
+
+[db_biosystems]
+source_url = ["ftp://ftp.ncbi.nih.gov/pub/biosystems/biosystems.{{version}}/"]
+source_is.dir = true
+version_available = ["20170414", "20170421"]
+
+[db_denovo_db]
+source_url = "http://denovo-db.gs.washington.edu/denovo-db.variants.v.{{version}}.tsv.gz"
+version_available = "1.5"
+
+[db_hpo]
+source_url = "http://compbio.charite.de/jenkins/job/hpo.annotations.monthly/{{version}}/artifact/annotation/*zip*/annotation.zip"
+version_available = "lastStableBuild"
+
+[db_tumorfusions]
+source_url = "http://www.tumorfusions.org/downloads/{{version}}.txt.gz"
+version_available = "pancanfus"
+
+[db_gtex]
+source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/gtex/v7/{{version}}"
+version_available = [
+                     "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_exon_reads.txt.gz", "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_median_tpm.gct.gz", "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_reads.gct.gz", "GTEx_Analysis_2016-01-15_v7_RNASeQCv1.1.8_gene_tpm.gct.gz", "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_expected_count.txt.gz", "GTEx_Analysis_2016-01-15_v7_RSEMv1.2.22_transcript_tpm.txt.gz", "GTEx_Analysis_2016-01-15_v7_STARv2.4.2a_junctions.gct.gz", "GTEx_Analysis_2016-01-15_v7_WholeGenomeSeq_635Ind_PASS_AB02_GQ20_HETX_MISS15_PLINKQC.lookup_table.txt.gz", "GTEx_Analysis_v7_Annotations_SampleAttributesDD.xlsx.gz", "GTEx_Analysis_v7_Annotations_SubjectPhenotypesDD.xlsx.gz", "GTEx_Analysis_v7_eQTL_covariates.tar.gz", "GTEx_Analysis_v7_eQTL_expression_matrices.tar.gz", "GTEx_Analysis_v7_eQTL.tar.gz", "GTEx_Analysis_v7.metasoft.txt.gz", "GTEx_droncseq_hip_pcf.tar.gz", "GTEx_v7_Annotations_SampleAttributesDS.txt", "GTEx_v7_Annotations_SubjectPhenotypesDS.txt", "Homo_sapiens_assembly19.fasta.gz", "biobank_collection_20171126_031201.txt.gz", "gencode.v19.genes.patched_contigs_exons.txt.gz", "gencode.v19.genes.v7.patched_contigs.gtf.gz", "gencode.v19.transcripts.patched_contigs.gtf.gz"
+                     ]
