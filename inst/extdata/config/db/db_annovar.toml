@@ -6,7 +6,15 @@ version_newest = "refgene"
 version_available = ["refgene"]
 buildver_available = ["hg38", "hg19", "hg18"]
 description = "UCSC goldenPath/{{buildver}}/database/refGene.txt.gz"
-after_success = "mv refGene.txt ucsc_{{buildver}}_refGene.txt"
+after_success = "#R#file.rename('refGene.txt', '{{buildver}}_refGene.txt')#R#"
+
+[db_ucsc_cytoband]
+source_url = "http://hgdownload.cse.ucsc.edu/goldenPath/{{buildver}}/database/cytoBand.txt.gz"
+version_newest = "cytoband"
+version_available = ["cytoband"]
+buildver_available = ["hg38", "hg19", "hg18", "mm10", "mm9"]
+description = "UCSC goldenPath/{{buildver}}/database/cytoBand.txt.gz"
+after_success = "#R#file.rename('cytoBand.txt', '{{buildver}}_cytoBand.txt')#R#"
 
 [db_ucsc_knowngene]
 source_url = ["http://hgdownload.cse.ucsc.edu/goldenPath/{{buildver}}/database/knownGene.txt.gz", 
@@ -16,8 +24,8 @@ version_newest = "knowngene"
 version_available = ["knowngene"]
 buildver_available = ["hg38", "hg19", "hg18"]
 description = "UCSC goldenPath/{{buildver}}/database/knownGene.txt.gz and kgXref.txt.gz"
-after_success = ["mv knownGene.txt ucsc_{{buildver}}_knownGene.txt", 
-                 "mv kgXref.txt ucsc_{{buildver}}_kgXref.txt"]
+after_success = ["#R#file.rename('knownGene.txt', '{{buildver}}_knownGene.txt')#R#",
+                 "#R#file.rename('kgXref.txt', '{{buildver}}_kgXref.txt')#R#"]
 
 [db_ucsc_ensgene]
 source_url = "http://hgdownload.cse.ucsc.edu/goldenPath/{{buildver}}/database/ensGene.txt.gz"
@@ -25,7 +33,7 @@ version_newest = "ensgene"
 version_available = ["ensgene"]
 buildver_available = ["hg19", "hg18"]
 description = "UCSC goldenPath/{{buildver}}/database/ensGene.txt.gz"
-after_success = "mv ensGene.txt ucsc_{{buildver}}_ensGene.txt"
+after_success = "#R#file.rename('ensGene.txt', '{{buildver}}_ensGene.txt')#R#"
 
 [db_ucsc_dnase_clustered]
 source_url = "http://hgdownload.cse.ucsc.edu/goldenPath/{{buildver}}/encodeDCC/wgEncodeRegDnaseClustered/wgEncodeRegDnaseClustered{{version}}.bed.gz"
@@ -33,7 +41,7 @@ version_newest = "V3"
 version_available = ["V3"]
 buildver_available = ["hg19"]
 description = "UCSC DNaseI Hypersensitivity Clusters in 125 cell types from ENCODE"
-after_success = "mv wgEncodeRegDnaseClustered{{version}}.bed ucsc_{{buildver}}_wgEncodeRegDnaseClustered{{version}}.bed"
+after_success = "#R#file.rename('wgEncodeRegDnaseClustered{{version}}.bed', '{{buildver}}_wgEncodeRegDnaseClustered{{version}}.bed')#R#"
 
 [db_ucsc_tfbs_clustered]
 source_url = "http://hgdownload.cse.ucsc.edu/goldenPath/{{buildver}}/encodeDCC/wgEncodeRegTfbsClustered/wgEncodeRegTfbsClustered{{version}}.bed.gz"
@@ -41,7 +49,7 @@ version_newest = "V3"
 version_available = ["V3"]
 buildver_available = ["hg19"]
 description = "UCSC Transcription Factor ChIP-seq (161 factors) from ENCODE with Factorbook Motifs"
-after_success = "mv wgEncodeRegTfbsClustered{{version}}.bed ucsc_{{buildver}}_wgEncodeRegTfbsClustered{{version}}.bed"
+after_success = "#R#file.rename('wgEncodeRegTfbsClustered{{version}}.bed', '{{buildver}}_wgEncodeRegTfbsClustered{{version}}.bed')#R#"
 
 [db_annovar_refgene]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_refGene.txt.gz", 
@@ -52,9 +60,6 @@ version_newest = "refgene"
 version_available = ["refgene"]
 buildver_available = ["hg38", "hg19"]
 description = "FASTA sequences for all annotated transcripts in RefSeq Gene"
-after_success = ["mv {{buildver}}_refGene.txt annovar_{{buildver}}_refGene.txt", 
-                 "mv {{buildver}}_refGeneMrna.fa annovar_{{buildver}}_refGeneMrna.fa",
-                 "mv {{buildver}}_refGeneVersion.txt annovar_{{buildver}}_refGeneVersion.txt"]
 
 [db_annovar_knowngene]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_knownGene.txt.gz", 
@@ -65,9 +70,6 @@ version_newest = "knowngene"
 version_available = ["knowngene"]
 buildver_available = ["hg19", "hg18"]
 description = "FASTA sequences for all annotated transcripts in UCSC Known Gene"
-after_success = ["mv {{buildver}}_knownGene.txt annovar_{{buildver}}_knownGene.txt", 
-                 "mv {{buildver}}_knownGeneMrna.fa annovar_{{buildver}}_knownGeneMrna.fa",
-                 "mv {{buildver}}_xgXref.txt annovar_{{buildver}}_xgXref.txt"]
 
 [db_annovar_ensgene]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_ensGene.txt.gz", 
@@ -77,8 +79,6 @@ version_newest = "ensgene"
 version_available = ["ensgene"]
 buildver_available = ["hg19"]
 description = "FASTA sequences for all annotated transcripts in ENSEMBL Gene"
-after_success = ["mv {{buildver}}_ensGene.txt annovar_{{buildver}}_ensGene.txt", 
-                 "mv {{buildver}}_ensGeneMrna.fa annovar_{{buildver}}_ensGeneMrna.fa"]
 
 [db_annovar_avsnp]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_{{version}}.txt.gz", 
@@ -376,7 +376,7 @@ description = "alternative allele frequency data in 1000 Genomes Project"
 1000g = "hg18"
 other = "hg19"
 
-[db_annovar_dbscsnv11]
+[db_annovar_dbscsnv]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_{{version}}.txt.gz",
               "http://www.openbioinformatics.org/annovar/download/{{buildver}}_{{version}}.txt.idx.gz"]
 decompress = [true, true]
@@ -384,6 +384,15 @@ version_newest = "dbscsnv11"
 version_available = ["dbscsnv11"]
 buildver_available = ["hg38", "hg19"]
 description = "dbscSNV version 1.1 for splice site prediction by AdaBoost and Random Forest"
+
+[db_annovar_dbscsnv_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+decompress = [true, true]
+version_newest = "dbscsnv11"
+version_available = ["dbscsnv11"]
+description = "dbscSNV version 1.1 for splice site prediction by AdaBoost and Random Forest"
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
 
 [db_annovar_regsnpintron]
 source_url = ["http://www.openbioinformatics.org/annovar/download/{{buildver}}_{{version}}.txt.gz",
@@ -487,7 +496,7 @@ buildver_available = "hg19"
 [db_annovar_epi_genes]
 source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_epi_genes_{{version}}.txt"
 decompress = false
-version_available = "v1"
+version_available = ["v1", "v1.1"]
 buildver_available = "hg19"
 
 [db_annovar_cscd]
@@ -499,3 +508,163 @@ buildver_available = ["hg19", "hg38"]
 source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.txt.gz"
 version_available = "varcards"
 buildver_available = "hg19"
+
+[db_annovar_varcards_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sql.gz"
+version_available = "varcards"
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_hgnc]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.txt.gz"
+version_available = "hgnc_coding"
+buildver_available = "hg19"
+
+[db_annovar_brvar]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{license}}/{{buildver}}_{{version}}.txt.gz"
+version_available = ["brvar_v1_core", "brvar_v1_extra"]
+buildver_available = "hg19"
+note = "not available now"
+[db_annovar_brvar.description]
+brvar_v1_core = "Integrated 1285 cases B-cell acute lymphoblastic leukemia (B-ALL) from public data portal. Variant calling result, using GATK (Haplotypecaller, UnifiedGenotyper), Lofreq and Varscan2, be merged (bases with baseQ/BAQ >13;minimum coverge>=10; maximum alt allele frequency >= 0.04; alt allel read number >= 3; only the varinats that mutation type is missense, nonsense, frameshift del, frameshift del, nonframeshift del, nonframeshift del, stoploss, nonsense and unknown be included)"
+brvar_v1_extra = "Complementary set of core, such as Synonymous mutation, intron, intergenic, UTR3 and UTR5, .etc"
+
+[db_annovar_loftool_scores]
+source_url = "http://www.openbioinformatics.org/annovar/download/{{version}}.txt.gz"
+version_available = "LoFtool_scores"
+buildver_available = "hg19"
+[db_annovar_loftool_scores.description]
+LoFtool_scores="LoFtool score: gene loss-of-function score percentiles. The smaller the percentile, the most intolerant is the gene to functional variation. The file can be downloaded [here](http://clark.compbio.iupui.edu/regsnp_intron_web/). Manuscript in preparation (please contact Dr. Joao Fadista - joao.fadista@med.lu.se). The authors would like to thank the Exome Aggregation Consortium and the groups that provided exome variant data for comparison. A full list of contributing groups can be found at http://exac.broadinstitute.org/about."
+
+[db_annovar_rvis_esv_score]
+source_url = "http://www.openbioinformatics.org/annovar/download/{{version}}.txt.gz"
+version_available = "RVIS_ExAC_4KW"
+buildver_available = "hg19"
+[db_annovar_rvis_esv_score.description]
+RVIS_ExAC_4KW = "RVIS-ESV score: RVIS score measures genetic intolerance of genes to functional mutations, as described in [Petrovski et al.](http://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1003709) Original RVIS was constructed based on patterns of standing variation in 6503 samples. The authors have recently constructed scores based on the ~61,000 samples from ExAC. There is high correlation, but more resolution for many genes. The ExAC cohort implementation is what we consider RVIS (v2). It can be downloaded here."
+
+[db_annovar_gdi_score]
+source_url = "http://www.openbioinformatics.org/annovar/download/{{version}}.txt.gz"
+version_available = "GDI_full_10282015"
+buildver_available = "hg19"
+[db_annovar_gdi_score.description]
+GDI_full_10282015 = "GDI score: the gene damage index (GDI) is describing the accumulated mutational damage for each human gene in the general population, and shows that highly mutated/damaged genes are unlikely to be disease-causing and yet they generate a big proportion of false positive variants harbored in such genes. Therefore removing high GDI genes is a very effective way to remove confidently false positives from WES/WGS data. More details were given in [this paper](http://www.pnas.org/content/early/2015/10/14/1518646112.abstract). The data set includes general damage prediction (low/medium/high) for different disease type (all, Mendelian, cancer, and PID) and can be downloaded from here."
+
+[db_annovar_tmcsnpdb]
+source_url = "http://www.openbioinformatics.org/annovar/download/{{buildver}}_{{version}}.txt.gz"
+version_available = "tmcsnpdb"
+buildver_available = "hg38"
+[db_annovar_tmcsnpdb.description]
+tmcsnpdb="TMC-SNPDB: SNP database from whole exome data of 62 normal samples derived from cancer patients of Indian origin, representing 114, 309 unique germline variants. Read the manuscript [here](http://database.oxfordjournals.org/content/2016/baw104.full). It is useful for exome sequencing studies on Indian populations and can be downloaded from here."
+
+[db_annovar_rediportal_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["REDIportal"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_gme_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["gme"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_hrcr1_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["hrcr1"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_revel_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["revel"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_mcap_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["mcap"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_exac03_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["exac03", "exac03nonpsych", "exac03nontcga"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_gnomad_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["gnomad_exome", "gnomad_genome"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_popfreq_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["popfreq_all_20150413", "popfreq_max_20150413"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_gwava_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["gwava"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_eigen_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = ["eigen"]
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_dhs_gene_connectivity]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.txt.gz"
+version_available = "dhs_gene_connectivity_2012"
+buildver_available = "hg19"
+description = "Genomic coordinates of all promoter DHSs and distal, non-promoter DHSs within +-500 kb correlated with them at threshold 0.7."
+
+[db_annovar_seeqtl]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.txt.gz"
+version_available = ["seeqtl_qvalue_hapmap3_cis", "seeqtl_qvalue_hapmap3_trans", "seeqtl_qvalue_myers_cis", "seeqtl_qvalue_myers_trans"]
+buildver_available = "hg19"
+description = "eQTLs of meta-analysis (consensus eQTLs) from HapMap human lymphoblastoid cell lines; eQTLs of human brain from Myers et al, see http://www.bios.unc.edu/research/genomic_software/seeQTL/data_source"
+
+[db_annovar_gtex_eqtl_egenes]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_gtex_{{version}}.v7.egenes.txt.gz"
+version_available = ["adipose_subcutaneous", "adipose_visceral_omentum", "adrenal_gland", "artery_aorta", "artery_coronary", "artery_tibial", "brain_amygdala", "brain_anterior_cingulate_cortex_ba24", "brain_caudate_basal_ganglia", "brain_cerebellar_hemisphere", "brain_cerebellum", "brain_cortex", "brain_frontal_cortex_ba9", "brain_hippocampus", "brain_hypothalamus", "brain_nucleus_accumbens_basal_ganglia", "brain_putamen_basal_ganglia", "brain_spinal_cord_cervical_c_1", "brain_substantia_nigra", "breast_mammary_tissue", "cells_ebv_transformed_lymphocytes", "cells_transformed_fibroblasts", "colon_sigmoid", "colon_transverse", "esophagus_gastroesophageal_junction", "esophagus_mucosa", "esophagus_muscularis", "heart_atrial_appendage", "heart_left_ventricle", "liver", "lung", "minor_salivary_gland", "muscle_skeletal", "nerve_tibial", "ovary", "pancreas", "pituitary", "prostate", "skin_not_sun_exposed_suprapubic", "skin_sun_exposed_lower_leg", "small_intestine_terminal_ileum", "spleen", "stomach", "testis", "thyroid", "uterus", "vagina", "whole_blood"]
+buildver_available = "hg19"
+description = "eQTLs of GTEx."
+
+[db_annovar_gtex_eqtl_pairs]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_gtex_{{version}}.v7.signif_variant_gene_pairs.txt.gz"
+version_available = ["adipose_subcutaneous", "adipose_visceral_omentum", "adrenal_gland", "artery_aorta", "artery_coronary", "artery_tibial", "brain_amygdala", "brain_anterior_cingulate_cortex_ba24", "brain_caudate_basal_ganglia", "brain_cerebellar_hemisphere", "brain_cerebellum", "brain_cortex", "brain_frontal_cortex_ba9", "brain_hippocampus", "brain_hypothalamus", "brain_nucleus_accumbens_basal_ganglia", "brain_putamen_basal_ganglia", "brain_spinal_cord_cervical_c_1", "brain_substantia_nigra", "breast_mammary_tissue", "cells_ebv_transformed_lymphocytes", "cells_transformed_fibroblasts", "colon_sigmoid", "colon_transverse", "esophagus_gastroesophageal_junction", "esophagus_mucosa", "esophagus_muscularis", "heart_atrial_appendage", "heart_left_ventricle", "liver", "lung", "minor_salivary_gland", "muscle_skeletal", "nerve_tibial", "ovary", "pancreas", "pituitary", "prostate", "skin_not_sun_exposed_suprapubic", "skin_sun_exposed_lower_leg", "small_intestine_terminal_ileum", "spleen", "stomach", "testis", "thyroid", "uterus", "vagina", "whole_blood"]
+buildver_available = "hg19"
+description = "eQTLs of GTEx significant variant gene paris."
+
+[db_annovar_rddpred_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = "rddpred_mes"
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_lncediting_sqlite]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{buildver}}_{{version}}.sqlite.sql.gz"
+version_available = "lncediting"
+buildver_available = "hg19"
+install = "#R#sql2sqlite('{{buildver}}_{{version}}.sqlite.sql', sqlite.path = '{{buildver}}_{{version}}.sqlite')#R#"
+
+[db_annovar_civic_gene_summaries]
+source_url = "https://civic.genome.wustl.edu/downloads/{{version}}/{{version}}-GeneSummaries.tsv"
+version_available = "nightly"
+buildver_available = ["hg19", "hg38"]
+install = "#R#file.rename('{{version}}-GeneSummaries.tsv', '{{version}}_civic_gene_summaries.txt')#R#"
+
+[db_annovar_omim_genemap2]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/{{version}}.txt.gz"
+version_available = ["omim_genemap2"]
+buildver_available = "hg19"
+
+[db_annovar_tall_somatic_genes]
+source_url = "http://bioinfo.rjh.com.cn/download/annovarR/humandb/tall_somatic_genes_{{version}}.txt"
+version_available = "20171206"
+buildver_available = ["hg19", "hg38"]

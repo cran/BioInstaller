@@ -4,12 +4,12 @@ avaliable_cfg = ["db_annovar.toml", "db_blast.toml", "db_main.toml"]
 prefix_url = "https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/"
 cfg_dir = "@>@system.file('extdata', 'config/db', package = 'BioInstaller')@<@"
 
-[db.item.db_blast]
+[db.item.blast]
 title = "Basic Local Alignment Search Tool Databases"
 description = "All of blast required databases"
 url = "ftp://ftp.ncbi.nih.gov/blast/db/"
 
-[db.item.db_cscd]
+[db.item.cscd]
 url = "http://gb.whu.edu.cn/CSCD/"
 description = "Circular RNA (circRNA) is a large group of RNA family extensively existed in cells and tissues. High-throughput sequencing provides a way to view circRNAs across different samples, especially in various diseases. However, there is still no comprehensive database for exploring the cancer-specific circRNAs. Researchers at Wuhan University collected 228 total RNA or polyA(-) RNA-seq samples from both cancer and normal cell lines, and identified 272 152 cancer-specific circRNAs. A total of 950 962 circRNAs were identified in normal samples only, and 170 909 circRNAs were identified in both tumor and normal samples, which could be further used as non-tumor background. The researchers constructed a cancer-specific circRNA database. To understand the functional effects of circRNAs, they predicted the microRNA response element sites and RNA binding protein sites for each circRNA. They further predicted potential open reading frames to highlight translatable circRNAs. To understand the association between the linear splicing and the back-splicing, the researchers also predicted the splicing events in linear transcripts of each circRNA. As the first comprehensive cancer-specific circRNA database, they believe CSCD could significantly contribute to the research for the function and regulation of cancer-associated circRNAs."
 publication = "XiaS , Feng J, Chen K, Ma Y, Gong J, Cai FF, Jin Y, Gao Y, Xia L, Chang H, Wei L, Han L, He C. (2017) CSCD: a database for cancer-specific circular RNAs. Nucleic Acids Research"
@@ -172,3 +172,129 @@ publication = [
                "Consortium G. Human genomics. The Genotype-Tissue Expression (GTEx) pilot analysis: multitissue gene regulation in humans[J]. Science, 2015, 348(6235):648-60.", 
                "Consortium G, Battle A, Brown C D, et al. Genetic effects on gene expression across human tissues[J]. Nature, 2017, 550(7675):204."
                ]
+
+[db.item.hgnc]
+url = "https://www.genenames.org/"
+description = "HGNC is responsible for approving unique symbols and names for human loci, including protein coding genes, ncRNA genes and pseudogenes, to allow unambiguous scientific communication. genenames.org is a curated online repository of HGNC-approved gene nomenclature, gene families and associated resources including links to genomic, proteomic and phenotypic information."
+publication = [
+               "Gray KA, Yates B, Seal RL, Wright MW, Bruford EA. genenames.org: the HGNC resources in 2015. Nucleic Acids Res. 2015 Jan;43(Database issue):D1079-85. doi: 10.1093/nar/gku1071. PMID:25361968",
+               "HGNC Database, HUGO Gene Nomenclature Committee (HGNC), EMBL Outstation - Hinxton, European Bioinformatics Institute, Wellcome Trust Genome Campus, Hinxton, Cambridgeshire, CB10 1SD, UK www.genenames.org."
+               ]
+
+[db.item.atcircdb]
+url = "http://genome.sdau.edu.cn/circRNA/index.php"
+description = """Circular RNA not only functions as a potential competitive target for miRNA, but also regulates transcription and interacts with RNA-binding proteins. Because of the structural stability of the circular form, these molecules are promising candidates for intervening in a number of biological pathways, and may be a high value tool for pharmaceutical research in human and photosynthesis in plant.
+Based on our previous research, we systematically investigated 622 RNA-Seq samples from 87 indepedent studies hosted at NCBI SRA, and extracted all related circular RNAs. To improve the prediction accuracy, we not only applied a straightforward metric to screen and rank the circular RNA, but also incorporated exon boundaries as well as circular RNA candidates from previous studies into this resource to provide robust evidence for experimental biologists. In regards of the interaction between miRNA and circular RNAs, we utilized psRNAtarget and TAPIR to evaluate the statistical significance. Together, this database will host all predicted and validated Arabidopsis circular RNAs, and provide valuable and comprehensive information for studying this newly emerging non-coding RNA."""
+publication = [
+               "Ye J, Wang L, Li S, Zhang Q, Zhang Q, Tang W, Wang K, Song K, Sablok G, Sun X*, Zhao H*; AtCircDB: a tissue-specific database for Arabidopsis circular RNAs. Brief Bioinform 2017 bbx089. doi: 10.1093/bib/bbx089.",
+               "Sun X, Wang L, Ding J, Wang Y, Wang J, Zhang X, Che Y, Liu Z, Zhang X, Ye J, Wang J, Sablok G, Deng Z, Zhao H. Integrative analysis of Arabidopsis thaliana transcriptomics reveals intuitive splicing mechanism for circular RNA. FEBS Lett. 2016. 590(20):3510-3516. "]
+
+[db.item.circnet]
+url = "http://circnet.mbc.nctu.edu.tw/"
+description = "Circular RNAs (circRNAs) represent a new type of regulatory noncoding RNA that only recently has been identified and cataloged. Emerging evidence indicates that circRNAs exert a new layer of post-transcriptional regulation of gene expression. In this study, we utilized transcriptome sequencing datasets to systematically identify the expression of circRNAs (including known and newly identified ones by our pipeline) in 464 RNA-seq samples, and then constructed the CircNet database (http://circnet.mbc.nctu.edu.tw/) that provides the following resources: (i) novel circRNAs, (ii) integrated miRNA-target networks, (iii) expression profiles of circRNA isoforms, (iv) genomic annotations of circRNA isoforms (e.g., 282,948 exon positions), and (v) sequences of circRNA isoforms. The CircNet database is to our knowledge the first public database that provides tissue-specific circRNA expression profiles and circRNA-miRNA-gene regulatory networks. It not only extends the most up to date catalog of circRNAs but also provides a thorough expression analysis of both previously reported and novel circRNAs. Furthermore, it generates an integrated regulatory network that illustrates the regulation between circRNAs, miRNAs and genes."
+publication = "Liu Y C, Li J R, Sun C H, et al. CircNet: a database of circular RNAs derived from transcriptome sequencing data[J]. Nucleic acids research, 2016, 44(D1): D209-D215."
+
+[db.item.circbase]
+url = "http://circrna.org/"
+description = "Recently, several laboratories have reported thousands of circular RNAs (circRNAs) in animals. Numerous circRNAs are highly stable and have specific spatiotemporal expression patterns. Even though a function for circRNAs is unknown, these features make circRNAs an interesting class of RNAs as possible biomarkers and for further research. We developed a database and website, “circBase,” where merged and unified data sets of circRNAs and the evidence supporting their expression can be accessed, downloaded, and browsed within the genomic context. circBase also provides scripts to identify known and novel circRNAs in sequencing data. The database is freely accessible through the web server at http://www.circbase.org/."
+publication = "Glažar P, Papavasileiou P, Rajewsky N. circBase: a database for circular RNAs[J]. Rna, 2014, 20(11): 1666-1670."
+
+[db.item.circrnadb]
+url = "http://202.195.183.4:8000/circrnadb/circRNADb.php"
+description = "circRNADb (version1.0.0), circular RNA (or circRNA) Database, is a comprehensive database for human circular RNAs with protein-coding annotations. It is freely available for non-commercial use. The latest version of this circRNA database contains 32,914 exonic circRNAs with 16,328 protein-coding annotations, of which 46 circRNAs from 37 genes were found to have their corresponding proteins expressed according mass spectrometry. circRNADb can be a valuable resource for large-scale studies of circRNA in humans."
+publication = "Chen X, Han P, Zhou T, et al. circRNADb: a comprehensive database for human circular RNAs with protein-coding annotations[J]. Scientific reports, 2016, 6."
+
+[db.item.exorbase]
+url = "http://www.exorbase.org/exoRBase/toIndex"
+description = """exoRBase is a repository of circular RNA (circRNA), long non-coding RNA (lncRNA) and messenger RNA (mRNA) derived from RNA-seq data analyses of human blood exosomes. Experimental validations from published literature are also included.
+exoRBase features the integration and visualization of RNA expression profiles based on normalized RNA-seq data spanning both normal individuals and patients with different diseases.
+exoRBase aims to collect and characterize all long RNA species in human blood exosomes. The annotation, expression level and possible original tissues are provided. exoRBase will aid researchers in identifying molecular signatures in blood exosomes and will trigger new circulating biomarker discovery and functional implication for human diseases."""
+publication = "Li S, Li Y, Chen B, et al. exoRBase: a database of circRNA, lncRNA and mRNA in human blood exosomes[J]. Nucleic Acids Research, 2017."
+
+[db.item.exsnp]
+url = "http://www.exsnp.org"
+description = "Genome-wide association studies (GWAS) of human complex disease have identified a large number of disease associated genetic loci, distinguished by an altered frequency of specific single nucleotide polymorphisms (SNPs) among individuals with a particular disease, compared to controls. However, most of these risk loci do not provide direct information on the biological basis of a disease or on the underlying mechanisms. Recent genome-wide expression quantitative trait loci (eQTLs) association studies have provided information on genetic factors, especially SNPs, associated with gene expression variation. These eQTLs likely contribute to phenotype diversity and disease susceptibility, but interpretation is handicapped by low reproducibility of the expression results. Our primary goal is to establish a gold-standard list of consensus eQTLs by integrating publicly available data for specific human populations and cell types, so as to efficiently prioritize functional SNPs. We used linkage disequilibrium data from Hapmap and the 1000 Genome Project to integrate the results of eQTL studies. Separate gold-standard sets for various populations allowed us to investigate eQTLs which contribute to population-specific expression variation. Additionally, tissue-specific eQTL associations were identified by comparing eQTL data from six cell types: LCLs, B cells, Monocytes, Brain, Liver, and Skin. Moreover, to discover the role of these eQTLs play in human common diseases, we have integrated the current gold standard data with SNPs in disease risk loci from GWA studies of seven common human diseases."
+publication = ["Yu CH, Pal LR, & Moult J. (2016). Consensus Genome-Wide Expression Quantitative Trait Loci and Their Relationship with Human Complex Trait Disease. OMICS, 20(7):400-14. PMID: 27428252", 
+               "Pal LR, Yu CH, Mount SM, & Moult J. (2015). Insights from GWAS: emerging landscape of mechanisms underlying complex trait disease. BMC Genomics, 16 Suppl 8:S4 PMID: 26110739"]
+
+[db.item.rvarbase]
+url = "http://rv.psych.ac.cn"
+description = "rVarBase annotates variant's regulatory feature in three fields: chromatin state of the region surrounding variant, regulatory elements overlapped with variant, and variant's potential target genes. It also provides optioned extended annotation for variants, including: LD-proxies of known SNP, SNP/CNV that is overlapped with or located in queried variant, traits (disease and expression quantitative trait) associated with variant. rVarBase is an updated version of the database rSNPBase, it is consistent with the old version in utilizing experimentally supported regulatory elements from ENCODE and other data resources to make relevant annotation (such as involved regulatory manner and potential target gene)."
+publication = "Guo, L., Du, Y., Qu, S., & Wang, J. (2015). rVarBase: an updated database for regulatory features of human variants. Nucleic acids research, gkv1107 PMID:26503253"
+
+[db.item.seeqtl]
+url = "http://www.bios.unc.edu/research/genomic_software/seeQTL/"
+description = "seeQTL is a comprehensive and versatile eQTL database, including various eQTL studies and a meta-analysis of HapMap eQTL information. The database presents eQTL association results in a convenient browser, using both segmented local-association plots and genome-wide Manhattan plots."
+publication = "Xia K, Shabalin A A, Huang S, et al. seeQTL: a searchable database for human eQTLs[J]. Bioinformatics, 2011, 28(3): 451-452. PMID:22171328"
+
+[db.item.fantom]
+url = "http://fantom.gsc.riken.jp"
+description = "FANTOM is an international research consortium established by Dr. Hayashizaki and his colleagues in 2000 to assign functional annotations to the full-length cDNAs that were collected during the Mouse Encyclopedia Project at RIKEN. FANTOM has since developed and expanded over time to encompass the fields of transcriptome analysis. The object of the project is moving steadily up the layers in the system of life, progressing thus from an understanding of the ‘elements’ - the transcripts - to an understanding of the ‘system’ - the transcriptional regulatory network, in other words the ‘system’ of an individual life form."
+publication = ["Andersson R, Gebhard C, Miguel-Escalada I, et al. An atlas of active enhancers across human cell types and tissues[J]. Nature, 2014, 507(7493): 455-461. MLA", "Fantom Consortium. A promoter-level mammalian expression atlas[J]. Nature, 2014, 507(7493): 462-470."]
+
+[db.item.snipa3]
+url = "http://snipa.helmholtz-muenchen.de/snipa3"
+description = "SNiPA offers both functional annotations and linkage disequilibrium information for bi-allelic genomic variants (SNPs and SNVs). SNiPA combines LD data based on the 1000 Genomes Project with various annotation layers, such as gene annotations, phenotypic trait associations, and expression-/metabolic quantitative trait loci. See the documentation for all data sources integrated into SNiPA. For information on updates and new releases, see the Release Notes."
+publication = "Arnold, M., Raffler, J., Pfeufer, A., Suhre, K., & Kastenmüller, G. (2014). SNiPA: an interactive, genetic variant-centered annotation browser. Bioinformatics, 31(8), 1334-1336."
+
+[db.item.rddpred]
+url = "http://epigenomics.snu.ac.kr/RDDpred/prior_data"
+description = """RDDpred: A condition-specific RNA-editing prediction model from RNA-seq data 
+1) RDDpred deduces condition-specific training examples without any experimental validations to construct a predictor. 
+2) As far as we know, RDDpred is the very first machine-learning based automated pipeline for RNA-editing prediction. 
+3) RDDpred successfully reproduced the results of two previous studies (95%, 90%), 
+with showing significant NPV (84%, 75%) and the prediction procedures are finished in reasonable time (18 hrs). 
+"""
+publication = "Kim M, Hur B, Kim S. RDDpred: a condition-specific RNA-editing prediction model from RNA-seq data[J]. BMC genomics, 2016, 17(Suppl 1)."
+
+[db.item.lncediting]
+url = "http://bioinfo.life.hust.edu.cn/LNCediting"
+description = "RNA editing is a widespread post-transcriptional mechanism that can make discrete changes to specific nucleotide sequences within a RNA transcripts. RNA editing events can result in missense codon changes in mRNA, modulation of alternative splicing in mRNA, or modification of regulatory RNAs and their binding sites in small noncoding RNA, such as miRNA. Recent studies have developed computational methods to accurately detect more than 2 million A-to-I RNA editing from next-generation sequencing data in different species. However, the vast majority of these RNA sites are in noncoding regions of the genome and have unknown functional relevance. LNCediting provides a comprehensive resource for the functional prediction of RNA editing in long noncoding RNAs (lncRNAs)."
+publication = "Jing Gong†, Chunjie Liu†, Wei Liu, Yu Xiang, Lixia Diao, An-Yuan Guo∗ and Leng Han∗. Nucl. Acids Res. (2016). doi: 10.1093/nar/gkw835."
+
+[db.item.eggnog]
+url = "http://eggnogdb.embl.de/#/app/home"
+description = "eggNOG is a public resource that provides Orthologous Groups (OGs) of proteins at different taxonomic levels, each with integrated and summarized functional annotations. Developments since the latest public release include changes to the algorithm for creating OGs across taxonomic levels, making nested groups hierarchically consistent. This allows for a better propagation of functional terms across nested OGs and led to the novel annotation of 95 890 previously uncharacterized OGs, increasing overall annotation coverage from 67% to 72%. The functional annotations of OGs have been expanded to also provide Gene Ontology terms, KEGG pathways and SMART/Pfam domains for each group. Moreover, eggNOG now provides pairwise orthology relationships within OGs based on analysis of phylogenetic trees. We have also incorporated a framework for quickly mapping novel sequences to OGs based on precomputed HMM profiles. Finally, eggNOG version 4.5 incorporates a novel data set spanning 2605 viral OGs, covering 5228 proteins from 352 viral proteomes. All data are accessible for bulk downloading, as a web-service, and through a completely redesigned web interface. The new access points provide faster searches and a number of new browsing and visualization capabilities, facilitating the needs of both experts and less experienced users. eggNOG v4.5 is available at http://eggnog.embl.de."
+publication = """eggNOG 4.5: a hierarchical orthology framework with improved functional annotations for eukaryotic, prokaryotic and viral sequences. Jaime Huerta-Cepas, Damian Szklarczyk, Kristoffer Forslund, Helen Cook, Davide Heller, Mathias C. Walter, Thomas Rattei, Daniel R. Mende, Shinichi Sunagawa, Michael Kuhn, Lars Juhl Jensen, Christian von Mering, and Peer Bork. Nucl. Acids Res. (04 January 2016) 44 (D1): D286-D293. doi: 10.1093/nar/gkv1248"""
+
+[db.item.rbp_var]
+title = "RBP-Var2: A platform for exploring functional variants involved in post-transcriptional regulation mediated by RNA-binding proteins"
+description = "RBP-Var is a database for annotation of functional variants which potentially influence RNA-protein interactions by changing RNA structure in the H. sapiens genome. It contains dbSNPs and RNA editing events in RBP bindig sites (rbSNVs), the change of RNA secondary structure induced by rbSNV, the rbSNV-induced gain/loss of binding sites of miRNA and potential functional rbSNVs which could impact RBP binding. In addition, RBP-Var also integrates GWAS data, eQTL data, ClinVar data, RNA expression and COSMIC data into selection of functional SNVs for genetic association studies."
+publication = "Mao F, Xiao L, Li X, et al. RBP-Var: a database of functional variants involved in regulation mediated by RNA-binding proteins[J]. Nucleic Acids Research, 2016, 44(Database issue):D154-D163."
+tag = ["NGS", "database"]
+
+[db.item.docm]
+title = "the Database of Curated Mutations"
+description = "DoCM, the Database of Curated Mutations, is a highly curated database of known, disease-causing mutations that provides easily explorable variant lists with direct links to source citations for easy verification."
+publication = "A correspondence describing DoCM has been published in Nature Methods: DoCM: a database of curated mutations in cancer. Nature Methods (2016) doi:10.1038/nmeth.4000."
+tag = ["NGS", "database"]
+
+[db.item.cancer_hotspot]
+title = "A RESOURCE FOR STATISTICALLY SIGNIFICANT MUTATIONS IN CANCER"
+description = "This resource is maintained by the Kravis Center for Molecular Oncology at Memorial Sloan Kettering Cancer Center. It provides information about statistically significantly recurrent mutations identified in large scale cancer genomics data."
+publication = ["Chang et al., Accelerating discovery of functional mutant alleles in cancer. Cancer Discovery, 10.1158/2159-8290.CD-17-0321 (2017)", 
+               "Chang et al., Identifying recurrent mutations in cancer reveals widespread lineage diversity and mutational specificity. Nature Biotechnology 34, 155–163 (2016)"]
+tag = ["NGS", "database"]
+
+[db.item.intogen]
+title = "Integrative Onco Genomics"
+description = "IntOGen-mutations platform (http://www.intogen.org/mutations/) summarizes somatic mutations, genes and pathways involved in tumorigenesis. It identifies and visualizes cancer drivers, analyzing 4,623 exomes from 13 cancer sites. It provides support to cancer researchers, aids the identification of drivers across tumor cohorts and helps rank mutations for better clinical decision-making."
+publication = ["Rubio-Perez, C., Tamborero, D., Schroeder, MP., Antolín, AA., Deu-Pons,J., Perez-Llamas, C., Mestres, J., Gonzalez-Perez, A., Lopez-Bigas, N. In silico prescription of anticancer drugs to cohorts of 28 tumor types reveals novel targeting opportunities. Cancer Cell 27 (2015), pp. 382-396", 
+               "Gonzalez-Perez A, Perez-Llamas C, Deu-Pons J, Tamborero D, Schroeder MP, Jene-Sanz A, Santos A & Lopez-Bigas N IntOGen-mutations identifies cancer Nature Methods 2013; doi:10.1038/nmeth.2642"]
+tag = ["NGS", "database"]
+
+[db.item.disgenet]
+title = "a database of gene-disease associations"
+description = """DisGeNET is a discovery platform containing one of the largest publicly available collections of genes and variants associated to human diseases. DisGeNET integrates data from expert curated repositories, GWAS catalogues, animal models and the scientific literature. DisGeNET data are homogeneously annotated with controlled vocabularies and community-driven ontologies. Additionally, several original metrics are provided to assist the prioritization of genotype–phenotype relationships.
+
+The current version of DisGeNET (v5.0) contains 561,119 gene-disease associations (GDAs), between 17,074 genes and 20,370 diseases, disorders, traits, and clinical or abnormal human phenotypes, and 135,588 variant-disease associations (VDAs), between 83,002 SNPs and 9,169 diseases and phenotypes."""
+publication = ["DisGeNET: a comprehensive platform integrating information on human disease-associated genes and variants, Nucleic Acids Research, Volume 45, Issue D1, 4 January 2017, Pages D833–D839, https://doi.org/10.1093/nar/gkw943"]
+tag = ["NGS", "database"]
+
+[db.item.cgi]
+title = "Cancer Genome Interpreter"
+description = """Cancer Genome Interpreter is designed to support the identification of tumor alterations that drive the disease and detect those that may be therapeutically actionable. CGI relies on existing knowledge collected from several resources and on computational methods that annotate the alterations in a tumor according to distinct levels of evidence.
+
+With a list of genomic alterations and the cancer type as input, the CGI identifies validated driver alterations and annotates and classifies the remaining variants of unknown significance. Then, alterations that are biomarkers of drug response or interact with existing chemical compounds are identified according to current knowledge."""
+publication = "Cancer Genome Interpreter Annotates The Biological And Clinical Relevance Of Tumor Alterations. bioRxiv 140475; doi: https://doi.org/10.1101/140475"
+tag = ["NGS", "database"]

@@ -31,6 +31,7 @@
 #' ['nochange', '!!glue(1:5)', 'nochange'] => ['nochange', '1', '2', '3', '4', '5', 'nochange']
 #' @param glue.flag A character flage indicating wheater run glue() function to parse (Default is !!glue) 
 #' @param save.to.db Ligical indicating wheather save the install infomation in db
+#' @param license The BioInstaller download license code. 
 #' @param verbose Ligical indicating wheather show the log message
 #' @param ... Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}
 #' @export
@@ -50,7 +51,8 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
   db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", "demo/softwares_db_demo.yaml", 
     package = "BioInstaller")), download.only = FALSE, decompress = TRUE, dependence.need = TRUE, 
   showWarnings = FALSE, extra.list = list(), rcmd.parse = TRUE, bash.parse = TRUE, 
-  glue.parse = TRUE, glue.flag = "!!glue", save.to.db = TRUE, verbose = TRUE, ...) {
+  glue.parse = TRUE, glue.flag = "!!glue", save.to.db = TRUE, license = "", verbose = TRUE, 
+  ...) {
   github.cfg.env <- paste0(github.cfg, collapse = ",")
   nongithub.cfg.env <- paste0(nongithub.cfg, collapse = ",")
   Sys.setenv(github.cfg = github.cfg.env, nongithub.cfg = nongithub.cfg.env)
@@ -59,6 +61,7 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
   nongithub.names <- names(fetch.config(nongithub.cfg))
   all.names <- c(github.names, nongithub.names)
   all.names <- all.names[!(all.names %in% c("title", "debug", "demo"))]
+  extra.list <- config.list.merge(extra.list, list(license = license))
   if (show.all.names) {
     return(all.names)
   }
@@ -140,7 +143,7 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
       info.msg(sprintf("%s downloaded fail!", name), verbose = verbose)
       return(FALSE)
     }
-    if (status == TRUE && (name.saved[count] %in% show.installed(db))) {
+    if (status == TRUE && (name.saved[count] %in% show.installed(db)) || (status == TRUE && !save.to.db)) {
       install.success <- c(install.success, name.saved[count])
     } else {
       install.fail <- c(install.fail, name.saved[count])
@@ -222,12 +225,14 @@ install.github <- function(name = "", download.dir = NULL, destdir = NULL, versi
     return(FALSE)
   }
   config <- fetch.config(config.cfg)[[name]]
+  config.parsed <- parse.extra(config, rcmd.parse = rcmd.parse, bash.parse = bash.parse, 
+    glue.parse = glue.parse, glue.flag = glue.flag)
   info.msg(sprintf("Fetching %s versions....", name), verbose = verbose)
-  all.versions <- show.avaliable.versions(config, name)
+  all.versions <- show.avaliable.versions(config.parsed, name)
   if (show.all.versions) {
     return(all.versions)
   }
-  version <- version.initial(name, version, all.versions, config)
+  version <- version.initial(name, version, all.versions, config.parsed)
   info.msg(sprintf("Install versions:%s", paste0(version, collapse = ", ")), verbose = verbose)
   processed.dir.list <- pre.process.dir(name, destdir, download.dir, 1, local.source = local.source, 
     is.nongithub = FALSE)
@@ -395,12 +400,14 @@ install.nongithub <- function(name = "", download.dir = NULL, destdir = NULL, ve
     return(FALSE)
   }
   config <- fetch.config(config.cfg)[[name]]
+  config.parsed <- parse.extra(config, rcmd.parse = rcmd.parse, bash.parse = bash.parse, 
+    glue.parse = glue.parse, glue.flag = glue.flag)
   info.msg(sprintf("Fetching %s versions....", name), verbose = verbose)
-  all.versions <- show.avaliable.versions(config, name)
+  all.versions <- show.avaliable.versions(config.parsed, name)
   if (show.all.versions) {
     return(all.versions)
   }
-  version <- version.initial(name, version, all.versions, config)
+  version <- version.initial(name, version, all.versions, config.parsed)
   info.msg(sprintf("Install versions:%s", paste0(version, collapse = ", ")), verbose = verbose)
   processed.dir.list <- pre.process.dir(name, destdir, download.dir, 1, local.source = local.source, 
     is.nongithub = TRUE)
@@ -461,6 +468,7 @@ install.nongithub <- function(name = "", download.dir = NULL, destdir = NULL, ve
       url.all.download)
     status[is.null(status)] <- FALSE
     if (all(!status)) {
+      unlink(tmp.dir, recursive = TRUE, force = TRUE)
       return(FALSE)
     }
     destfile <- attributes(status)$success
