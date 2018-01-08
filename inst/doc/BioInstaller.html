@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jianfeng Li" />
 
-<meta name="date" content="2018-01-04" />
+<meta name="date" content="2018-01-05" />
 
 <title>Introduction to BioInstaller</title>
 
@@ -52,7 +52,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <h1 class="title toc-ignore">Introduction to BioInstaller</h1>
 <h4 class="author"><em>Jianfeng Li</em></h4>
-<h4 class="date"><em>2018-01-04</em></h4>
+<h4 class="date"><em>2018-01-05</em></h4>
 
 
 
@@ -229,7 +229,7 @@ code > span.er { color: #ff0000; font-weight: bold; }
 
 <span class="co"># Fetching versions of softwares</span>
 <span class="kw">install.bioinfo</span>(<span class="st">'samtools'</span>, <span class="dt">show.all.versions =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; INFO [2018-01-04 15:26:11] Fetching samtools versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:10] Fetching samtools versions....</span>
 <span class="co">#&gt;  [1] &quot;1.6&quot;        &quot;1.5&quot;        &quot;1.4.1&quot;      &quot;1.4&quot;        &quot;1.3.1&quot;     </span>
 <span class="co">#&gt;  [6] &quot;1.3&quot;        &quot;1.2&quot;        &quot;1.1&quot;        &quot;1.0&quot;        &quot;0.2.0-rc12&quot;</span>
 <span class="co">#&gt; [11] &quot;0.2.0-rc11&quot; &quot;0.2.0-rc10&quot; &quot;0.2.0-rc9&quot;  &quot;0.2.0-rc8&quot;  &quot;0.2.0-rc7&quot; </span>
@@ -240,25 +240,25 @@ code > span.er { color: #ff0000; font-weight: bold; }
 <span class="co"># Install 'demo' with debug infomation</span>
 download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_2'</span>, <span class="kw">tempdir</span>())
 <span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:name:demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:destdir:</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:db:~/.BioInstaller</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:14] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:15] Fetching demo versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:15] Install versions:GRCh37</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:16] Now start to install demo in /tmp/RtmpIbO52g/demo_2.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:16] Running before install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:16] Now start to download demo in /tmp/RtmpIbO52g/demo_2.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:18] Running install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:19] Running after install successful steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:19] Running change.info for demo and be saved to ~/.BioInstaller</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:19] Debug:Install by Github configuration file: </span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:19] Debug:Install by Non Github configuration file: demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:19] Installed successful list: demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Now start to install demo in /tmp/RtmpyHrSsw/demo_2.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Running before install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:12] Now start to download demo in /tmp/RtmpyHrSsw/demo_2.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Running install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Running change.info for demo and be saved to ~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:Install by Non Github configuration file: demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Installed successful list: demo</span>
 <span class="co">#&gt; $fail.list</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
@@ -269,18 +269,18 @@ download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span
 download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_3'</span>, <span class="kw">tempdir</span>())
 <span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir,
   <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:name:demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:destdir:</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:db:~/.BioInstaller</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:20] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:21] Fetching demo versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:21] Install versions:GRCh37</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:21] Now start to download demo in /tmp/RtmpIbO52g/demo_3.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] demo be downloaded in /tmp/RtmpIbO52g/demo_3 successful</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:20] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Now start to download demo in /tmp/RtmpyHrSsw/demo_3.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] demo be downloaded in /tmp/RtmpyHrSsw/demo_3 successful</span>
 <span class="co">#&gt; [1] TRUE</span>
 
 <span class="co"># Set download.dir and destdir (destdir like /usr/local </span>
@@ -289,25 +289,25 @@ download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span
 download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_source'</span>, <span class="kw">tempdir</span>())
 destdir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo'</span>, <span class="kw">tempdir</span>())
 <span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">destdir =</span> destdir)
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:name:demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:destdir:/tmp/RtmpIbO52g/demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:db:~/.BioInstaller</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:23] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:24] Fetching demo versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:24] Install versions:GRCh37</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:24] Now start to install demo in /tmp/RtmpIbO52g/demo.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:24] Running before install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:24] Now start to download demo in /tmp/RtmpIbO52g/demo_source.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:27] Running install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:27] Running after install successful steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:28] Running change.info for demo and be saved to ~/.BioInstaller</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:29] Debug:Install by Github configuration file: </span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:29] Debug:Install by Non Github configuration file: demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:29] Installed successful list: demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:name:demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:destdir:/tmp/RtmpyHrSsw/demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:db:~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:21] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:22] Fetching demo versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:22] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:22] Now start to install demo in /tmp/RtmpyHrSsw/demo.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:22] Running before install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:22] Now start to download demo in /tmp/RtmpyHrSsw/demo_source.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Running install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Running change.info for demo and be saved to ~/.BioInstaller</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Debug:Install by Non Github configuration file: demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:23] Installed successful list: demo</span>
 <span class="co">#&gt; $fail.list</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
@@ -337,29 +337,29 @@ config
 <span class="co">#&gt; [1] TRUE</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $source.dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $bin_dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $executable_files</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $install.dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $version</span>
 <span class="co">#&gt; [1] &quot;GRCh37&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $last.update.time</span>
-<span class="co">#&gt; [1] &quot;2018-01-04 15:26:34&quot;</span>
+<span class="co">#&gt; [1] &quot;2018-01-05 18:35:25&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; attr(,&quot;config&quot;)</span>
 <span class="co">#&gt; [1] &quot;demo&quot;</span>
 <span class="co">#&gt; attr(,&quot;configtype&quot;)</span>
 <span class="co">#&gt; [1] &quot;yaml&quot;</span>
 <span class="co">#&gt; attr(,&quot;file&quot;)</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/file184444b7bc312&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/file12825420fa403&quot;</span>
 
 config &lt;-<span class="st"> </span>configr::<span class="kw">read.config</span>(temp.db)
 config$demo$comments &lt;-<span class="st"> 'This is a demo.'</span>
@@ -371,22 +371,22 @@ params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="d
 <span class="co">#&gt; [1] &quot;TRUE&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $source.dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $bin_dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $executable_files</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $install.dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/demo_1&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/demo_1&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $version</span>
 <span class="co">#&gt; [1] &quot;GRCh37&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $last.update.time</span>
-<span class="co">#&gt; [1] &quot;2018-01-04 15:26:34&quot;</span>
+<span class="co">#&gt; [1] &quot;2018-01-05 18:35:25&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $comments</span>
 <span class="co">#&gt; [1] &quot;This is a demo.&quot;</span>
@@ -396,7 +396,7 @@ params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="d
 <span class="co">#&gt; attr(,&quot;configtype&quot;)</span>
 <span class="co">#&gt; [1] &quot;ini&quot;</span>
 <span class="co">#&gt; attr(,&quot;file&quot;)</span>
-<span class="co">#&gt; [1] &quot;/tmp/RtmpIbO52g/file184444b7bc312&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/RtmpyHrSsw/file12825420fa403&quot;</span>
 <span class="kw">del.info</span>(<span class="st">'demo'</span>)
 <span class="co">#&gt; [1] TRUE</span></code></pre>
 </div>
@@ -405,7 +405,7 @@ params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="d
 <p>BioInstaller can be used to install softwares from local source. To install github softwares, a cloned directory were required, and nongithub softwares can be installed from decompressed directory or a compressed archive.</p>
 <pre class="sourceCode r"><code class="sourceCode r">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/github_demo_local'</span>, <span class="kw">tempdir</span>())
 <span class="kw">install.bioinfo</span>(<span class="st">'github_demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; cloning into '/tmp/RtmpIbO52g/github_demo_local'...</span>
+<span class="co">#&gt; cloning into '/tmp/RtmpyHrSsw/github_demo_local'...</span>
 <span class="co">#&gt; Receiving objects:  16% (1/6),    0 kb</span>
 <span class="co">#&gt; Receiving objects:  33% (2/6),    0 kb</span>
 <span class="co">#&gt; Receiving objects:  50% (3/6),    0 kb</span>
@@ -414,24 +414,24 @@ params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="d
 <span class="co">#&gt; Receiving objects: 100% (6/6),    0 kb, done.</span>
 <span class="co">#&gt; [1] TRUE</span>
 <span class="kw">install.bioinfo</span>(<span class="st">'github_demo'</span>, <span class="dt">local.source =</span> download.dir)
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:name:github_demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:destdir:</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:db:/tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:38] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:39] Fetching github_demo versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Install versions:master</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Now start to install github_demo in /tmp/RtmpIbO52g/github_demo.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Running before install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Running install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Running after install successful steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:40] Running change.info for github_demo and be saved to /tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:41] Debug:Install by Github configuration file: github_demo</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:41] Debug:Install by Non Github configuration file: </span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:41] Installed successful list: github_demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:name:github_demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:db:/tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:27] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:28] Fetching github_demo versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:28] Install versions:master</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:28] Now start to install github_demo in /tmp/RtmpyHrSsw/github_demo.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:28] Running before install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Running install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Running change.info for github_demo and be saved to /tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Debug:Install by Github configuration file: github_demo</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Debug:Install by Non Github configuration file: </span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:29] Installed successful list: github_demo</span>
 <span class="co">#&gt; $fail.list</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
@@ -440,26 +440,26 @@ params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="d
 
 download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_local'</span>, <span class="kw">tempdir</span>())
 <span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-<span class="co">#&gt; [1] FALSE</span>
+<span class="co">#&gt; [1] TRUE</span>
 <span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">local.source =</span> <span class="kw">sprintf</span>(<span class="st">'%s/GRCh37_MT_ensGene.txt.gz'</span>, download.dir), <span class="dt">decompress =</span> <span class="ot">TRUE</span>)
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:name:demo_2</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:destdir:</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:db:/tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:44] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:46] Fetching demo_2 versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:46] Install versions:GRCh37</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:46] Now start to install demo_2 in /tmp/RtmpIbO52g/demo_local.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:46] Running before install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:50] Running install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:50] Running after install successful steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:51] Running change.info for demo_2 and be saved to /tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:51] Debug:Install by Github configuration file: </span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:51] Debug:Install by Non Github configuration file: demo_2</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:51] Installed successful list: demo_2</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:name:demo_2</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:db:/tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Fetching demo_2 versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Install versions:GRCh37</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Now start to install demo_2 in /tmp/RtmpyHrSsw/demo_local.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:30] Running before install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Running install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Running change.info for demo_2 and be saved to /tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Debug:Install by Non Github configuration file: demo_2</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Installed successful list: demo_2</span>
 <span class="co">#&gt; $fail.list</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
@@ -471,7 +471,7 @@ download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span
 <p>BioInstaller provide a <code>craw.all.version</code> function to try download all avaliable URL files in nongithub part.</p>
 <pre class="sourceCode r"><code class="sourceCode r">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/craw_all_versions'</span>, <span class="kw">tempdir</span>())
 <span class="kw">craw.all.versions</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir)
-<span class="co">#&gt; INFO [2018-01-04 15:26:52] Fetching demo versions....</span></code></pre>
+<span class="co">#&gt; INFO [2018-01-05 18:35:32] Fetching demo versions....</span></code></pre>
 </div>
 <div id="get-meta-information-of-softwares-and-databases" class="section level2">
 <h2>Get meta information of softwares and databases</h2>
@@ -479,31 +479,31 @@ download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span
 meta_files &lt;-<span class="st"> </span><span class="kw">get.meta.files</span>()
 meta_files
 <span class="co">#&gt; $db_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $github_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $nongithub_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $web_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
 
 <span class="co"># Get all of meta informaton in BioInstaller</span>
 meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>()
 meta
 <span class="co">#&gt; $db_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $github_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $nongithub_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $web_meta_file</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/web/web_meta.toml&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $db</span>
 <span class="co">#&gt; $db$cfg_meta</span>
@@ -1319,7 +1319,7 @@ db_cfg_meta_parsed
 <span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $cfg_dir</span>
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db&quot;</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; $prefix_url</span>
 <span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/&quot;</span>
@@ -1353,10 +1353,10 @@ db_cfg_meta$bwa
 <span class="co"># Get databases meta file</span>
 db_meta_file &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'db_meta_file'</span>)
 db_meta_file
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_meta.toml&quot;</span>
 db_meta_file &lt;-<span class="st"> </span>meta_files[[<span class="st">&quot;db_meta_file&quot;</span>]]
 db_meta_file
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></code></pre>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></code></pre>
 </div>
 <div id="download-databases" class="section level2">
 <h2>Download databases</h2>
@@ -1455,14 +1455,14 @@ db_cfg_meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span
                         <span class="dt">read.config.params=</span><span class="kw">list</span>(<span class="dt">rcmd.parse =</span> <span class="ot">TRUE</span>))
 cfg_dir &lt;-<span class="st"> </span>db_cfg_meta$cfg_dir
 cfg_dir
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db&quot;</span>
 avaliable_cfg &lt;-<span class="st"> </span>db_cfg_meta$avaliable_cfg
 avaliable_cfg
 <span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;</span>
 <span class="kw">sprintf</span>(<span class="st">&quot;%s/%s&quot;</span>, cfg_dir, avaliable_cfg)
-<span class="co">#&gt; [1] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_annovar.toml&quot;</span>
-<span class="co">#&gt; [2] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_blast.toml&quot;  </span>
-<span class="co">#&gt; [3] &quot;/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml&quot;</span>
+<span class="co">#&gt; [1] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_annovar.toml&quot;</span>
+<span class="co">#&gt; [2] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_blast.toml&quot;  </span>
+<span class="co">#&gt; [3] &quot;/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml&quot;</span>
 
 <span class="co"># ANNOVAR</span>
 download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/db_annovar'</span>, <span class="kw">tempdir</span>())
@@ -1477,22 +1477,22 @@ config.toml &lt;-<span class="st"> </span><span class="kw">system.file</span>(<s
   <span class="dt">package =</span> <span class="st">&quot;BioInstaller&quot;</span>)
 <span class="kw">install.bioinfo</span>(<span class="st">'db_diseaseenhancer'</span>, <span class="dt">download.dir =</span> download.dir, 
   <span class="dt">nongithub.cfg =</span> config.toml)
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Debug:name:db_diseaseenhancer</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Debug:destdir:</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Debug:db:/tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Debug:github.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/github/github.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Debug:nongithub.cfg:/tmp/Rtmp8Ha09o/Rinst184156ea10611/BioInstaller/extdata/config/db/db_main.toml</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Fetching db_diseaseenhancer versions....</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Install versions:diseaseEnh5.1</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Now start to install db_diseaseenhancer in /tmp/RtmpIbO52g/db_main.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Running before install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:26:57] Now start to download db_diseaseenhancer in /tmp/RtmpIbO52g/db_main.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:05] Running install steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:05] Running after install successful steps.</span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:05] Running change.info for db_diseaseenhancer and be saved to /tmp/RtmpIbO52g/file184444b7bc312</span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:06] Debug:Install by Github configuration file: </span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:06] Debug:Install by Non Github configuration file: db_diseaseenhancer</span>
-<span class="co">#&gt; INFO [2018-01-04 15:27:06] Installed successful list: db_diseaseenhancer</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:33] Debug:name:db_diseaseenhancer</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:33] Debug:destdir:</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:33] Debug:db:/tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:33] Debug:github.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/github/github.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:33] Debug:nongithub.cfg:/tmp/Rtmp66QDte/Rinst128134ebe73ec/BioInstaller/extdata/config/db/db_main.toml</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:34] Fetching db_diseaseenhancer versions....</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:34] Install versions:diseaseEnh5.1</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:34] Now start to install db_diseaseenhancer in /tmp/RtmpyHrSsw/db_main.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:34] Running before install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:34] Now start to download db_diseaseenhancer in /tmp/RtmpyHrSsw/db_main.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:37] Running install steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:37] Running after install successful steps.</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:37] Running change.info for db_diseaseenhancer and be saved to /tmp/RtmpyHrSsw/file12825420fa403</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:38] Debug:Install by Github configuration file: </span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:38] Debug:Install by Non Github configuration file: db_diseaseenhancer</span>
+<span class="co">#&gt; INFO [2018-01-05 18:35:38] Installed successful list: db_diseaseenhancer</span>
 <span class="co">#&gt; $fail.list</span>
 <span class="co">#&gt; [1] &quot;&quot;</span>
 <span class="co">#&gt; </span>
