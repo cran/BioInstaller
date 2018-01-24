@@ -1,3 +1,28 @@
+2018-01-20 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* added mutsig in nongithub
+
+2018-01-19 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* added db_annovar_docm, db_annovar_intogen, 
+		db_annovar_disgenet, db_annovar_cancer_hotspots in db
+		* rename db_cancer_hotspot to db_cancer_hotspots
+		* added RESM, radia in github
+		* added rMATS, PARADA, IGV, Marina, PARADIGM, Meerkat, 
+		vadir, in nongithub
+		* source parse_version.R in local env
+
+2018-01-10 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* added facets, GIGGLE (genomic search engine) in github
+		* added absolute, hapseg, atlas2, beagle, contest 
+		in nongithub
+
+2018-01-09 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* added olego, chronqc and rHAT
+		* set.biosoftwares.db(tempfile()) in vignettes/BioInstaller.Rmd
+
 2018-01-05 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
 
 		* fix CRAN warning, demo source_url modified 

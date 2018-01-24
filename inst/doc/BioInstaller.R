@@ -3,7 +3,7 @@ knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
 
 ## ------------------------------------------------------------------------
 library(BioInstaller)
-
+set.biosoftwares.db(tempfile())
 # Show all avaliable softwares/dependece in default inst/extdata/config/github/github.toml 
 # and inst/extdata/config/nongithub/nongithub.toml
 install.bioinfo(show.all.names = TRUE)
