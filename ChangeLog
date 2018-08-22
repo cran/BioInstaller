@@ -1,3 +1,76 @@
+2018-08-22 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add copy_plugins and copy_configs functions in R/web.R
+		* replace getURL by fromJSON to access the Github APIs
+
+2018-08-18 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add miniconda and spack in docker image
+		* add table output box in instant spack
+
+2018-08-16 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add pubmed search tool
+		* add geoquery instant plugin
+		* improve instant spack and code plugins
+
+2018-08-15 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add datasets2tools plugin
+
+2018-08-13 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add wrapper functions, conda and spack
+		* add new function new.bioinfo
+
+2018-08-03 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* use editor in pipeline
+		* add instant page
+		* plugins dir could change
+
+2018-08-02 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Improve the setting function
+		* Use codemirror editor
+
+2018-08-01 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Add setting UI in Shiny
+		* rename craw.all.versions to crawl.all.versions
+
+2018-07-22 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Add easy_project plugin in pipeline
+		* Add files_of_path_monitor plugin in dashbord
+
+2018-07-21 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* Initial Shiny application
+
+2018-05-04 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* design the BioInstaller logo
+		* use pkgdown to generate document html site
+		* update README.md and improve vignettes
+
+2018-04-29 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add picky, freec, oncodriveclust, sequenza, taxmaps, 
+		svaba, rop in github.toml
+		* add jaffa_reffa in nongithub.toml 
+
+2018-04-29 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* change db_annovar sql2sqlite parameter names
+		* add manta and JAFFA in github.toml
+		* add JAFFA reffa in nongithub.toml
+		* update vignettes theme using prettydoc
+
+2018-03-13 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
+
+		* add db_annovar_abraom
+
 2018-01-20 Li Jianfeng <lee_jianfeng@sjtu.edu.cn>
 
 		* added mutsig in nongithub

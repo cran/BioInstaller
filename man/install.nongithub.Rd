@@ -16,7 +16,7 @@ install.nongithub(name = "", download.dir = NULL, destdir = NULL,
   download.only = FALSE, decompress = TRUE, dependence.need = TRUE,
   showWarnings = FALSE, extra.list = list(), rcmd.parse = TRUE,
   bash.parse = TRUE, glue.parse = TRUE, glue.flag = "!!glue",
-  save.to.db = TRUE, verbose = TRUE, ...)
+  save.to.db = TRUE, overwrite = FALSE, verbose = TRUE, ...)
 }
 \arguments{
 \item{name}{Software name}
@@ -65,6 +65,8 @@ system.file('extdata', 'demo/softwares_db_demo.yaml', package = 'BioInstaller'))
 
 \item{save.to.db}{Ligical indicating wheather save the install infomation in db}
 
+\item{overwrite}{Force delete the destdir or download dir without a interactive message (careful)}
+
 \item{verbose}{Ligical indicating wheather show the log message}
 
 \item{...}{Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}}
@@ -78,6 +80,9 @@ Install or download softwares from non-Github Web site
 \examples{
 db <- sprintf('\%s/.BioInstaller', tempdir())
 set.biosoftwares.db(db)
-install.nongithub('gmap', show.all.versions = TRUE)
+tryCatch(install.nongithub('gmap', show.all.versions = TRUE),
+error = function(e) {
+  message('Connecting Gmap website failed. Please try it again later.')
+})
 unlink(db)
 }

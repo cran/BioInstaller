@@ -165,9 +165,19 @@ bin_dir = ["{{destdir}}/bin"]
 linux = "mkdir -p {{destdir}}/bin; cp *.jar {{destdir}}/bin"
 mac = "mkdir -p {{destdir}}/bin; cp *.jar {{destdir}}/bin"
 
-[gatk4]
+[gatk4_jhuang_mirror]
 source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/gatk/gatk-{{version}}.zip"
-version_available = "4.0.0.0"
+version_available = ["4.0.6.0", "4.0.0.0"]
+make_dir = ["./"]
+bin_dir = ["{{destdir}}/bin"]
+[gatk4_jhuang_mirror.install]
+linux = "mkdir -p {{destdir}}/bin; cp gatk *.jar {{destdir}}/bin"
+mac = "mkdir -p {{destdir}}/bin; cp gatk *.jar {{destdir}}/bin"
+
+[gatk4]
+source_url = ["https://github.com/broadinstitute/gatk/releases/download/{{version}}/gatk-{{version}}.zip",
+              "https://github.com/broadinstitute/gatk/archive/{{version}}.zip"]
+use_github_versions = true
 linux = "mkdir -p {{destdir}}/bin; cp gatk *.jar {{destdir}}/bin"
 mac = "mkdir -p {{destdir}}/bin; cp gatk *.jar {{destdir}}/bin"
 
@@ -602,8 +612,8 @@ linux = ["https://repo.continuum.io/miniconda/Miniconda2-{{version}}-Linux-x86_6
          "http://bioinfo.rjh.com.cn/download/miniconda/Miniconda2-{{version}}-Linux-x86_64.sh"]
 
 [miniconda2.install]
-linux = "sh Miniconda2-{{version}}-Linux-x86_64.sh"
-mac = "sh Miniconda2-{{version}}-MacOSX-x86_64.sh"
+linux = "bash Miniconda2-{{version}}-Linux-x86_64.sh -b -p {{destdir}}/miniconda2 && echo 'export PATH=$HOME/miniconda2/bin:$PATH' >> $HOME/.bashrc"
+mac = "bash Miniconda2-{{version}}-Linux-x86_64.sh -b -p {{destdir}}/miniconda2 && echo 'export PATH=$HOME/miniconda2/bin:$PATH' >> $HOME/.bashrc"
 
 [miniconda3]
 decompress = false
@@ -618,8 +628,8 @@ linux = ["https://repo.continuum.io/miniconda/Miniconda3-{{version}}-Linux-x86_6
          "https://repo.continuum.io/miniconda/Miniconda3-{{version}}-Linux-x86_64.sh"]
 
 [miniconda3.install]
-linux = "sh Miniconda3-{{version}}-Linux-x86_64.sh"
-mac = "sh Miniconda3-{{version}}-MacOSX-x86_64.sh"
+linux = "bash Miniconda3-{{version}}-Linux-x86_64.sh -b -p {{destdir}}/miniconda3 && echo 'export PATH={{destdir}}/miniconda3/bin:$PATH' >> $HOME/.bashrc"
+mac = "bash Miniconda3-{{version}}-Linux-x86_64.sh -b -p {{destdir}}/miniconda3 && echo 'export PATH={{destdir}}/miniconda3/bin:$PATH' >> $HOME/.bashrc"
 
 [strelka]
 source_url = "ftp://strelka@ftp.illumina.com/v1-branch/v{{version}}/strelka_workflow-{{version}}.tar.gz"
@@ -762,3 +772,15 @@ version_available = ["exome_full192.coverage", "mutation_type_dictionary_file.tx
 [mutsig_reffa]
 source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/mutsig/{{version}}.zip"
 version_available = ["hg19.fa"]
+
+[jaffa_reffa]
+source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/jaffa/JAFFA_REFERENCE_FILES_{{version}}.tar.gz"
+version_available = ["HG19_GENCODE19", "HG38_GENCODE22"]
+
+[effusion]
+source_url = "http://www.babbittlab.ucsf.edu/effusion/effusion_{{version}}.tar.gz"
+version_available = ["1.0.0"]
+
+[hgtid]
+source_url = "http://bioinfo.rjh.com.cn/download/bioinstaller/hgtid/{{version}}"
+version_available = ["HGT-ID_v1.0.tar.gz", "sampleResults.zip"]

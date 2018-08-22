@@ -32,6 +32,7 @@
 #' @param glue.flag A character flage indicating wheater run glue() function to parse (Default is !!glue) 
 #' @param save.to.db Ligical indicating wheather save the install infomation in db
 #' @param license The BioInstaller download license code. 
+#' @param overwrite Force delete the destdir or download dir without a interactive message (careful)
 #' @param verbose Ligical indicating wheather show the log message
 #' @param ... Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}
 #' @export
@@ -39,7 +40,10 @@
 #' @examples
 #' db <- sprintf('%s/.BioInstaller', tempdir())
 #' set.biosoftwares.db(db)
-#' install.bioinfo('bwa', show.all.versions = TRUE)
+#' tryCatch(install.bioinfo('bwa', show.all.versions = TRUE), 
+#' error = function(e) {
+#'   message('Connecting Github failed. Please try it again later.')
+#' })
 #' unlink(db)
 install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.saved = NULL, 
   github.cfg = system.file("extdata", "config/github/github.toml", package = "BioInstaller"), 
@@ -51,8 +55,8 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
   db = Sys.getenv("BIO_SOFTWARES_DB_ACTIVE", system.file("extdata", "demo/softwares_db_demo.yaml", 
     package = "BioInstaller")), download.only = FALSE, decompress = TRUE, dependence.need = TRUE, 
   showWarnings = FALSE, extra.list = list(), rcmd.parse = TRUE, bash.parse = TRUE, 
-  glue.parse = TRUE, glue.flag = "!!glue", save.to.db = TRUE, license = "", verbose = TRUE, 
-  ...) {
+  glue.parse = TRUE, glue.flag = "!!glue", save.to.db = TRUE, license = "", overwrite = FALSE, 
+  verbose = TRUE, ...) {
   github.cfg.env <- paste0(github.cfg, collapse = ",")
   nongithub.cfg.env <- paste0(nongithub.cfg, collapse = ",")
   Sys.setenv(github.cfg = github.cfg.env, nongithub.cfg = nongithub.cfg.env)
@@ -105,7 +109,7 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
         db = db, download.only = download.only, verbose = verbose, showWarnings = showWarnings, 
         dependence.need = dependence.need, extra.list = extra.list, rmcd.parse = rcmd.parse, 
         bash.parse = bash.parse, glue.parse = glue.parse, glue.flag = glue.flag, 
-        save.to.db = save.to.db, ...)
+        save.to.db = save.to.db, overwrite = overwrite, ...)
       bygithub <- c(bygithub, i)
     } else if (i %in% nongithub.names || (sf.name %in% nongithub.names && sf.name != 
       i)) {
@@ -127,7 +131,7 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
         decompress = decompress, dependence.need = dependence.need, verbose = verbose, 
         extra.list = extra.list, rcmd.parse = rcmd.parse, bash.parse = bash.parse, 
         glue.parse = glue.parse, glue.flag = glue.flag, save.to.db = save.to.db, 
-        ...)
+        overwrite = overwrite, ...)
       bynongithub <- c(bynongithub, i)
     } else {
       warning(sprintf("%s not existed in install database, so can not be installed by BioInstaller package.", 
@@ -201,6 +205,7 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
 #' ['nochange', '!!glue(1:5)', 'nochange'] => ['nochange', '1', '2', '3', '4', '5', 'nochange']
 #' @param glue.flag A character flage indicating wheater run glue() function to parse (Default is !!glue) 
 #' @param save.to.db Ligical indicating wheather save the install infomation in db
+#' @param overwrite Force delete the destdir or download dir without a interactive message (careful)
 #' @param verbose Ligical indicating wheather show the log message
 #' @param ... Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}
 #' @return Bool Value
@@ -208,7 +213,10 @@ install.bioinfo <- function(name = c(), download.dir = c(), destdir = c(), name.
 #' @examples
 #' db <- sprintf('%s/.BioInstaller', tempdir())
 #' set.biosoftwares.db(db)
-#' install.github('bwa', show.all.versions = TRUE)
+#' tryCatch(install.github('bwa', show.all.versions = TRUE),
+#' error = function(e) {
+#'   message('Connecting Github failed. Please try it again later.')
+#' })
 #' unlink(db)
 install.github <- function(name = "", download.dir = NULL, destdir = NULL, version = NULL, 
   local.source = NULL, show.all.versions = FALSE, name.saved = NULL, github.cfg = system.file("extdata", 
@@ -216,7 +224,7 @@ install.github <- function(name = "", download.dir = NULL, destdir = NULL, versi
     system.file("extdata", "demo/softwares_db_demo.yaml", package = "BioInstaller")), 
   download.only = FALSE, showWarnings = FALSE, dependence.need = TRUE, extra.list = list(), 
   rcmd.parse = TRUE, bash.parse = TRUE, glue.parse = TRUE, glue.flag = "!!glue", 
-  save.to.db = TRUE, verbose = TRUE, ...) {
+  save.to.db = TRUE, overwrite = FALSE, verbose = TRUE, ...) {
   old.work.dir <- getwd()
   config.cfg <- github.cfg
   name <- tolower(name)
@@ -239,7 +247,8 @@ install.github <- function(name = "", download.dir = NULL, destdir = NULL, versi
     is.nongithub = FALSE)
   destdir <- processed.dir.list[["des.dir"]]
   download.dir <- processed.dir.list[["down.dir"]]
-  status <- destdir.initial(download.dir, strict = FALSE, download.only, local.source = local.source)
+  status <- destdir.initial(download.dir, strict = FALSE, download.only, local.source = local.source, 
+    overwrite = overwrite, is.git = TRUE)
   if (status == FALSE) {
     return(FALSE)
   }
@@ -372,6 +381,7 @@ install.github <- function(name = "", download.dir = NULL, destdir = NULL, versi
 #' ['nochange', '!!glue(1:5)', 'nochange'] => ['nochange', '1', '2', '3', '4', '5', 'nochange']
 #' @param glue.flag A character flage indicating wheater run glue() function to parse (Default is !!glue) 
 #' @param save.to.db Ligical indicating wheather save the install infomation in db
+#' @param overwrite Force delete the destdir or download dir without a interactive message (careful)
 #' @param verbose Ligical indicating wheather show the log message
 #' @param ... Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}
 #' @return Bool Value
@@ -379,7 +389,10 @@ install.github <- function(name = "", download.dir = NULL, destdir = NULL, versi
 #' @examples
 #' db <- sprintf('%s/.BioInstaller', tempdir())
 #' set.biosoftwares.db(db)
-#' install.nongithub('gmap', show.all.versions = TRUE)
+#' tryCatch(install.nongithub('gmap', show.all.versions = TRUE),
+#' error = function(e) {
+#'   message('Connecting Gmap website failed. Please try it again later.')
+#' })
 #' unlink(db)
 install.nongithub <- function(name = "", download.dir = NULL, destdir = NULL, version = NULL, 
   local.source = NULL, show.all.versions = FALSE, name.saved = NULL, nongithub.cfg = c(system.file("extdata", 
@@ -390,7 +403,7 @@ install.nongithub <- function(name = "", download.dir = NULL, destdir = NULL, ve
     system.file("extdata", "demo/softwares_db_demo.yaml", package = "BioInstaller")), 
   download.only = FALSE, decompress = TRUE, dependence.need = TRUE, showWarnings = FALSE, 
   extra.list = list(), rcmd.parse = TRUE, bash.parse = TRUE, glue.parse = TRUE, 
-  glue.flag = "!!glue", save.to.db = TRUE, verbose = TRUE, ...) {
+  glue.flag = "!!glue", save.to.db = TRUE, overwrite = FALSE, verbose = TRUE, ...) {
   old.work.dir <- getwd()
   config.cfg <- nongithub.cfg
   name <- tolower(name)
@@ -414,7 +427,8 @@ install.nongithub <- function(name = "", download.dir = NULL, destdir = NULL, ve
     is.nongithub = TRUE)
   destdir <- processed.dir.list[["des.dir"]]
   download.dir <- processed.dir.list[["down.dir"]]
-  status <- destdir.initial(download.dir, strict = FALSE, download.only, local.source = local.source)
+  status <- destdir.initial(download.dir, strict = FALSE, download.only, local.source = local.source, 
+    is.git = FALSE, overwrite = overwrite)
   if (status == FALSE) {
     return(FALSE)
   }

@@ -1,5 +1,5 @@
-#' This package can be used to install and download massive bioinformatics analysis 
-#' softwares and databases, such as NGS reads mapping tools with its required databases.
+#' This package is a comprehensive R package to integrate 
+#' bioinformatics resources, such as software/script and database
 #'
 #' @author
 #' Li Jianfeng \url{lee_jianfeng@sjtu.edu.cn}
@@ -12,11 +12,14 @@
 #'
 #' @docType package
 #' @name BioInstaller
-#' @import configr stringr futile.logger rvest
+#' @import configr stringr futile.logger rvest liteq
+#' @importFrom jsonlite fromJSON
 #' @importFrom git2r clone checkout
 #' @importFrom stringi stri_rand_strings
 #' @importFrom RCurl getURL basicTextGatherer
 #' @importFrom R.utils gunzip gzip
-#' @importFrom utils unzip untar download.file URLencode
+#' @importFrom utils unzip untar download.file URLencode read.table
+#' @importFrom utils compareVersion install.packages installed.packages
 #' @importFrom devtools install_github
+#' @importFrom shiny runApp
 NULL

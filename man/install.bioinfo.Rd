@@ -18,7 +18,8 @@ install.bioinfo(name = c(), download.dir = c(), destdir = c(),
   download.only = FALSE, decompress = TRUE, dependence.need = TRUE,
   showWarnings = FALSE, extra.list = list(), rcmd.parse = TRUE,
   bash.parse = TRUE, glue.parse = TRUE, glue.flag = "!!glue",
-  save.to.db = TRUE, license = "", verbose = TRUE, ...)
+  save.to.db = TRUE, license = "", overwrite = FALSE, verbose = TRUE,
+  ...)
 }
 \arguments{
 \item{name}{Software name}
@@ -75,6 +76,8 @@ system.file('extdata', 'demo/softwares_db_demo.yaml', package = 'BioInstaller'))
 
 \item{license}{The BioInstaller download license code.}
 
+\item{overwrite}{Force delete the destdir or download dir without a interactive message (careful)}
+
 \item{verbose}{Ligical indicating wheather show the log message}
 
 \item{...}{Other key and value paired need be saved in BioInstaller passed to \code{\link{change.info}}}
@@ -88,6 +91,9 @@ Download and install biology software or database
 \examples{
 db <- sprintf('\%s/.BioInstaller', tempdir())
 set.biosoftwares.db(db)
-install.bioinfo('bwa', show.all.versions = TRUE)
+tryCatch(install.bioinfo('bwa', show.all.versions = TRUE), 
+error = function(e) {
+  message('Connecting Github failed. Please try it again later.')
+})
 unlink(db)
 }
