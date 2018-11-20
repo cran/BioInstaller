@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jianfeng Li" />
 
-<meta name="date" content="2018-08-22" />
+<meta name="date" content="2018-11-20" />
 
 <title>Introduction to R functions of BioInstaller</title>
 
@@ -583,7 +583,10 @@
         }
 
         if (binding.resize) {
-          var lastSize = {};
+          var lastSize = {
+            w: sizeObj ? sizeObj.getWidth() : el.offsetWidth,
+            h: sizeObj ? sizeObj.getHeight() : el.offsetHeight
+          };
           var resizeHandler = function(e) {
             var size = {
               w: sizeObj ? sizeObj.getWidth() : el.offsetWidth,
@@ -897,7 +900,8 @@ DTWidget.formatCurrency = function(thiz, row, data, col, currency, digits, inter
 DTWidget.formatString = function(thiz, row, data, col, prefix, suffix) {
   var d = data[col];
   if (d === null) return;
-  $(thiz.api().cell(row, col).node()).html(prefix + d + suffix);
+  var cell = $(thiz.api().cell(row, col).node());
+  cell.html(prefix + cell.html() + suffix);
 };
 
 DTWidget.formatPercentage = function(thiz, row, data, col, digits, interval, mark, decMark) {
@@ -926,7 +930,7 @@ DTWidget.formatDate = function(thiz, row, data, col, method, params) {
   // (new Date('2015-10-28')).toDateString() may return 2015-10-27 because the
   // actual time created could be like 'Tue Oct 27 2015 19:00:00 GMT-0500 (CDT)',
   // i.e. the date-only string is treated as UTC time instead of local time
-  if (method === 'toDateString' && /^\d{4,}\D\d{2}\D\d{2}$/.test(d)) {
+  if ((method === 'toDateString' || method === 'toLocaleDateString') && /^\d{4,}\D\d{2}\D\d{2}$/.test(d)) {
     d = d.split(/\D/);
     d = new Date(d[0], d[1] - 1, d[2]);
   } else {
@@ -1035,6 +1039,9 @@ HTMLWidgets.widget({
     if (data.class) $table.addClass(data.class);
     if (data.caption) $table.prepend(data.caption);
 
+    if (!data.selection) data.selection = {
+      mode: 'none', selected: null, target: 'row'
+    };
     if (HTMLWidgets.shinyMode && data.selection.mode !== 'none' &&
         data.selection.target === 'row+column') {
       if ($table.children('tfoot').length === 0) {
@@ -1125,7 +1132,16 @@ HTMLWidgets.widget({
       options.ajax.dataSrc = function(json) {
         DT_rows_all = $.makeArray(json.DT_rows_all);
         DT_rows_current = $.makeArray(json.DT_rows_current);
-        return json.data;
+        var data = json.data;
+        if (!colReorderEnabled()) return data;
+        var table = $table.DataTable(), order = table.colReorder.order(), flag = true, i, j, row;
+        for (i = 0; i < order.length; ++i) if (order[i] !== i) flag = false;
+        if (flag) return data;
+        for (i = 0; i < data.length; ++i) {
+          row = data[i].slice();
+          for (j = 0; j < order.length; ++j) data[i][j] = row[order[j]];
+        }
+        return data;
       };
     }
 
@@ -1133,7 +1149,11 @@ HTMLWidgets.widget({
     if (instance.fillContainer) $table.on('init.dt', function(e) {
       thiz.fillAvailableHeight(el, $(el).innerHeight());
     });
-
+    // If the page contains serveral datatables and one of which enables colReorder,
+    // the table.colReorder.order() function will exist but throws error when called.
+    // So it seems like the only way to know if colReorder is enabled or not is to
+    // check the options.
+    var colReorderEnabled = function() { return "colReorder" in options; };
     var table = $table.DataTable(options);
     $el.data('datatable', table);
 
@@ -1188,7 +1208,15 @@ HTMLWidgets.widget({
         }
 
         if (e.sender !== instance.ctselectHandle && e.value && e.value.length) {
-          $table[0].ctselect = keysToMatches(e.value);
+          var matches = keysToMatches(e.value);
+
+          // persistent selection with plotly (& leaflet)
+          var ctOpts = crosstalk.var("plotlyCrosstalkOpts").get() || {};
+          if (ctOpts.persistent === true) {
+            var matches = $.extend(matches, $table[0].ctselect);
+          }
+
+          $table[0].ctselect = matches;
           table.draw();
         } else {
           if ($table[0].ctselect) {
@@ -1287,9 +1315,7 @@ HTMLWidgets.widget({
             }
           });
           if (searchCol) filter[0].selectize.setValue(JSON.parse(searchCol));
-          // an ugly hack to deal with shiny: for some reason, the onBlur event
-          // of selectize does not work in shiny
-          $x.find('div > div.selectize-input > input').on('blur', function() {
+          filter[0].selectize.on('blur', function() {
             $x.hide().trigger('hide'); $input.parent().show(); $input.trigger('blur');
           });
           filter.next('div').css('margin-bottom', 'auto');
@@ -1380,11 +1406,13 @@ HTMLWidgets.widget({
               filter.val(v);
             }
           });
-          var formatDate = function(d) {
+          var formatDate = function(d, isoFmt) {
             d = scaleBack(d, scale);
             if (type === 'number') return d;
             if (type === 'integer') return parseInt(d);
             var x = new Date(+d);
+            var fmt = ('filterDateFmt' in data) ? data.filterDateFmt[i] : undefined;
+            if (fmt !== undefined && isoFmt === false) return x[fmt.method].apply(x, fmt.params);
             if (type === 'date') {
               var pad0 = function(x) {
                 return ('0' + x).substr(-2, 2);
@@ -1421,7 +1449,10 @@ HTMLWidgets.widget({
             }
             r1  = t1; r2 = t2;
           })();
-          $span1.text(formatDate(r1)); $span2.text(formatDate(r2));
+          var updateSliderText = function(v1, v2) {
+            $span1.text(formatDate(v1, false)); $span2.text(formatDate(v2, false));
+          };
+          updateSliderText(r1, r2);
           var updateSlider = function(e) {
             var val = filter.val();
             // turn off filter if in full range
@@ -1433,7 +1464,7 @@ HTMLWidgets.widget({
             } else {
               $input.attr('title', '').val('');
             }
-            $span1.text(v1); $span2.text(v2);
+            updateSliderText(val[0], val[1]);
             if (e.type === 'slide') return;  // no searching when sliding only
             if (server) {
               table.column(i).search($td.data('filter') ? ival : '').draw();
@@ -1468,22 +1499,29 @@ HTMLWidgets.widget({
           if (typeof filter === 'undefined' || !$td.data('filter')) return true;
 
           var r = filter.val(), v, r0, r1;
+          var i_data = function(i) {
+            if (!colReorderEnabled()) return i;
+            var order = table.colReorder.order(), k;
+            for (k = 0; k < order.length; ++k) if (order[k] === i) return k;
+            return i; // in theory it will never be here...
+          }
+          v = data[i_data(i)];
           if (type === 'number' || type === 'integer') {
-            v = parseFloat(data[i]);
+            v = parseFloat(v);
             // how to handle NaN? currently exclude these rows
             if (isNaN(v)) return(false);
             r0 = parseFloat(scaleBack(r[0], scale))
             r1 = parseFloat(scaleBack(r[1], scale));
             if (v >= r0 && v <= r1) return true;
           } else if (type === 'date' || type === 'time') {
-            v = new Date(data[i]);
+            v = new Date(v);
             r0 = new Date(r[0] / scale); r1 = new Date(r[1] / scale);
             if (v >= r0 && v <= r1) return true;
           } else if (type === 'factor') {
-            if (r.length === 0 || inArray(data[i], r)) return true;
+            if (r.length === 0 || inArray(v, r)) return true;
           } else if (type === 'logical') {
             if (r.length === 0) return true;
-            if (inArray(data[i] === '' ? 'na' : data[i], r)) return true;
+            if (inArray(v === '' ? 'na' : v, r)) return true;
           }
           return false;
         };
@@ -1759,7 +1797,7 @@ HTMLWidgets.widget({
         // server-side tables, we have to *real* row indices are in `selected1`
         if (server) table.on('draw.dt', selectRows);
         methods.selectRows = function(selected) {
-          selected1 = selected ? selected : [];
+          selected1 = $.makeArray(selected);
           selectRows();
           changeInput('rows_selected', selected1);
         }
@@ -1793,7 +1831,7 @@ HTMLWidgets.widget({
         selectCols();  // in case users have specified pre-selected columns
         if (server) table.on('draw.dt', selectCols);
         methods.selectColumns = function(selected) {
-          selected2 = selected ? selected : [];
+          selected2 = $.makeArray(selected);
           selectCols();
           changeInput('columns_selected', selected2);
         }
@@ -1934,6 +1972,20 @@ HTMLWidgets.widget({
         searchColumn(i, v);
       });
       table.draw();
+    }
+
+    methods.hideCols = function(hide, reset) {
+      if (reset) table.columns().visible(true, false);
+      table.columns(hide).visible(false);
+    }
+
+    methods.showCols = function(show, reset) {
+      if (reset) table.columns().visible(false, false);
+      table.columns(show).visible(true);
+    }
+
+    methods.colReorder = function(order, origOrder) {
+      table.colReorder.order(order, origOrder);
     }
 
     methods.selectPage = function(page) {
@@ -2303,7 +2355,7 @@ code > span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Introduction to R functions of BioInstaller</h1>
 <h4 class="author project-author">Jianfeng Li</h4>
-<h4 class="date project-date">2018-08-22</h4>
+<h4 class="date project-date">2018-11-20</h4>
 </section>
 
 
@@ -2342,42 +2394,42 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co"># Show all avaliable softwares/dependece in default inst/extdata/config/github/github.toml </span></a>
 <a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co"># and inst/extdata/config/nongithub/nongithub.toml</span></a>
 <a class="sourceLine" id="cb1-5" data-line-number="5">x &lt;-<span class="st"> </span><span class="kw">install.bioinfo</span>(<span class="dt">show.all.names =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<div id="htmlwidget-5318cf0b2c3711fbd74b" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-5318cf0b2c3711fbd74b">{"x":{"filter":"none","caption":"<caption>Items supported by BioInstaller<\/caption>","data":[["abyss","arnapipe","asap","backspin","bamtools","bamutil","bcftools","bearscc","bedtools","bowtie","bowtie2","breakdancer","brie","bwa","chronqc","cnvkit","cnvnator","dart","delly","facets","fastp","fastq_tools","fastx_toolkit","freebayes","freec","fsclvm","giggle","github_demo","hisat2","htseq","igraph","isop","jaffa","jvarkit","libgtextutils","lofreq","macs","manta","marvel","mdseq","mimosca","mrnn","multiqc","oases","olego","oncodriveclust","oncotator","outrigger","picard","picky","pindel","pxz","raceid","radia","rca","resm","rhat","rop","rum","samtools_old","sclvm","scnorm","seqtk","sequenza","seurat","singlesplice","sleuth","snakemake_dna_gatk_flow","somaticsniper","spack","sparsehash","speedseq","star","strawberry","svaba","taxmaps","tmap","tophat2","tracer","trimgalore","trinityrnaseq","varscan2","vcflib","vcftools","vep","zifa","absolute","annovar","armadillo","atlas2","bcl2fastq","beagle","blast","blat","bzip2","cesa","cnvnator_samtools","contest","curl","demo_2","edena","effusion","ensemble_grch37_reffa","ensemble_grch38_reffa","fastqc","fatotwobit","fusioncatcher","fusioncatcher_reffa","gatk","gatk4","gatk4_jhuang_mirror","gatk_bundle","gmap","gridss","hapseg","hgtid","hisat2_reffa","htslib","igv"],["imagej","interproscan","jaffa_reffa","liftover","lzo","lzop","mapsplice2","marina","meerkat","miniconda2","miniconda3","mutect","mutsig","mutsig_dependence","mutsig_reffa","ngs_qc_toolkit","novoalign","paradigm","pcre","pigz","prada","prinseq","r","reditools","rmats","rmats_reffa","root","samstat","samtools","snpeff","solexaqa","sqlite","sratools","srnanalyzer","ssaha2","strelka","subread","svtoolkit","tvc","ucsc_reffa","ucsc_utils","vadir","vcfanno","velvet","xz","zlib","db_appris","db_atcircdb","db_biosystems","db_cancer_hotspots","db_cgi","db_circbase","db_circnet","db_circrnadb","db_civic","db_consensuspathdb","db_cscd","db_dbsno","db_dcdb","db_denovo_db","db_dgidb","db_differentialnet","db_diseaseenhancer","db_disgenet","db_docm","db_drugbank","db_ecodrug","db_eggnog","db_exorbase","db_expression_atlas","db_exsnp","db_fantom_cage_peaks","db_fantom_co_expression_clusters","db_fantom_enhancers","db_fantom_motifs","db_fantom_ontology","db_fantom_tss_classifier","db_funcoup","db_gtex","db_hgnc","db_hmdb","db_hpdi","db_hpo","db_inbiomap","db_instruct","db_interpro","db_intogen","db_islandviewer","db_lncediting","db_lncipedia","db_medreaders","db_mircancer","db_mirdb","db_mirnest","db_mirtarbase","db_mndr","db_msdd","db_msigdb","db_omim_open","db_omim_private","db_oncokb","db_oncomirdb","db_oncotator","db_pancanqtl","db_phosphonetworks","db_proteinatlas","db_rbp_var","db_rbpdb","db_rddpred","db_redoxdb","db_remap","db_remap2","db_rsnp3","db_rvarbase","db_seecancer","db_seeqtl","db_sm2mir","db_snipa3","db_srnanalyzer"],["db_superdrug2","db_tumorfusions","db_varcards","db_annovar_1000g","db_annovar_1000g_sqlite","db_annovar_abraom","db_annovar_avsift","db_annovar_avsnp","db_annovar_avsnp_sqlite","db_annovar_brvar","db_annovar_cadd","db_annovar_cadd_sqlite","db_annovar_cancer_hotspots","db_annovar_cg","db_annovar_civic_gene_summaries","db_annovar_clinvar","db_annovar_clinvar_sqlite","db_annovar_cosmic","db_annovar_cosmic_sqlite","db_annovar_cscd","db_annovar_darned_sqlite","db_annovar_dbnsfp","db_annovar_dbnsfp_sqlite","db_annovar_dbscsnv","db_annovar_dbscsnv_sqlite","db_annovar_dhs_gene_connectivity","db_annovar_disgenet","db_annovar_docm","db_annovar_eigen","db_annovar_eigen_sqlite","db_annovar_ensgene","db_annovar_epi_genes","db_annovar_esp6500siv2","db_annovar_exac03","db_annovar_exac03_sqlite","db_annovar_fathmm","db_annovar_gdi_score","db_annovar_gerp","db_annovar_gme","db_annovar_gme_sqlite","db_annovar_gnomad","db_annovar_gnomad_sqlite","db_annovar_gtex_eqtl_egenes","db_annovar_gtex_eqtl_pairs","db_annovar_gwava","db_annovar_gwava_sqlite","db_annovar_hgnc","db_annovar_hrcr1","db_annovar_hrcr1_sqlite","db_annovar_icgc21","db_annovar_icgc_sqlite","db_annovar_intervar","db_annovar_intervar_sqlite","db_annovar_intogen","db_annovar_kaviar","db_annovar_knowngene","db_annovar_ljb26_all","db_annovar_lncediting_sqlite","db_annovar_loftool_scores","db_annovar_mcap","db_annovar_mcap_sqlite","db_annovar_mitimpact","db_annovar_nci60","db_annovar_nci60_sqlite","db_annovar_normal_pool","db_annovar_normal_pool_sqlite","db_annovar_omim_genemap2","db_annovar_popfreq","db_annovar_popfreq_sqlite","db_annovar_radar_sqlite","db_annovar_rddpred_sqlite","db_annovar_rediportal_sqlite","db_annovar_refgene","db_annovar_regsnpintron","db_annovar_revel","db_annovar_revel_sqlite","db_annovar_rvis_esv_score","db_annovar_seeqtl","db_annovar_snp","db_annovar_tall_somatic_genes","db_annovar_tmcsnpdb","db_annovar_varcards","db_annovar_varcards_sqlite","db_ucsc_cytoband","db_ucsc_dnase_clustered","db_ucsc_ensgene","db_ucsc_knowngene","db_ucsc_refgene","db_ucsc_tfbs_clustered","db_blast_env_nr","db_blast_est_human","db_blast_est_mouse","db_blast_est_others","db_blast_gss","db_blast_htgs","db_blast_human_genomic","db_blast_landmark","db_blast_mouse_genomic","db_blast_nr","db_blast_nt","db_blast_other_genomic","db_blast_pataa","db_blast_patnt","db_blast_pdbaa","db_blast_pdbnt","db_blast_ref_prok_rep_genomes","db_blast_ref_viroids_rep_genomes","db_blast_ref_viruses_rep_genomes","db_blast_refseq_genomic","db_blast_refseq_protein","db_blast_refseq_rna","db_blast_refseqgene","db_blast_sts","db_blast_swissprot","db_blast_taxdb","db_blast_tsa_nr","db_blast_tsa_nt","db_blast_vector","abyss"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-c632ff3cf4f72df33141" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-c632ff3cf4f72df33141">{"x":{"filter":"none","caption":"<caption>Items supported by BioInstaller<\/caption>","data":[["abyss","arnapipe","asap","backspin","bamtools","bamutil","bcftools","bearscc","bedtools","bowtie","bowtie2","bpipe","breakdancer","brie","bwa","chronqc","cnvkit","cnvnator","dart","delly","facets","fastp","fastq_tools","fastx_toolkit","freebayes","freec","fsclvm","giggle","github_demo","hisat2","htseq","igraph","isop","jaffa","jvarkit","libgtextutils","lofreq","macs","manta","marvel","mdseq","mimosca","mrnn","multiqc","oases","olego","oncodriveclust","oncotator","outrigger","picard","picky","pindel","pxz","raceid","radia","rca","resm","rhat","rop","rum","samtools_old","sclvm","scnorm","seqtk","sequenza","seurat","singlesplice","sleuth","snakemake","snakemake_dna_gatk_flow","somaticsniper","spack","sparsehash","speedseq","star","strawberry","svaba","taxmaps","tmap","tophat2","tracer","trimgalore","trinityrnaseq","varscan2","vcflib","vcftools","vep","zifa","absolute","annovar","armadillo","atlas2","bcl2fastq","beagle","blast","blat","bzip2","cesa","cnvnator_samtools","contest","cromwell","curl","demo_2","edena","effusion","ensemble_grch37_reffa","ensemble_grch38_reffa","fastqc","fatotwobit","fusioncatcher","fusioncatcher_reffa","gatk","gatk4","gatk4_jhuang_mirror","gatk_bundle","gmap","gridss","hapseg","hgtid","hisat2_reffa","htslib","igv","imagej"],["interproscan","jaffa_reffa","liftover","lzo","lzop","mapsplice2","marina","meerkat","miniconda2","miniconda3","mutect","mutsig","mutsig_dependence","mutsig_reffa","nextflow","ngs_qc_toolkit","novoalign","paradigm","pcre","pigz","prada","prinseq","r","reditools","rmats","rmats_reffa","root","samstat","samtools","snpeff","solexaqa","sqlite","sratools","srnanalyzer","ssaha2","strelka","subread","svtoolkit","tvc","ucsc_reffa","ucsc_utils","vadir","vcfanno","velvet","xz","zlib","db_appris","db_atcircdb","db_awesome","db_biosystems","db_cancer_hotspots","db_cancersplicingqtl","db_cellmarker","db_cgi","db_circbase","db_circnet","db_circrnadb","db_civic","db_consensuspathdb","db_cscd","db_dbsno","db_dcdb","db_denovo_db","db_dgidb","db_differentialnet","db_diseaseenhancer","db_disgenet","db_docm","db_drugbank","db_ecodrug","db_eggnog","db_ewasdb","db_exorbase","db_expression_atlas","db_exsnp","db_fantom_cage_peaks","db_fantom_co_expression_clusters","db_fantom_enhancers","db_fantom_motifs","db_fantom_ontology","db_fantom_tss_classifier","db_funcoup","db_fusiongdb","db_gtex","db_hgnc","db_hmdb","db_hpdi","db_hpo","db_inbiomap","db_instruct","db_interpro","db_intogen","db_islandviewer","db_lnc2cancer","db_lncediting","db_lncipedia","db_lncrnadisease","db_medreaders","db_mircancer","db_mirdb","db_mirnest","db_mirtarbase","db_mndr","db_msdd","db_msigdb","db_omim_open","db_omim_private","db_oncokb","db_oncomirdb","db_oncotator","db_pancanqtl","db_phosphonetworks","db_pmkb","db_proteinatlas","db_rbp_var","db_rbpdb","db_rddpred","db_redoxdb","db_remap","db_remap2","db_rsnp3","db_rvarbase","db_sedb"],["db_seecancer","db_seeqtl","db_sm2mir","db_snipa3","db_srnanalyzer","db_superdrug2","db_tumorfusions","db_varcards","db_annovar_1000g","db_annovar_1000g_sqlite","db_annovar_abraom","db_annovar_avsift","db_annovar_avsnp","db_annovar_avsnp_sqlite","db_annovar_brvar","db_annovar_cadd","db_annovar_cadd_sqlite","db_annovar_cancer_hotspots","db_annovar_cg","db_annovar_civic_gene_summaries","db_annovar_clinvar","db_annovar_clinvar_sqlite","db_annovar_cosmic","db_annovar_cosmic_sqlite","db_annovar_cscd","db_annovar_darned_sqlite","db_annovar_dbnsfp","db_annovar_dbnsfp_sqlite","db_annovar_dbscsnv","db_annovar_dbscsnv_sqlite","db_annovar_dhs_gene_connectivity","db_annovar_disgenet","db_annovar_docm","db_annovar_eigen","db_annovar_eigen_sqlite","db_annovar_ensgene","db_annovar_epi_genes","db_annovar_esp6500siv2","db_annovar_exac03","db_annovar_exac03_sqlite","db_annovar_fathmm","db_annovar_gdi_score","db_annovar_gerp","db_annovar_gme","db_annovar_gme_sqlite","db_annovar_gnomad","db_annovar_gnomad_sqlite","db_annovar_gtex_eqtl_egenes","db_annovar_gtex_eqtl_pairs","db_annovar_gwava","db_annovar_gwava_sqlite","db_annovar_hgnc","db_annovar_hrcr1","db_annovar_hrcr1_sqlite","db_annovar_icgc21","db_annovar_icgc_sqlite","db_annovar_intervar","db_annovar_intervar_sqlite","db_annovar_intogen","db_annovar_kaviar","db_annovar_knowngene","db_annovar_ljb26_all","db_annovar_lncediting_sqlite","db_annovar_loftool_scores","db_annovar_mcap","db_annovar_mcap_sqlite","db_annovar_mitimpact","db_annovar_nci60","db_annovar_nci60_sqlite","db_annovar_normal_pool","db_annovar_normal_pool_sqlite","db_annovar_omim_genemap2","db_annovar_popfreq","db_annovar_popfreq_sqlite","db_annovar_radar_sqlite","db_annovar_rddpred_sqlite","db_annovar_rediportal_sqlite","db_annovar_refgene","db_annovar_regsnpintron","db_annovar_revel","db_annovar_revel_sqlite","db_annovar_rvis_esv_score","db_annovar_seeqtl","db_annovar_snp","db_annovar_tall_somatic_genes","db_annovar_tmcsnpdb","db_annovar_varcards","db_annovar_varcards_sqlite","db_ucsc_cytoband","db_ucsc_dnase_clustered","db_ucsc_ensgene","db_ucsc_knowngene","db_ucsc_refgene","db_ucsc_tfbs_clustered","db_blast_env_nr","db_blast_est_human","db_blast_est_mouse","db_blast_est_others","db_blast_gss","db_blast_htgs","db_blast_human_genomic","db_blast_landmark","db_blast_mouse_genomic","db_blast_nr","db_blast_nt","db_blast_other_genomic","db_blast_pataa","db_blast_patnt","db_blast_pdbaa","db_blast_pdbnt","db_blast_ref_prok_rep_genomes","db_blast_ref_viroids_rep_genomes","db_blast_ref_viruses_rep_genomes","db_blast_refseq_genomic","db_blast_refseq_protein","db_blast_refseq_rna","db_blast_refseqgene","db_blast_sts","db_blast_swissprot","db_blast_taxdb","db_blast_tsa_nr","db_blast_tsa_nt","db_blast_vector"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p>When setting the <code>show.all.versions</code> to <code>TRUE</code>, the versions of software and database will be returned.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Fetching versions of softwares</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="kw">install.bioinfo</span>(<span class="dt">name =</span> <span class="st">'samtools'</span>, <span class="dt">show.all.versions =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Fetching samtools versions....</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;  [1] &quot;1.9&quot;        &quot;1.8&quot;        &quot;1.7&quot;        &quot;1.6&quot;        &quot;1.5&quot;       </span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  [6] &quot;1.4.1&quot;      &quot;1.4&quot;        &quot;1.3.1&quot;      &quot;1.3&quot;        &quot;1.2&quot;       </span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [11] &quot;1.1&quot;        &quot;1.0&quot;        &quot;0.2.0-rc12&quot; &quot;0.2.0-rc11&quot; &quot;0.2.0-rc10&quot;</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [16] &quot;0.2.0-rc9&quot;  &quot;0.2.0-rc8&quot;  &quot;0.2.0-rc7&quot;  &quot;0.2.0-rc6&quot;  &quot;0.2.0-rc5&quot; </span></a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [21] &quot;0.2.0-rc4&quot;  &quot;0.2.0-rc3&quot;  &quot;0.2.0-rc2&quot;  &quot;0.2.0-rc1&quot;  &quot;0.1.20&quot;    </span></a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [26] &quot;0.1.19&quot;     &quot;0.1.18&quot;     &quot;0.1.17&quot;     &quot;0.1.16&quot;     &quot;master&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; INFO [2018-11-20 23:15:10] Fetching samtools versions....</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;  [1] &quot;master&quot;     &quot;0.1.16&quot;     &quot;0.1.17&quot;     &quot;0.1.18&quot;     &quot;0.1.19&quot;    </span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  [6] &quot;0.1.20&quot;     &quot;0.2.0-rc1&quot;  &quot;0.2.0-rc2&quot;  &quot;0.2.0-rc3&quot;  &quot;0.2.0-rc4&quot; </span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; [11] &quot;0.2.0-rc5&quot;  &quot;0.2.0-rc6&quot;  &quot;0.2.0-rc7&quot;  &quot;0.2.0-rc8&quot;  &quot;0.2.0-rc9&quot; </span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; [16] &quot;0.2.0-rc10&quot; &quot;0.2.0-rc11&quot; &quot;0.2.0-rc12&quot; &quot;1.0&quot;        &quot;1.1&quot;       </span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; [21] &quot;1.2&quot;        &quot;1.3&quot;        &quot;1.3.1&quot;      &quot;1.4&quot;        &quot;1.4.1&quot;     </span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; [26] &quot;1.5&quot;        &quot;1.6&quot;        &quot;1.7&quot;        &quot;1.8&quot;        &quot;1.9&quot;</span></a></code></pre></div>
 <p>Parameter <code>verbose</code> in <code>install.bioinfo</code> can be used to show the extra debug information.</p>
 <p>Besides, if you only want to download the source code or raw database files to a specific directory, the parameter <code>download.dir</code> and <code>download.only</code>are required.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Install 'demo' with debug infomation</span></a>
 <a class="sourceLine" id="cb3-2" data-line-number="2">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_2'</span>, <span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:name:demo</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:destdir:</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c854a986bef</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; INFO [2018-08-22 23:02:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; INFO [2018-08-22 23:02:22] Fetching demo versions....</span></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; INFO [2018-08-22 23:02:22] Install versions:GRCh37</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; INFO [2018-08-22 23:02:22] Now start to install demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_2.</span></a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; INFO [2018-08-22 23:02:22] Running before install steps.</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; INFO [2018-08-22 23:02:22] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_2.</span></a>
-<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Running install steps.</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Running after install successful steps.</span></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Running change.info for demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c854a986bef</span></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:Install by Github configuration file: </span></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:Install by Non Github configuration file: demo</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Installed successful list: demo</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:name:demo</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:destdir:</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1762b2c80</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; INFO [2018-11-20 23:15:11] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="co">#&gt; INFO [2018-11-20 23:15:12] Fetching demo versions....</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; INFO [2018-11-20 23:15:12] Install versions:GRCh37</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; INFO [2018-11-20 23:15:12] Now start to install demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_2.</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; INFO [2018-11-20 23:15:12] Running before install steps.</span></a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; INFO [2018-11-20 23:15:12] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_2.</span></a>
+<a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Running install steps.</span></a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Running after install successful steps.</span></a>
+<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Running change.info for demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1762b2c80</span></a>
+<a class="sourceLine" id="cb3-20" data-line-number="20"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:Install by Github configuration file: </span></a>
+<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:Install by Non Github configuration file: demo</span></a>
+<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Installed successful list: demo</span></a>
 <a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; $fail.list</span></a>
 <a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; [1] &quot;&quot;</span></a>
 <a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; </span></a>
@@ -2388,18 +2440,18 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb3-30" data-line-number="30">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_3'</span>, <span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb3-31" data-line-number="31"><span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir,</a>
 <a class="sourceLine" id="cb3-32" data-line-number="32">  <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:name:demo</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:destdir:</span></a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c854a986bef</span></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
-<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
-<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml</span></a>
-<a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Fetching demo versions....</span></a>
-<a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Install versions:GRCh37</span></a>
-<a class="sourceLine" id="cb3-43" data-line-number="43"><span class="co">#&gt; INFO [2018-08-22 23:02:23] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_3.</span></a>
-<a class="sourceLine" id="cb3-44" data-line-number="44"><span class="co">#&gt; INFO [2018-08-22 23:02:24] demo be downloaded in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_3 successful</span></a>
+<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:name:demo</span></a>
+<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:destdir:</span></a>
+<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1762b2c80</span></a>
+<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
+<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
+<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml</span></a>
+<a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Fetching demo versions....</span></a>
+<a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Install versions:GRCh37</span></a>
+<a class="sourceLine" id="cb3-43" data-line-number="43"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_3.</span></a>
+<a class="sourceLine" id="cb3-44" data-line-number="44"><span class="co">#&gt; INFO [2018-11-20 23:15:13] demo be downloaded in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_3 successful</span></a>
 <a class="sourceLine" id="cb3-45" data-line-number="45"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
 <p>After finishing the download step, typically, you need to install the software by running several commands or an installation script. BioInstaller stores the related installation script or commands in the configuration files, and you can one-click to install the related software or database.</p>
 <p>Besides, BioInstaller will pass several parameters to installation command or script. Just like <code>destdir</code> of <code>./configure --prefix={{destdir}}; make; make install</code> for compiling C program.</p>
@@ -2411,25 +2463,25 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb4-4" data-line-number="4">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo_source'</span>, <span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5">destdir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/demo'</span>, <span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="kw">install.bioinfo</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">destdir =</span> destdir)</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:name:demo</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:destdir:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c854a986bef</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Fetching demo versions....</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Install versions:GRCh37</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Now start to install demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo.</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Running before install steps.</span></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; INFO [2018-08-22 23:02:24] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_source.</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Running install steps.</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Running after install successful steps.</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Running change.info for demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c854a986bef</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Debug:Install by Github configuration file: </span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Debug:Install by Non Github configuration file: demo</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; INFO [2018-08-22 23:02:25] Installed successful list: demo</span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:name:demo</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:destdir:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1762b2c80</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; INFO [2018-11-20 23:15:13] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Fetching demo versions....</span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Install versions:GRCh37</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Now start to install demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo.</span></a>
+<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Running before install steps.</span></a>
+<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Now start to download demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_source.</span></a>
+<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Running install steps.</span></a>
+<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Running after install successful steps.</span></a>
+<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Running change.info for demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1762b2c80</span></a>
+<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Debug:Install by Github configuration file: </span></a>
+<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Debug:Install by Non Github configuration file: demo</span></a>
+<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="co">#&gt; INFO [2018-11-20 23:15:14] Installed successful list: demo</span></a>
 <a class="sourceLine" id="cb4-26" data-line-number="26"><span class="co">#&gt; $fail.list</span></a>
 <a class="sourceLine" id="cb4-27" data-line-number="27"><span class="co">#&gt; [1] &quot;&quot;</span></a>
 <a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co">#&gt; </span></a>
@@ -2460,29 +2512,29 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; [1] TRUE</span></a>
 <a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; $source.dir</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; $bin_dir</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; $executable_files</span></a>
 <a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; [1] &quot;&quot;</span></a>
 <a class="sourceLine" id="cb6-14" data-line-number="14"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; $install.dir</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; [1] &quot;/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="co">#&gt; [1] &quot;/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; $version</span></a>
 <a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; [1] &quot;GRCh37&quot;</span></a>
 <a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-21" data-line-number="21"><span class="co">#&gt; $last.update.time</span></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; [1] &quot;2018-08-22 23:02:26&quot;</span></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co">#&gt; [1] &quot;2018-11-20 23:15:15&quot;</span></a>
 <a class="sourceLine" id="cb6-23" data-line-number="23"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; attr(,&quot;config&quot;)</span></a>
 <a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; [1] &quot;demo&quot;</span></a>
 <a class="sourceLine" id="cb6-26" data-line-number="26"><span class="co">#&gt; attr(,&quot;configtype&quot;)</span></a>
 <a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; [1] &quot;yaml&quot;</span></a>
 <a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; attr(,&quot;file&quot;)</span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/file13c856cc14ba3&quot;</span></a>
+<a class="sourceLine" id="cb6-29" data-line-number="29"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/filebbb1356f0358&quot;</span></a>
 <a class="sourceLine" id="cb6-30" data-line-number="30"></a>
 <a class="sourceLine" id="cb6-31" data-line-number="31">config &lt;-<span class="st"> </span>configr<span class="op">::</span><span class="kw">read.config</span>(temp.db)</a>
 <a class="sourceLine" id="cb6-32" data-line-number="32">config<span class="op">$</span>demo<span class="op">$</span>comments &lt;-<span class="st"> 'This is a demo.'</span></a>
@@ -2494,19 +2546,19 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt; [1] &quot;TRUE&quot;</span></a>
 <a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt; $source.dir</span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-42" data-line-number="42"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co">#&gt; $bin_dir</span></a>
-<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-45" data-line-number="45"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-46" data-line-number="46"><span class="co">#&gt; $install.dir</span></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="co">#&gt; [1] &quot;/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/demo_1&quot;</span></a>
+<a class="sourceLine" id="cb6-47" data-line-number="47"><span class="co">#&gt; [1] &quot;/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/demo_1&quot;</span></a>
 <a class="sourceLine" id="cb6-48" data-line-number="48"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co">#&gt; $version</span></a>
 <a class="sourceLine" id="cb6-50" data-line-number="50"><span class="co">#&gt; [1] &quot;GRCh37&quot;</span></a>
 <a class="sourceLine" id="cb6-51" data-line-number="51"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-52" data-line-number="52"><span class="co">#&gt; $last.update.time</span></a>
-<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="co">#&gt; [1] &quot;2018-08-22 23:02:26&quot;</span></a>
+<a class="sourceLine" id="cb6-53" data-line-number="53"><span class="co">#&gt; [1] &quot;2018-11-20 23:15:15&quot;</span></a>
 <a class="sourceLine" id="cb6-54" data-line-number="54"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb6-55" data-line-number="55"><span class="co">#&gt; $comments</span></a>
 <a class="sourceLine" id="cb6-56" data-line-number="56"><span class="co">#&gt; [1] &quot;This is a demo.&quot;</span></a>
@@ -2516,7 +2568,7 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb6-60" data-line-number="60"><span class="co">#&gt; attr(,&quot;configtype&quot;)</span></a>
 <a class="sourceLine" id="cb6-61" data-line-number="61"><span class="co">#&gt; [1] &quot;ini&quot;</span></a>
 <a class="sourceLine" id="cb6-62" data-line-number="62"><span class="co">#&gt; attr(,&quot;file&quot;)</span></a>
-<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/file13c856cc14ba3&quot;</span></a>
+<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/filebbb1356f0358&quot;</span></a>
 <a class="sourceLine" id="cb6-64" data-line-number="64"><span class="kw">del.info</span>(<span class="st">'demo'</span>)</a>
 <a class="sourceLine" id="cb6-65" data-line-number="65"><span class="co">#&gt; [1] TRUE</span></a></code></pre></div>
 </div>
@@ -2534,31 +2586,31 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="kw">install.bioinfo</span>(<span class="st">'github_demo'</span>, <span class="dt">local.source =</span> download.dir)}, <span class="dt">error =</span> <span class="cf">function</span>(e) {</a>
 <a class="sourceLine" id="cb7-5" data-line-number="5">  <span class="kw">message</span>(<span class="st">&quot;Please check the SSL or connection with GitHub&quot;</span>)</a>
 <a class="sourceLine" id="cb7-6" data-line-number="6">})</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; cloning into '/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/github_demo_local'...</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt; cloning into '/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/github_demo_local'...</span></a>
 <a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt; Receiving objects:  16% (1/6),    0 kb</span></a>
 <a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt; Receiving objects:  33% (2/6),    0 kb</span></a>
 <a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt; Receiving objects:  50% (3/6),    0 kb</span></a>
 <a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt; Receiving objects:  66% (4/6),    0 kb</span></a>
 <a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Receiving objects:  83% (5/6),    0 kb</span></a>
 <a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; Receiving objects: 100% (6/6),    0 kb, done.</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:name:github_demo</span></a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:destdir:</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
-<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
-<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml</span></a>
-<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; INFO [2018-08-22 23:02:29] Fetching github_demo versions....</span></a>
-<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Install versions:master</span></a>
-<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Now start to install github_demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/github_demo.</span></a>
-<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Running before install steps.</span></a>
-<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Running install steps.</span></a>
-<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Running after install successful steps.</span></a>
-<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Running change.info for github_demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Debug:Install by Github configuration file: github_demo</span></a>
-<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Debug:Install by Non Github configuration file: </span></a>
-<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt; INFO [2018-08-22 23:02:30] Installed successful list: github_demo</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:name:github_demo</span></a>
+<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:destdir:</span></a>
+<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1356f0358</span></a>
+<a class="sourceLine" id="cb7-17" data-line-number="17"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb7-18" data-line-number="18"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
+<a class="sourceLine" id="cb7-19" data-line-number="19"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb7-20" data-line-number="20"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
+<a class="sourceLine" id="cb7-21" data-line-number="21"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml</span></a>
+<a class="sourceLine" id="cb7-22" data-line-number="22"><span class="co">#&gt; INFO [2018-11-20 23:15:19] Fetching github_demo versions....</span></a>
+<a class="sourceLine" id="cb7-23" data-line-number="23"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Install versions:master</span></a>
+<a class="sourceLine" id="cb7-24" data-line-number="24"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Now start to install github_demo in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/github_demo.</span></a>
+<a class="sourceLine" id="cb7-25" data-line-number="25"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Running before install steps.</span></a>
+<a class="sourceLine" id="cb7-26" data-line-number="26"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Running install steps.</span></a>
+<a class="sourceLine" id="cb7-27" data-line-number="27"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Running after install successful steps.</span></a>
+<a class="sourceLine" id="cb7-28" data-line-number="28"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Running change.info for github_demo and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1356f0358</span></a>
+<a class="sourceLine" id="cb7-29" data-line-number="29"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Debug:Install by Github configuration file: github_demo</span></a>
+<a class="sourceLine" id="cb7-30" data-line-number="30"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Debug:Install by Non Github configuration file: </span></a>
+<a class="sourceLine" id="cb7-31" data-line-number="31"><span class="co">#&gt; INFO [2018-11-20 23:15:20] Installed successful list: github_demo</span></a>
 <a class="sourceLine" id="cb7-32" data-line-number="32"><span class="co">#&gt; $fail.list</span></a>
 <a class="sourceLine" id="cb7-33" data-line-number="33"><span class="co">#&gt; [1] &quot;&quot;</span></a>
 <a class="sourceLine" id="cb7-34" data-line-number="34"><span class="co">#&gt; </span></a>
@@ -2569,24 +2621,24 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb7-39" data-line-number="39"><span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">download.only =</span> <span class="ot">TRUE</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
 <a class="sourceLine" id="cb7-40" data-line-number="40"><span class="co">#&gt; [1] TRUE</span></a>
 <a class="sourceLine" id="cb7-41" data-line-number="41"><span class="kw">install.bioinfo</span>(<span class="st">'demo_2'</span>, <span class="dt">download.dir =</span> download.dir, <span class="dt">local.source =</span> <span class="kw">sprintf</span>(<span class="st">'%s/GRCh37_MT_ensGene.txt.gz'</span>, download.dir), <span class="dt">decompress =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:name:demo_2</span></a>
-<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:destdir:</span></a>
-<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
-<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
-<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">#&gt; INFO [2018-08-22 23:02:31] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml</span></a>
-<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Fetching demo_2 versions....</span></a>
-<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Install versions:GRCh37</span></a>
-<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Now start to install demo_2 in /private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpfQa2ER/demo_local.</span></a>
-<a class="sourceLine" id="cb7-53" data-line-number="53"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Running before install steps.</span></a>
-<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Running install steps.</span></a>
-<a class="sourceLine" id="cb7-55" data-line-number="55"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Running after install successful steps.</span></a>
-<a class="sourceLine" id="cb7-56" data-line-number="56"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Running change.info for demo_2 and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb7-57" data-line-number="57"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Debug:Install by Github configuration file: </span></a>
-<a class="sourceLine" id="cb7-58" data-line-number="58"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Debug:Install by Non Github configuration file: demo_2</span></a>
-<a class="sourceLine" id="cb7-59" data-line-number="59"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Installed successful list: demo_2</span></a>
+<a class="sourceLine" id="cb7-42" data-line-number="42"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:name:demo_2</span></a>
+<a class="sourceLine" id="cb7-43" data-line-number="43"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:destdir:</span></a>
+<a class="sourceLine" id="cb7-44" data-line-number="44"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1356f0358</span></a>
+<a class="sourceLine" id="cb7-45" data-line-number="45"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb7-46" data-line-number="46"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub.toml</span></a>
+<a class="sourceLine" id="cb7-47" data-line-number="47"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb7-48" data-line-number="48"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml</span></a>
+<a class="sourceLine" id="cb7-49" data-line-number="49"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml</span></a>
+<a class="sourceLine" id="cb7-50" data-line-number="50"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Fetching demo_2 versions....</span></a>
+<a class="sourceLine" id="cb7-51" data-line-number="51"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Install versions:GRCh37</span></a>
+<a class="sourceLine" id="cb7-52" data-line-number="52"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Now start to install demo_2 in /private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpK8vw9W/demo_local.</span></a>
+<a class="sourceLine" id="cb7-53" data-line-number="53"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Running before install steps.</span></a>
+<a class="sourceLine" id="cb7-54" data-line-number="54"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Running install steps.</span></a>
+<a class="sourceLine" id="cb7-55" data-line-number="55"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Running after install successful steps.</span></a>
+<a class="sourceLine" id="cb7-56" data-line-number="56"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Running change.info for demo_2 and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1356f0358</span></a>
+<a class="sourceLine" id="cb7-57" data-line-number="57"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:Install by Github configuration file: </span></a>
+<a class="sourceLine" id="cb7-58" data-line-number="58"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Debug:Install by Non Github configuration file: demo_2</span></a>
+<a class="sourceLine" id="cb7-59" data-line-number="59"><span class="co">#&gt; INFO [2018-11-20 23:15:21] Installed successful list: demo_2</span></a>
 <a class="sourceLine" id="cb7-60" data-line-number="60"><span class="co">#&gt; $fail.list</span></a>
 <a class="sourceLine" id="cb7-61" data-line-number="61"><span class="co">#&gt; [1] &quot;&quot;</span></a>
 <a class="sourceLine" id="cb7-62" data-line-number="62"><span class="co">#&gt; </span></a>
@@ -2598,7 +2650,7 @@ code > span.ot { color: #007020; }
 <p>Function <code>craw.all.version</code> is the simplest method to download all available URL files in nongithub or database files.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/crawl.all.versions'</span>, <span class="kw">tempdir</span>())</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw">crawl.all.versions</span>(<span class="st">'demo'</span>, <span class="dt">download.dir =</span> download.dir)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; INFO [2018-08-22 23:02:32] Fetching demo versions....</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; INFO [2018-11-20 23:15:22] Fetching demo versions....</span></a></code></pre></div>
 </div>
 <div id="meta-information-of-software-and-database" class="section level2">
 <h2>Meta information of software and database</h2>
@@ -2607,16 +2659,16 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-2" data-line-number="2">meta_files &lt;-<span class="st"> </span><span class="kw">get.meta.files</span>()</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3">meta_files</a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; $db_meta_file</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; $github_meta_file</span></a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; $nongithub_meta_file</span></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; $web_meta_file</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/web/web_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/web/web_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-15" data-line-number="15"></a>
 <a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co"># Get all of meta informaton in BioInstaller</span></a>
 <a class="sourceLine" id="cb9-17" data-line-number="17">meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>()</a>
@@ -2626,16 +2678,16 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; [7] &quot;nongithub&quot;           &quot;title&quot;               &quot;web&quot;</span></a>
 <a class="sourceLine" id="cb9-22" data-line-number="22">meta[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>]</a>
 <a class="sourceLine" id="cb9-23" data-line-number="23"><span class="co">#&gt; $db_meta_file</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; $github_meta_file</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-29" data-line-number="29"><span class="co">#&gt; $nongithub_meta_file</span></a>
-<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-30" data-line-number="30"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/nongithub/nongithub_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-31" data-line-number="31"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-32" data-line-number="32"><span class="co">#&gt; $web_meta_file</span></a>
-<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/web/web_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-33" data-line-number="33"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/web/web_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-34" data-line-number="34">meta<span class="op">$</span>db<span class="op">$</span>cfg_meta</a>
 <a class="sourceLine" id="cb9-35" data-line-number="35"><span class="co">#&gt; $avaliable_cfg</span></a>
 <a class="sourceLine" id="cb9-36" data-line-number="36"><span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span></a>
@@ -2674,7 +2726,7 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-69" data-line-number="69"><span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;   </span></a>
 <a class="sourceLine" id="cb9-70" data-line-number="70"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-71" data-line-number="71"><span class="co">#&gt; $cfg_dir</span></a>
-<a class="sourceLine" id="cb9-72" data-line-number="72"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db&quot;</span></a>
+<a class="sourceLine" id="cb9-72" data-line-number="72"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db&quot;</span></a>
 <a class="sourceLine" id="cb9-73" data-line-number="73"><span class="co">#&gt; </span></a>
 <a class="sourceLine" id="cb9-74" data-line-number="74"><span class="co">#&gt; $prefix_url</span></a>
 <a class="sourceLine" id="cb9-75" data-line-number="75"><span class="co">#&gt; [1] &quot;https://raw.githubusercontent.com/JhuangLab/BioInstaller/master/inst/extdata/config/db/&quot;</span></a>
@@ -2695,10 +2747,10 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb9-90" data-line-number="90"><span class="co"># Get databases meta file</span></a>
 <a class="sourceLine" id="cb9-91" data-line-number="91">db_meta_file &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'db_meta_file'</span>)</a>
 <a class="sourceLine" id="cb9-92" data-line-number="92">db_meta_file</a>
-<a class="sourceLine" id="cb9-93" data-line-number="93"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
+<a class="sourceLine" id="cb9-93" data-line-number="93"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a>
 <a class="sourceLine" id="cb9-94" data-line-number="94">db_meta_file &lt;-<span class="st"> </span>meta_files[[<span class="st">&quot;db_meta_file&quot;</span>]]</a>
 <a class="sourceLine" id="cb9-95" data-line-number="95">db_meta_file</a>
-<a class="sourceLine" id="cb9-96" data-line-number="96"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb9-96" data-line-number="96"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_meta.toml&quot;</span></a></code></pre></div>
 </div>
 <div id="download-database" class="section level2">
 <h2>Download database</h2>
@@ -2710,22 +2762,22 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb10-5" data-line-number="5"><span class="kw">suppressWarnings</span>(</a>
 <a class="sourceLine" id="cb10-6" data-line-number="6">  DT<span class="op">::</span><span class="kw">datatable</span>(<span class="kw">matrix</span>(x, <span class="dt">ncol=</span><span class="dv">3</span>), <span class="dt">caption =</span> <span class="kw">sprintf</span>(<span class="st">&quot;Database supported by BioInstaller (n=%s)&quot;</span>, <span class="kw">length</span>(x)))</a>
 <a class="sourceLine" id="cb10-7" data-line-number="7">)</a></code></pre></div>
-<div id="htmlwidget-cb87aea7f88511824891" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-cb87aea7f88511824891">{"x":{"filter":"none","caption":"<caption>Database supported by BioInstaller (n=200)<\/caption>","data":[["ensemble_grch37_reffa","ensemble_grch38_reffa","fusioncatcher_reffa","gatk_bundle","hisat2_reffa","jaffa_reffa","mutsig_reffa","rmats_reffa","ucsc_reffa","db_appris","db_atcircdb","db_biosystems","db_cancer_hotspots","db_cgi","db_circbase","db_circnet","db_circrnadb","db_civic","db_consensuspathdb","db_cscd","db_dbsno","db_dcdb","db_denovo_db","db_dgidb","db_differentialnet","db_diseaseenhancer","db_disgenet","db_docm","db_drugbank","db_ecodrug","db_eggnog","db_exorbase","db_expression_atlas","db_exsnp","db_fantom_cage_peaks","db_fantom_co_expression_clusters","db_fantom_enhancers","db_fantom_motifs","db_fantom_ontology","db_fantom_tss_classifier","db_funcoup","db_gtex","db_hgnc","db_hmdb","db_hpdi","db_hpo","db_inbiomap","db_instruct","db_interpro","db_intogen","db_islandviewer","db_lncediting","db_lncipedia","db_medreaders","db_mircancer","db_mirdb","db_mirnest","db_mirtarbase","db_mndr","db_msdd","db_msigdb","db_omim_open","db_omim_private","db_oncokb","db_oncomirdb","db_oncotator","db_pancanqtl"],["db_phosphonetworks","db_proteinatlas","db_rbp_var","db_rbpdb","db_rddpred","db_redoxdb","db_remap","db_remap2","db_rsnp3","db_rvarbase","db_seecancer","db_seeqtl","db_sm2mir","db_snipa3","db_srnanalyzer","db_superdrug2","db_tumorfusions","db_varcards","db_annovar_1000g","db_annovar_1000g_sqlite","db_annovar_abraom","db_annovar_avsift","db_annovar_avsnp","db_annovar_avsnp_sqlite","db_annovar_brvar","db_annovar_cadd","db_annovar_cadd_sqlite","db_annovar_cancer_hotspots","db_annovar_cg","db_annovar_civic_gene_summaries","db_annovar_clinvar","db_annovar_clinvar_sqlite","db_annovar_cosmic","db_annovar_cosmic_sqlite","db_annovar_cscd","db_annovar_darned_sqlite","db_annovar_dbnsfp","db_annovar_dbnsfp_sqlite","db_annovar_dbscsnv","db_annovar_dbscsnv_sqlite","db_annovar_dhs_gene_connectivity","db_annovar_disgenet","db_annovar_docm","db_annovar_eigen","db_annovar_eigen_sqlite","db_annovar_ensgene","db_annovar_epi_genes","db_annovar_esp6500siv2","db_annovar_exac03","db_annovar_exac03_sqlite","db_annovar_fathmm","db_annovar_gdi_score","db_annovar_gerp","db_annovar_gme","db_annovar_gme_sqlite","db_annovar_gnomad","db_annovar_gnomad_sqlite","db_annovar_gtex_eqtl_egenes","db_annovar_gtex_eqtl_pairs","db_annovar_gwava","db_annovar_gwava_sqlite","db_annovar_hgnc","db_annovar_hrcr1","db_annovar_hrcr1_sqlite","db_annovar_icgc21","db_annovar_icgc_sqlite","db_annovar_intervar"],["db_annovar_intervar_sqlite","db_annovar_intogen","db_annovar_kaviar","db_annovar_knowngene","db_annovar_ljb26_all","db_annovar_lncediting_sqlite","db_annovar_loftool_scores","db_annovar_mcap","db_annovar_mcap_sqlite","db_annovar_mitimpact","db_annovar_nci60","db_annovar_nci60_sqlite","db_annovar_normal_pool","db_annovar_normal_pool_sqlite","db_annovar_omim_genemap2","db_annovar_popfreq","db_annovar_popfreq_sqlite","db_annovar_radar_sqlite","db_annovar_rddpred_sqlite","db_annovar_rediportal_sqlite","db_annovar_refgene","db_annovar_regsnpintron","db_annovar_revel","db_annovar_revel_sqlite","db_annovar_rvis_esv_score","db_annovar_seeqtl","db_annovar_snp","db_annovar_tall_somatic_genes","db_annovar_tmcsnpdb","db_annovar_varcards","db_annovar_varcards_sqlite","db_ucsc_cytoband","db_ucsc_dnase_clustered","db_ucsc_ensgene","db_ucsc_knowngene","db_ucsc_refgene","db_ucsc_tfbs_clustered","db_blast_env_nr","db_blast_est_human","db_blast_est_mouse","db_blast_est_others","db_blast_gss","db_blast_htgs","db_blast_human_genomic","db_blast_landmark","db_blast_mouse_genomic","db_blast_nr","db_blast_nt","db_blast_other_genomic","db_blast_pataa","db_blast_patnt","db_blast_pdbaa","db_blast_pdbnt","db_blast_ref_prok_rep_genomes","db_blast_ref_viroids_rep_genomes","db_blast_ref_viruses_rep_genomes","db_blast_refseq_genomic","db_blast_refseq_protein","db_blast_refseq_rna","db_blast_refseqgene","db_blast_sts","db_blast_swissprot","db_blast_taxdb","db_blast_tsa_nr","db_blast_tsa_nt","db_blast_vector","ensemble_grch37_reffa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-54744bae4f38587107de" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-54744bae4f38587107de">{"x":{"filter":"none","caption":"<caption>Database supported by BioInstaller (n=209)<\/caption>","data":[["ensemble_grch37_reffa","ensemble_grch38_reffa","fusioncatcher_reffa","gatk_bundle","hisat2_reffa","jaffa_reffa","mutsig_reffa","rmats_reffa","ucsc_reffa","db_appris","db_atcircdb","db_awesome","db_biosystems","db_cancer_hotspots","db_cancersplicingqtl","db_cellmarker","db_cgi","db_circbase","db_circnet","db_circrnadb","db_civic","db_consensuspathdb","db_cscd","db_dbsno","db_dcdb","db_denovo_db","db_dgidb","db_differentialnet","db_diseaseenhancer","db_disgenet","db_docm","db_drugbank","db_ecodrug","db_eggnog","db_ewasdb","db_exorbase","db_expression_atlas","db_exsnp","db_fantom_cage_peaks","db_fantom_co_expression_clusters","db_fantom_enhancers","db_fantom_motifs","db_fantom_ontology","db_fantom_tss_classifier","db_funcoup","db_fusiongdb","db_gtex","db_hgnc","db_hmdb","db_hpdi","db_hpo","db_inbiomap","db_instruct","db_interpro","db_intogen","db_islandviewer","db_lnc2cancer","db_lncediting","db_lncipedia","db_lncrnadisease","db_medreaders","db_mircancer","db_mirdb","db_mirnest","db_mirtarbase","db_mndr","db_msdd","db_msigdb","db_omim_open","db_omim_private"],["db_oncokb","db_oncomirdb","db_oncotator","db_pancanqtl","db_phosphonetworks","db_pmkb","db_proteinatlas","db_rbp_var","db_rbpdb","db_rddpred","db_redoxdb","db_remap","db_remap2","db_rsnp3","db_rvarbase","db_sedb","db_seecancer","db_seeqtl","db_sm2mir","db_snipa3","db_srnanalyzer","db_superdrug2","db_tumorfusions","db_varcards","db_annovar_1000g","db_annovar_1000g_sqlite","db_annovar_abraom","db_annovar_avsift","db_annovar_avsnp","db_annovar_avsnp_sqlite","db_annovar_brvar","db_annovar_cadd","db_annovar_cadd_sqlite","db_annovar_cancer_hotspots","db_annovar_cg","db_annovar_civic_gene_summaries","db_annovar_clinvar","db_annovar_clinvar_sqlite","db_annovar_cosmic","db_annovar_cosmic_sqlite","db_annovar_cscd","db_annovar_darned_sqlite","db_annovar_dbnsfp","db_annovar_dbnsfp_sqlite","db_annovar_dbscsnv","db_annovar_dbscsnv_sqlite","db_annovar_dhs_gene_connectivity","db_annovar_disgenet","db_annovar_docm","db_annovar_eigen","db_annovar_eigen_sqlite","db_annovar_ensgene","db_annovar_epi_genes","db_annovar_esp6500siv2","db_annovar_exac03","db_annovar_exac03_sqlite","db_annovar_fathmm","db_annovar_gdi_score","db_annovar_gerp","db_annovar_gme","db_annovar_gme_sqlite","db_annovar_gnomad","db_annovar_gnomad_sqlite","db_annovar_gtex_eqtl_egenes","db_annovar_gtex_eqtl_pairs","db_annovar_gwava","db_annovar_gwava_sqlite","db_annovar_hgnc","db_annovar_hrcr1","db_annovar_hrcr1_sqlite"],["db_annovar_icgc21","db_annovar_icgc_sqlite","db_annovar_intervar","db_annovar_intervar_sqlite","db_annovar_intogen","db_annovar_kaviar","db_annovar_knowngene","db_annovar_ljb26_all","db_annovar_lncediting_sqlite","db_annovar_loftool_scores","db_annovar_mcap","db_annovar_mcap_sqlite","db_annovar_mitimpact","db_annovar_nci60","db_annovar_nci60_sqlite","db_annovar_normal_pool","db_annovar_normal_pool_sqlite","db_annovar_omim_genemap2","db_annovar_popfreq","db_annovar_popfreq_sqlite","db_annovar_radar_sqlite","db_annovar_rddpred_sqlite","db_annovar_rediportal_sqlite","db_annovar_refgene","db_annovar_regsnpintron","db_annovar_revel","db_annovar_revel_sqlite","db_annovar_rvis_esv_score","db_annovar_seeqtl","db_annovar_snp","db_annovar_tall_somatic_genes","db_annovar_tmcsnpdb","db_annovar_varcards","db_annovar_varcards_sqlite","db_ucsc_cytoband","db_ucsc_dnase_clustered","db_ucsc_ensgene","db_ucsc_knowngene","db_ucsc_refgene","db_ucsc_tfbs_clustered","db_blast_env_nr","db_blast_est_human","db_blast_est_mouse","db_blast_est_others","db_blast_gss","db_blast_htgs","db_blast_human_genomic","db_blast_landmark","db_blast_mouse_genomic","db_blast_nr","db_blast_nt","db_blast_other_genomic","db_blast_pataa","db_blast_patnt","db_blast_pdbaa","db_blast_pdbnt","db_blast_ref_prok_rep_genomes","db_blast_ref_viroids_rep_genomes","db_blast_ref_viruses_rep_genomes","db_blast_refseq_genomic","db_blast_refseq_protein","db_blast_refseq_rna","db_blast_refseqgene","db_blast_sts","db_blast_swissprot","db_blast_taxdb","db_blast_tsa_nr","db_blast_tsa_nt","db_blast_vector","ensemble_grch37_reffa"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>V1<\/th>\n      <th>V2<\/th>\n      <th>V3<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># all databases config </span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3">db_cfg_meta &lt;-<span class="st"> </span><span class="kw">get.meta</span>(<span class="dt">config =</span> <span class="st">'db'</span>, <span class="dt">value =</span> <span class="st">'cfg_meta'</span>, </a>
 <a class="sourceLine" id="cb11-4" data-line-number="4">                        <span class="dt">read.config.params=</span><span class="kw">list</span>(<span class="dt">rcmd.parse =</span> <span class="ot">TRUE</span>))</a>
 <a class="sourceLine" id="cb11-5" data-line-number="5">cfg_dir &lt;-<span class="st"> </span>db_cfg_meta<span class="op">$</span>cfg_dir</a>
 <a class="sourceLine" id="cb11-6" data-line-number="6">cfg_dir</a>
-<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db&quot;</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db&quot;</span></a>
 <a class="sourceLine" id="cb11-8" data-line-number="8">avaliable_cfg &lt;-<span class="st"> </span>db_cfg_meta<span class="op">$</span>avaliable_cfg</a>
 <a class="sourceLine" id="cb11-9" data-line-number="9">avaliable_cfg</a>
 <a class="sourceLine" id="cb11-10" data-line-number="10"><span class="co">#&gt; [1] &quot;db_annovar.toml&quot; &quot;db_blast.toml&quot;   &quot;db_main.toml&quot;</span></a>
 <a class="sourceLine" id="cb11-11" data-line-number="11"><span class="kw">sprintf</span>(<span class="st">&quot;%s/%s&quot;</span>, cfg_dir, avaliable_cfg)</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_annovar.toml&quot;</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; [2] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_blast.toml&quot;  </span></a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; [3] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb11-12" data-line-number="12"><span class="co">#&gt; [1] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_annovar.toml&quot;</span></a>
+<a class="sourceLine" id="cb11-13" data-line-number="13"><span class="co">#&gt; [2] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_blast.toml&quot;  </span></a>
+<a class="sourceLine" id="cb11-14" data-line-number="14"><span class="co">#&gt; [3] &quot;/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml&quot;</span></a></code></pre></div>
 <p>Just like <a href="http://annovar.openbioinformatics.org/en/latest/">ANNOVAR</a> and <a href="http://www.bioconductor.org/">Bioconductor</a> have done, we hope to establish a integrated and shared database pool in this tool.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># ANNOVAR</span></a>
 <a class="sourceLine" id="cb12-2" data-line-number="2">download.dir &lt;-<span class="st"> </span><span class="kw">sprintf</span>(<span class="st">'%s/db_annovar'</span>, <span class="kw">tempdir</span>())</a>
@@ -2740,27 +2792,24 @@ code > span.ot { color: #007020; }
 <a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">package =</span> <span class="st">&quot;BioInstaller&quot;</span>)</a>
 <a class="sourceLine" id="cb12-12" data-line-number="12"><span class="kw">install.bioinfo</span>(<span class="st">'db_diseaseenhancer'</span>, <span class="dt">download.dir =</span> download.dir, </a>
 <a class="sourceLine" id="cb12-13" data-line-number="13">  <span class="dt">nongithub.cfg =</span> config.toml)</a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Debug:name:db_diseaseenhancer</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Debug:destdir:</span></a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/github/github.toml</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpLV8Wsi/Rinst13c7531e580df/BioInstaller/extdata/config/db/db_main.toml</span></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Fetching db_diseaseenhancer versions....</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Install versions:diseaseEnh5.1</span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Now start to install db_diseaseenhancer in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/db_main.</span></a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Running before install steps.</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; INFO [2018-08-22 23:02:34] Now start to download db_diseaseenhancer in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/db_main.</span></a>
-<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Running install steps.</span></a>
-<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Running after install successful steps.</span></a>
-<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Running change.info for db_diseaseenhancer and be saved to /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c856cc14ba3</span></a>
-<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Debug:Install by Github configuration file: </span></a>
-<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Debug:Install by Non Github configuration file: db_diseaseenhancer</span></a>
-<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt; INFO [2018-08-22 23:02:35] Installed successful list: db_diseaseenhancer</span></a>
-<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt; $fail.list</span></a>
-<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt; [1] &quot;&quot;</span></a>
-<a class="sourceLine" id="cb12-32" data-line-number="32"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb12-33" data-line-number="33"><span class="co">#&gt; $success.list</span></a>
-<a class="sourceLine" id="cb12-34" data-line-number="34"><span class="co">#&gt; [1] &quot;db_diseaseenhancer&quot;</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Debug:name:db_diseaseenhancer</span></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Debug:destdir:</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Debug:db:/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb1356f0358</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Debug:github.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/github/github.toml</span></a>
+<a class="sourceLine" id="cb12-18" data-line-number="18"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Debug:nongithub.cfg:/private/var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T/RtmpAn3eId/Rinstbba16d1b57bc/BioInstaller/extdata/config/db/db_main.toml</span></a>
+<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Fetching db_diseaseenhancer versions....</span></a>
+<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Install versions:enh2target</span></a>
+<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Now start to install db_diseaseenhancer in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/db_main.</span></a>
+<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Running before install steps.</span></a>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; INFO [2018-11-20 23:15:23] Now start to download db_diseaseenhancer in /var/folders/nc/yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/db_main.</span></a>
+<a class="sourceLine" id="cb12-24" data-line-number="24"><span class="co">#&gt; INFO [2018-11-20 23:16:39] Debug:Install by Github configuration file: </span></a>
+<a class="sourceLine" id="cb12-25" data-line-number="25"><span class="co">#&gt; INFO [2018-11-20 23:16:39] Debug:Install by Non Github configuration file: db_diseaseenhancer</span></a>
+<a class="sourceLine" id="cb12-26" data-line-number="26"><span class="co">#&gt; INFO [2018-11-20 23:16:39] Installed fail list: db_diseaseenhancer</span></a>
+<a class="sourceLine" id="cb12-27" data-line-number="27"><span class="co">#&gt; $fail.list</span></a>
+<a class="sourceLine" id="cb12-28" data-line-number="28"><span class="co">#&gt; [1] &quot;db_diseaseenhancer&quot;</span></a>
+<a class="sourceLine" id="cb12-29" data-line-number="29"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb12-30" data-line-number="30"><span class="co">#&gt; $success.list</span></a>
+<a class="sourceLine" id="cb12-31" data-line-number="31"><span class="co">#&gt; [1] &quot;&quot;</span></a></code></pre></div>
 </div>
 <div id="write-you-own-configuration-file" class="section level2">
 <h2>Write you own configuration file</h2>
@@ -2769,9 +2818,9 @@ code > span.ot { color: #007020; }
 <div id="session-info" class="section level2">
 <h2>Session info</h2>
 <p>Here is the output of <code>sessionInfo()</code> on the system on which this document was compiled:</p>
-<pre><code>#&gt; R version 3.5.0 (2018-04-23)
+<pre><code>#&gt; R version 3.5.1 (2018-07-02)
 #&gt; Platform: x86_64-apple-darwin15.6.0 (64-bit)
-#&gt; Running under: macOS High Sierra 10.13.6
+#&gt; Running under: macOS  10.14.1
 #&gt; 
 #&gt; Matrix products: default
 #&gt; BLAS: /Library/Frameworks/R.framework/Versions/3.5/Resources/lib/libRblas.0.dylib
@@ -2785,26 +2834,32 @@ code > span.ot { color: #007020; }
 #&gt; 
 #&gt; other attached packages:
 #&gt; [1] rvest_0.3.2        xml2_1.2.0         stringr_1.3.1     
-#&gt; [4] RCurl_1.95-4.10    bitops_1.0-6       BioInstaller_0.3.6
+#&gt; [4] RCurl_1.95-4.11    bitops_1.0-6       BioInstaller_0.3.7
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
-#&gt;  [1] Rcpp_0.12.17         later_0.7.3          git2r_0.21.0.9002   
-#&gt;  [4] compiler_3.5.0       formatR_1.5          futile.logger_1.4.3 
-#&gt;  [7] R.methodsS3_1.7.1    futile.options_1.0.1 prettydoc_0.2.1     
-#&gt; [10] R.utils_2.6.0        tools_3.5.0          digest_0.6.15       
-#&gt; [13] bit_1.1-14           jsonlite_1.5         RSQLite_2.1.1       
-#&gt; [16] evaluate_0.10.1      memoise_1.1.0        shiny_1.1.0         
-#&gt; [19] DBI_1.0.0            crosstalk_1.0.0      curl_3.2            
-#&gt; [22] yaml_2.1.19          withr_2.1.2          httr_1.3.1          
-#&gt; [25] configr_0.3.3        knitr_1.20           htmlwidgets_1.2     
-#&gt; [28] devtools_1.13.6      rappdirs_0.3.1       DT_0.4              
-#&gt; [31] rprojroot_1.3-2      bit64_0.9-7          glue_1.2.0          
-#&gt; [34] R6_2.2.2             rmarkdown_1.10       liteq_1.0.1         
-#&gt; [37] lambda.r_1.2.3       blob_1.1.1           magrittr_1.5        
-#&gt; [40] promises_1.0.1       backports_1.1.2      htmltools_0.3.6     
-#&gt; [43] assertthat_0.2.0     xtable_1.8-2         mime_0.5            
-#&gt; [46] httpuv_1.4.4.1       stringi_1.2.3        ini_0.3.1           
-#&gt; [49] RcppTOML_0.1.3       R.oo_1.22.0</code></pre>
+#&gt;  [1] prettydoc_0.2.1      liteq_1.0.1          remotes_2.0.2       
+#&gt;  [4] testthat_2.0.1       htmltools_0.3.6      usethis_1.4.0       
+#&gt;  [7] yaml_2.2.0           base64enc_0.1-3      blob_1.1.1          
+#&gt; [10] rlang_0.3.0.1        pkgbuild_1.0.2       later_0.7.5         
+#&gt; [13] R.oo_1.22.0          glue_1.3.0           withr_2.1.2         
+#&gt; [16] DBI_1.0.0            R.utils_2.7.0        rappdirs_0.3.1      
+#&gt; [19] bit64_0.9-7          lambda.r_1.2.3       sessioninfo_1.1.1   
+#&gt; [22] ini_0.3.1            futile.logger_1.4.3  R.methodsS3_1.7.1   
+#&gt; [25] htmlwidgets_1.3      devtools_2.0.1       RcppTOML_0.1.5      
+#&gt; [28] memoise_1.1.0        evaluate_0.12        knitr_1.20          
+#&gt; [31] callr_3.0.0          crosstalk_1.0.0      httpuv_1.4.5        
+#&gt; [34] ps_1.2.1             curl_3.2             Rcpp_1.0.0          
+#&gt; [37] xtable_1.8-3         DT_0.5               promises_1.0.1      
+#&gt; [40] backports_1.1.2      formatR_1.5          desc_1.2.0          
+#&gt; [43] pkgload_1.0.2        jsonlite_1.5         debugme_1.1.0       
+#&gt; [46] configr_0.3.4.1      mime_0.6             fs_1.2.6            
+#&gt; [49] bit_1.1-14           digest_0.6.18        stringi_1.2.4       
+#&gt; [52] processx_3.2.0       shiny_1.2.0          rprojroot_1.3-2     
+#&gt; [55] cli_1.0.1            tools_3.5.1          magrittr_1.5        
+#&gt; [58] RSQLite_2.1.1        futile.options_1.0.1 crayon_1.3.4        
+#&gt; [61] prettyunits_1.0.2    assertthat_0.2.0     rmarkdown_1.10      
+#&gt; [64] httr_1.3.1           R6_2.3.0             compiler_3.5.1      
+#&gt; [67] git2r_0.23.0</code></pre>
 </div>
 </section>
 

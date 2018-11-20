@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jianfeng Li" />
 
-<meta name="date" content="2018-08-22" />
+<meta name="date" content="2018-11-20" />
 
 <title>Write Your Own Configuration File</title>
 
@@ -109,7 +109,7 @@ code > span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Write Your Own Configuration File</h1>
 <h4 class="author project-author">Jianfeng Li</h4>
-<h4 class="date project-date">2018-08-22</h4>
+<h4 class="date project-date">2018-11-20</h4>
 </section>
 
 
@@ -140,6 +140,7 @@ code > span.ot { color: #007020; }
 <li>You can use the <code>before_install</code> stored the pre-installation steps</li>
 <li>The <code>install</code> mainly be used to store the installation steps. Besides, you can use your own installation script and setted it to <code>#R# system('/path/yourscript')#R#</code></li>
 <li>The <code>make_dir</code> is the compile directory of software and database. Because the workdir of R default will be set to <code>download.dir</code>, and need be changed to <code>make_dir</code> finish <code>install</code> steps.</li>
+<li>All <a href="https://bitbucket.org">Bitbucket</a> repo should set ‘bitbucket’ to ‘true’ (e.g. snakemake in <a href="https://github.com/JhuangLab/BioInstaller/blob/master/inst/extdata/config/github/github.toml">github.toml</a>)</li>
 </ul>
 <pre class="toml"><code>[bwa]
 github_url = &quot;https://github.com/lh3/bwa&quot;
@@ -208,7 +209,7 @@ mac = [&quot;sed -i s/\&quot;## CFLAGS='-O3 -m64' .*\&quot;/\&quot;CFLAGS='-O3 -
 <a class="sourceLine" id="cb3-21" data-line-number="21"><span class="kw">install.bioinfo</span>(<span class="dt">nongithub.cfg =</span> blast.databases, <span class="dt">github.cfg =</span> mask.github,</a>
 <a class="sourceLine" id="cb3-22" data-line-number="22">  <span class="dt">show.all.names =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#&gt; Warning in fetch.config(github.cfg): Configuration file /var/folders/nc/</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpfQa2ER/file13c85c47a957 is empty,</span></a>
+<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#&gt; yl5qhkkn6vxf_m7s_yz2kzvh0000gn/T//RtmpK8vw9W/filebbb14fb80eba is empty,</span></a>
 <a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#&gt; please check the links.</span></a>
 <a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#&gt;  [1] &quot;db_blast_env_nr&quot;                  &quot;db_blast_est_human&quot;              </span></a>
 <a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#&gt;  [3] &quot;db_blast_est_mouse&quot;               &quot;db_blast_est_others&quot;             </span></a>

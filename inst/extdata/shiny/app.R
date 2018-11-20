@@ -1,12 +1,6 @@
-pkgs.shiny <- c("shinycssloaders", "Cairo", "shinydashboard", "configr",
-                "data.table", "shinyjs", "liteq", "DT", "benchmarkme",
-                "stringr", "R.utils", "shiny", "RSQLite")
-sapply(pkgs.shiny, function(x) {
-  suppressMessages(require(x, character.only = TRUE))
-})
 # source UI required code config.R sourced in the body_upload_ui.R
 files <- list.files(".", "^ui_")
-files <- c(files, "config.R")
+files <- c("deps.R", files, "config.R")
 for (i in files) {
   source(i, encoding = "UTF-8")
 }

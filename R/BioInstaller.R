@@ -1,5 +1,6 @@
-#' This package is a comprehensive R package to integrate 
-#' bioinformatics resources, such as software/script and database
+#' This package is a new platform to construct interactive and reproducible biological 
+#' data analysis applications based on R language, which includes the R functions and R 
+#' Shiny application, REST APIs.
 #'
 #' @author
 #' Li Jianfeng \url{lee_jianfeng@sjtu.edu.cn}
@@ -20,6 +21,6 @@
 #' @importFrom R.utils gunzip gzip
 #' @importFrom utils unzip untar download.file URLencode read.table
 #' @importFrom utils compareVersion install.packages installed.packages
-#' @importFrom devtools install_github
+#' @importFrom devtools install_github install_url
 #' @importFrom shiny runApp
 NULL

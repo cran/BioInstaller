@@ -1,6 +1,6 @@
 Package: BioInstaller
 Title: Integrator of Bioinformatics Resources
-Version: 0.3.6
+Version: 0.3.7
 Authors@R: person("Jianfeng", "Li", email = "lee_jianfeng@sjtu.edu.cn", role = c("aut", "cre"), comment = c(ORCID = "0000-0003-2349-208X"))
 Maintainer: Jianfeng Li <lee_jianfeng@sjtu.edu.cn>
 Description: 
@@ -15,11 +15,11 @@ Imports: stringr (>= 1.2.0), futile.logger (>= 1.4.1), configr (>=
         0.3.3), jsonlite, git2r (>= 0.0.3), R.utils (>= 2.5.0), RCurl
         (>= 1.95-4.8), rvest (>= 0.3.2), devtools (>= 1.13.2), stringi
         (>= 1.1.5), shiny, liteq
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Suggests: knitr, rmarkdown, testthat, prettydoc, DT
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2018-08-22 15:02:46 UTC; ljf
+Packaged: 2018-11-20 15:16:48 UTC; ljf
 Author: Jianfeng Li [aut, cre] (<https://orcid.org/0000-0003-2349-208X>)
 Repository: CRAN
-Date/Publication: 2018-08-22 16:10:11 UTC
+Date/Publication: 2018-11-20 15:50:09 UTC

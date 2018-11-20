@@ -12,7 +12,7 @@
 
 <meta name="author" content="Jianfeng Li" />
 
-<meta name="date" content="2018-08-22" />
+<meta name="date" content="2018-11-20" />
 
 <title>Download Source Code of BioInstaller</title>
 
@@ -43,7 +43,7 @@ code > span.ot { color: #007020; }
 <section class="page-header">
 <h1 class="title toc-ignore project-name">Download Source Code of BioInstaller</h1>
 <h4 class="author project-author">Jianfeng Li</h4>
-<h4 class="date project-date">2018-08-22</h4>
+<h4 class="date project-date">2018-11-20</h4>
 </section>
 
 
@@ -51,14 +51,7 @@ code > span.ot { color: #007020; }
 <ul>
 <li><a href="#github">Github</a></li>
 <li><a href="#cran">CRAN</a></li>
-<li><a href="#jhuanglab-host">JhuangLab host</a><ul>
-<li><a href="#bioinstaller-0.3.6">BioInstaller 0.3.6</a></li>
-<li><a href="#v0.3.5.7000">v0.3.5.7000</a></li>
-<li><a href="#v0.3.5.6000">v0.3.5.6000</a></li>
-<li><a href="#v0.3.3">v0.3.3</a></li>
-<li><a href="#v0.2.1">v0.2.1</a></li>
-<li><a href="#v0.1.2">v0.1.2</a></li>
-</ul></li>
+<li><a href="#jhuanglab-host">JhuangLab host</a></li>
 </ul>
 </div>
 
@@ -73,103 +66,7 @@ code > span.ot { color: #007020; }
 </div>
 <div id="jhuanglab-host" class="section level2">
 <h2>JhuangLab host</h2>
-<div id="bioinstaller-0.3.6" class="section level3">
-<h3>BioInstaller 0.3.6</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.3.6.tar.gz">here</a>.</p>
-<div id="new-features" class="section level4">
-<h4>New features</h4>
-<ul>
-<li>add copy_plugins and copy_configs functions to restore the plugins and config</li>
-<li>use fromJSON to access the github APIs, which can avoid the SSL problem on windows platform</li>
-</ul>
-</div>
-</div>
-<div id="v0.3.5.7000" class="section level3">
-<h3>v0.3.5.7000</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.3.5.7000.tar.gz">here</a>.</p>
-<div id="minor-bugs-fixed" class="section level4">
-<h4>Minor bugs fixed</h4>
-<ul>
-<li>Add conda and spack in the Docker image</li>
-</ul>
-</div>
-</div>
-<div id="v0.3.5.6000" class="section level3">
-<h3>v0.3.5.6000</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.3.5.6000.tar.gz">here</a>.</p>
-<div id="new-features-1" class="section level4">
-<h4>New features</h4>
-<ul>
-<li><p>Shiny application supported</p></li>
-<li><p>Numbers increased of included items, especialy the databases</p></li>
-<li><p>Use github <a href="https://github.com/JhuangLab/BioInstaller/issues">forum</a></p></li>
-<li><p>Add parameter <code>overwrite</code> in <code>install.bioinfo</code></p></li>
-<li><p>Add Opencpu, Shiny and Rstudio service in Docker container</p></li>
-<li><p>Use ‘Setting’ module in Shiny application to manage the variables</p></li>
-</ul>
-</div>
-<div id="minor-bugs-fixed-1" class="section level4">
-<h4>Minor bugs fixed</h4>
-<ul>
-<li>Check and confirm delete the existing dir only when clone a github project</li>
-</ul>
-</div>
-</div>
-<div id="v0.3.3" class="section level3">
-<h3>v0.3.3</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.3.3.tar.gz">here</a>.</p>
-<div id="new-features-2" class="section level4">
-<h4>New features</h4>
-<ul>
-<li><p>Multiple resources file be supported</p></li>
-<li><p>Adjust and set db, github, nongithub, web and docker in inst/extdata/config</p></li>
-<li><p>Meta information of software and database be added in newly supported items</p></li>
-<li><p>Decompress can be auto-recognized</p></li>
-<li><p>Docker supported</p></li>
-</ul>
-</div>
-<div id="minor-bugs-fixed-2" class="section level4">
-<h4>Minor bugs fixed</h4>
-<ul>
-<li><p>change.info default is to write tempfile() now</p></li>
-<li><p>Fixed a bug when set save.to.db to FALSE. It can raise installed fail</p></li>
-</ul>
-</div>
-</div>
-<div id="v0.2.1" class="section level3">
-<h3>v0.2.1</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.2.1.tar.gz">here</a>.</p>
-<div id="new-features-3" class="section level4">
-<h4>New features</h4>
-<ul>
-<li><p>ANNOVAR databases can be download using inst/extdata/databases/ANNOVAR.toml</p></li>
-<li><p>Move databases toml file to inst/extdata/databases/</p></li>
-<li><p><code>local.source</code> be supported (Don’t need download the source code again when it were download already)</p></li>
-<li><p>Function <code>docker.pull</code> and <code>docker.search</code> be added to download and search docker repo</p></li>
-<li><p>Function <code>craw.all.versions</code> be added to crawl source code of all version (Sotwares or databases)</p></li>
-</ul>
-</div>
-</div>
-<div id="v0.1.2" class="section level3">
-<h3>v0.1.2</h3>
-<p>Download <a href="http://bioinfo.rjh.com.cn/download/bioinstaller/bioinstaller/v0.1.2.tar.gz">here</a>.</p>
-<div id="new-features-4" class="section level4">
-<h4>New features</h4>
-<ul>
-<li><p>#R# CMD #R# marked the R CMD need to be runed</p></li>
-<li><p>glue parse be supported</p></li>
-<li><p>Softwares versions of github.cfg be fetched from github API</p></li>
-<li><p>destdir and download.dir can be setted respectively</p></li>
-<li><p><code>verbose</code> default is TRUE, show log infomation</p></li>
-</ul>
-</div>
-<div id="minor-bugs-fixed-3" class="section level4">
-<h4>Minor bugs fixed</h4>
-<ul>
-<li>Fix <code>unlink()</code> clean tests files fail on windows (force = TRUE)</li>
-</ul>
-</div>
-</div>
+<p>2018.11 Temporarily suspend service.</p>
 </div>
 </section>
 

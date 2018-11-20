@@ -1,5 +1,5 @@
 ## ---- echo = FALSE-------------------------------------------------------
-knitr::opts_chunk$set(comment = "#>", collapse = TRUE)
+knitr::opts_chunk$set(comment = "#>", collapse = TRUE, screenshot.force = FALSE)
 get_dt <- function(item) {
   Name <- names(item)
   Description <- unname(unlist(lapply(item, function(x){

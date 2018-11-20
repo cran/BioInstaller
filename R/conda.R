@@ -44,7 +44,7 @@ conda.list <- function(env_name = "base", ...) {
     return(FALSE)
   }
   text <- paste0(objs, collapse = "\n")
-  x <- tryCatch(read.table(text = text), error = function(e) {
+  x <- tryCatch(read.table(text = text, fill = TRUE), error = function(e) {
     data.frame()
   })
   if (nrow(x) == 0) 
@@ -89,9 +89,9 @@ conda.env.list <- function(...) {
 #'   conda.env.create(params = 'vader/deathstar')
 #'   conda.env.create(env_name = 'name')
 #'   conda.env.create(env_file = '/path/to/environment.yml')
-#'   conda.env.create(env_name = 'deathstar', 
+#'   conda.env.create(env_name = 'deathstar',
 #'                    env_file = '/path/to/requirements.txt')
-#'   conda.env.create(env_file = '/path/to/requirements.txt', 
+#'   conda.env.create(env_file = '/path/to/requirements.txt',
 #'   env_path = '/home/user/software/deathstar')
 #' }
 conda.env.create <- function(env_name = "", env_file = "", env_path = "", params = "", 

@@ -1,5 +1,5 @@
 ## ----setup, include=FALSE------------------------------------------------
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, screenshot.force = FALSE, comment = "#>", collapse = TRUE)
 
 ## ----eval=FALSE----------------------------------------------------------
 #  # If the BioInstaller R package has not been installed,
